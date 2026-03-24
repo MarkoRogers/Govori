@@ -87,7 +87,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .vocab-meaning{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:8px}
 .vocab-gender{font-size:12px;color:var(--text2);font-weight:700;margin-bottom:10px;padding:3px 10px;background:var(--bg3);border-radius:99px;display:inline-block}
 .vocab-example-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
-.vocab-sentence{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:14px}
+.vocab-sentence{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:14px;display:flex;flex-direction:column;gap:2px}
+.vocab-sentence-hr{color:var(--text);font-weight:700}
+.vocab-sentence-en{color:var(--text2);font-size:13px;font-style:italic}
 .vocab-sentence .clickable-word{cursor:pointer;color:var(--text);font-weight:700;border-bottom:1px dashed var(--blue);transition:color .15s;display:inline-block}
 .vocab-sentence .clickable-word:hover{color:var(--blue)}
 .audio-btn{background:var(--blue);border:none;border-radius:99px;padding:9px 18px;cursor:pointer;color:white;display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;margin:0 auto;transition:all .1s;box-shadow:0 3px 0 var(--blue-dark)}
@@ -146,6 +148,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .continue-btn{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;transition:all .1s;white-space:nowrap}
 .correct-bar .continue-btn{background:var(--green);color:#000;box-shadow:0 3px 0 var(--green-dark)}
 .wrong-bar .continue-btn{background:var(--red);color:#fff;box-shadow:0 3px 0 var(--red-dark)}
+.review-word-btn{background:none;border:1px solid rgba(255,75,75,.5);color:var(--red);border-radius:8px;padding:4px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;display:block;transition:background .15s}
+.review-word-btn:hover{background:rgba(255,75,75,.15)}
 .check-btn-wrap{width:100%;max-width:580px;padding:0 20px 100px;margin:0 auto}
 .check-btn{background:var(--red);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;border:none;border-radius:13px;padding:15px;cursor:pointer;width:100%;box-shadow:0 4px 0 var(--red-dark);transition:all .1s}
 .check-btn:disabled{background:var(--bg3);color:var(--text3);box-shadow:none;cursor:default}
@@ -325,6 +329,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="feedback-text">
       <div class="feedback-title" id="feedbackTitle"></div>
       <div class="feedback-answer" id="feedbackAnswer"></div>
+      <button class="review-word-btn" id="reviewWordBtn" style="display:none" onclick="reviewWordFromFeedback()">👁 View word again</button>
     </div>
     <button class="continue-btn" id="continueBtnFb" onclick="nextQuestion()">CONTINUE</button>
   </div>
@@ -372,26 +377,99 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 // VOCABULARY DATABASE
 // ═══════════════════════════════════════════════════════
 const VOCAB = {
+  // Unit 0 — People & Things (čovjek, žena, dječak, djevojčica, dijete + je, i, ili)
   0: [
-    ['zdravo','hello','ZDRA-voh','phrase'],
-    ['bok','hi / bye','bok','phrase'],
-    ['dobar dan','good day','DOH-bar dan','phrase'],
-    ['dobro jutro','good morning','DOH-broh YOO-troh','phrase'],
-    ['dobra večer','good evening','DOH-bra VEH-chehr','phrase'],
-    ['laku noć','good night','LAH-koo noch','phrase'],
-    ['hvala','thank you','HVA-lah','phrase'],
-    ['molim','please / you\'re welcome','MOH-leem','phrase'],
-    ['da','yes','dah','adv'],
-    ['ne','no','neh','adv'],
-    ['oprosti','sorry (informal)','oh-PROH-stee','phrase'],
-    ['kako se zoveš?','what\'s your name?','KAH-koh seh ZOH-vesh','phrase'],
-    ['zovem se...','my name is...','ZOH-vem seh','phrase'],
-    ['kako si?','how are you? (informal)','KAH-koh see','phrase'],
-    ['dobro','good / well','DOH-broh','adj'],
-    ['vidimo se','see you','VEE-dee-moh seh','phrase'],
-    ['do viđenja','goodbye','doh vee-JEH-nyah','phrase'],
+    ['čovjek','man','CHOH-vyehk','noun','m'],
+    ['žena','woman','ZHEH-nah','noun','f'],
+    ['dječak','boy','DYEH-chak','noun','m'],
+    ['djevojčica','girl','dyeh-voy-CHEE-tsah','noun','f'],
+    ['dijete','child','dee-YEH-teh','noun','n'],
+    ['djeca','children','DYEH-tsah','noun','f'],
+    ['je','is','yeh','verb'],
+    ['i','and','ee','conj'],
+    ['ili','or','EE-lee','conj'],
+    ['to','it / that','toh','pronoun'],
   ],
+  // Unit 1 — Eat & Drink (jede, pije + basic foods)
   1: [
+    ['jede','eats','YEH-deh','verb'],
+    ['pije','drinks','PEE-yeh','verb'],
+    ['voda','water','VOH-dah','noun','f'],
+    ['mlijeko','milk','mlee-YEH-koh','noun','n'],
+    ['kruh','bread','krooh','noun','m'],
+    ['jabuka','apple','YAH-boo-kah','noun','f'],
+    ['juha','soup','YOO-hah','noun','f'],
+    ['sok','juice','sok','noun','m'],
+    ['meso','meat','MEH-soh','noun','n'],
+    ['sir','cheese','seer','noun','m'],
+  ],
+  // Unit 2 — I / He / She (ja, on, ona, oni, mi + sam, je, smo)
+  2: [
+    ['ja','I','yah','pronoun'],
+    ['on','he','on','pronoun'],
+    ['ona','she','OH-nah','pronoun'],
+    ['oni','they','OH-nee','pronoun'],
+    ['mi','we','mee','pronoun'],
+    ['sam','am','sam','verb'],
+    ['smo','are (we)','smoh','verb'],
+    ['su','are (they)','soo','verb'],
+    ['ne','no / not','neh','adv'],
+    ['da','yes','dah','adv'],
+  ],
+  // Unit 3 — Pronouns & Have (ti, vi + imam/ima + pets)
+  3: [
+    ['ti','you','tee','pronoun'],
+    ['vi','you (plural)','vee','pronoun'],
+    ['si','are (you)','see','verb'],
+    ['ste','are (you pl.)','steh','verb'],
+    ['imam','I have','EE-mam','verb'],
+    ['ima','has / there is','EE-mah','verb'],
+    ['pas','dog','pas','noun','m'],
+    ['mačka','cat','MACH-kah','noun','f'],
+    ['ptica','bird','PTEE-tsah','noun','f'],
+    ['riba','fish','REE-bah','noun','f'],
+  ],
+  // Unit 4 — More Food & Drink
+  4: [
+    ['kava','coffee','KAH-vah','noun','f'],
+    ['čaj','tea','chay','noun','m'],
+    ['sir','cheese','seer','noun','m'],
+    ['naranča','orange','nah-RAN-chah','noun','f'],
+    ['banana','banana','bah-NAH-nah','noun','f'],
+    ['pizza','pizza','PEET-zah','noun','f'],
+    ['salata','salad','sah-LAH-tah','noun','f'],
+    ['jaje','egg','YAH-yeh','noun','n'],
+    ['maslac','butter','MAS-lats','noun','m'],
+    ['šećer','sugar','SHEH-chehr','noun','m'],
+  ],
+  // Unit 5 — Family
+  5: [
+    ['majka','mother','MY-kah','noun','f'],
+    ['otac','father','OH-ats','noun','m'],
+    ['brat','brother','brat','noun','m'],
+    ['sestra','sister','SEH-strah','noun','f'],
+    ['djed','grandfather','dyed','noun','m'],
+    ['baka','grandmother','BAH-kah','noun','f'],
+    ['sin','son','seen','noun','m'],
+    ['kći','daughter','kchee','noun','f'],
+    ['muž','husband','moozh','noun','m'],
+    ['supruga','wife','soo-PROO-gah','noun','f'],
+  ],
+  // Unit 6 — Colours
+  6: [
+    ['crvena','red','tsr-VEH-nah','adj'],
+    ['plava','blue','PLAH-vah','adj'],
+    ['zelena','green','ZEH-leh-nah','adj'],
+    ['žuta','yellow','ZHOO-tah','adj'],
+    ['bijela','white','bee-YEH-lah','adj'],
+    ['crna','black','TSRR-nah','adj'],
+    ['smeđa','brown','SMEH-jah','adj'],
+    ['narančasta','orange','nah-ran-CHA-stah','adj'],
+    ['ružičasta','pink','roo-zhee-CHA-stah','adj'],
+    ['siva','grey','SEE-vah','adj'],
+  ],
+  // Unit 7 — Numbers 1–10
+  7: [
     ['jedan','one','YEH-dan','num'],
     ['dva','two','dvah','num'],
     ['tri','three','tree','num'],
@@ -402,157 +480,84 @@ const VOCAB = {
     ['osam','eight','OH-sam','num'],
     ['devet','nine','DEH-vet','num'],
     ['deset','ten','DEH-set','num'],
-    ['crvena','red','tsr-VEH-nah','adj'],
-    ['plava','blue','PLAH-vah','adj'],
-    ['zelena','green','ZEH-leh-nah','adj'],
-    ['žuta','yellow','ZHOO-tah','adj'],
-    ['bijela','white','bee-YEH-lah','adj'],
-    ['crna','black','TSRR-nah','adj'],
   ],
-  2: [
-    ['ja','I','yah','pronoun'],
-    ['ti','you (informal)','tee','pronoun'],
-    ['on','he','on','pronoun'],
-    ['ona','she','OH-nah','pronoun'],
-    ['mi','we','mee','pronoun'],
-    ['vi','you (plural/formal)','vee','pronoun'],
-    ['oni','they (m)','OH-nee','pronoun'],
-    ['majka','mother','MY-kah','noun','f'],
-    ['otac','father','OH-ats','noun','m'],
-    ['brat','brother','brat','noun','m'],
-    ['sestra','sister','SEH-strah','noun','f'],
-    ['prijatelj','friend (m)','pree-YA-telj','noun','m'],
-    ['prijateljica','friend (f)','pree-YA-telj-ee-tsah','noun','f'],
-    ['dijete','child','dee-YEH-teh','noun','n'],
-    ['čovjek','man / person','CHOH-vyehk','noun','m'],
-    ['žena','woman','ZHEH-nah','noun','f'],
-  ],
-  3: [
-    ['voda','water','VOH-dah','noun','f'],
-    ['kava','coffee','KAH-vah','noun','f'],
-    ['čaj','tea','chay','noun','m'],
-    ['sok','juice','sok','noun','m'],
-    ['kruh','bread','krooh','noun','m'],
-    ['sir','cheese','seer','noun','m'],
-    ['meso','meat','MEH-soh','noun','n'],
-    ['riba','fish','REE-bah','noun','f'],
-    ['jabuka','apple','YAH-boo-kah','noun','f'],
-    ['naranča','orange','nah-RAN-chah','noun','f'],
-    ['salata','salad','sah-LAH-tah','noun','f'],
-    ['juha','soup','YOO-hah','noun','f'],
-    ['pizza','pizza','PEET-zah','noun','f'],
-    ['ukusno','delicious','oo-KOOS-noh','adj'],
-    ['gladna','hungry (f)','GLAD-nah','adj'],
-    ['žedna','thirsty (f)','ZHEHD-nah','adj'],
-  ],
-  4: [
-    ['gdje','where','gyeh','adv'],
-    ['lijevo','left','LEE-yeh-voh','adv'],
-    ['desno','right','DEHS-noh','adv'],
-    ['ravno','straight ahead','RAV-noh','adv'],
-    ['auto','car','OW-toh','noun','n'],
-    ['autobus','bus','OW-toh-boos','noun','m'],
-    ['vlak','train','vlak','noun','m'],
-    ['tramvaj','tram','TRAM-vy','noun','m'],
-    ['avion','airplane','AH-vee-on','noun','m'],
-    ['kolodvor','train station','koh-LOH-dvor','noun','m'],
-    ['autobusna stanica','bus stop','OW-toh-boos-nah STA-nee-tsah','phrase'],
-    ['ulica','street','OO-lee-tsah','noun','f'],
-    ['grad','city','grad','noun','m'],
-    ['park','park','park','noun','m'],
-    ['blizu','nearby / close','BLEE-zoo','adv'],
-    ['daleko','far','DAH-leh-koh','adv'],
-  ],
-  5: [
-    ['kuća','house','KOO-chah','noun','f'],
-    ['stan','apartment','stan','noun','m'],
-    ['soba','room','SOH-bah','noun','f'],
-    ['kuhinja','kitchen','KOO-heen-yah','noun','f'],
-    ['spavaća soba','bedroom','spah-VAH-chah SOH-bah','phrase'],
-    ['kupaonica','bathroom','koo-pah-OH-nee-tsah','noun','f'],
-    ['stol','table','stol','noun','m'],
-    ['stolica','chair','STOH-lee-tsah','noun','f'],
-    ['krevet','bed','KREH-vet','noun','m'],
-    ['prozor','window','PROH-zor','noun','m'],
-    ['vrata','door','VRAH-tah','noun','n'],
-    ['ujutro','in the morning','oo-YOO-troh','adv'],
-    ['navečer','in the evening','nah-VEH-chehr','adv'],
-    ['uvijek','always','OO-vee-yek','adv'],
-    ['nikad','never','NEE-kad','adv'],
-    ['ponekad','sometimes','POH-neh-kad','adv'],
-  ],
-  6: [
-    ['biti','to be','BEE-tee','verb'],
-    ['imati','to have','EE-mah-tee','verb'],
+  // Unit 8 — Core Verbs
+  8: [
     ['ići','to go','EE-chee','verb'],
     ['doći','to come','DOH-chee','verb'],
-    ['jesti','to eat','YEH-stee','verb'],
-    ['piti','to drink','PEE-tee','verb'],
-    ['spavati','to sleep','SPAH-vah-tee','verb'],
-    ['raditi','to work / to do','RAH-dee-tee','verb'],
     ['govoriti','to speak','goh-voh-REE-tee','verb'],
-    ['razumjeti','to understand','rah-ZOOM-yeh-tee','verb'],
-    ['htjeti','to want','HTEH-tee','verb'],
-    ['moći','to be able to / can','MOH-chee','verb'],
-    ['trebati','to need','TREH-bah-tee','verb'],
-    ['vidjeti','to see','VEE-dyeh-tee','verb'],
-    ['voljeti','to love / to like','VOH-lyeh-tee','verb'],
+    ['čitati','to read','CHEE-tah-tee','verb'],
+    ['spavati','to sleep','SPAH-vah-tee','verb'],
+    ['raditi','to work','RAH-dee-tee','verb'],
     ['živjeti','to live','ZHEE-vyeh-tee','verb'],
+    ['vidjeti','to see','VEE-dyeh-tee','verb'],
+    ['voljeti','to love','VOH-lyeh-tee','verb'],
+    ['razumjeti','to understand','rah-ZOOM-yeh-tee','verb'],
   ],
-  7: [
+  // Unit 9 — Adjectives
+  9: [
     ['velik','big','VEH-leek','adj'],
     ['mali','small','MAH-lee','adj'],
-    ['dobar','good','DOH-bar','adj'],
-    ['loš','bad','losh','adj'],
     ['lijep','beautiful','LEE-yep','adj'],
     ['star','old','star','adj'],
     ['mlad','young','mlad','adj'],
-    ['brz','fast','brzh','adj'],
-    ['spor','slow','spor','adj'],
-    ['toplo','warm','TOH-ploh','adj'],
-    ['hladno','cold','HLAD-noh','adj'],
-    ['lako','easy','LAH-koh','adj'],
-    ['teško','difficult','TEHSH-koh','adj'],
     ['sretan','happy','SREH-tan','adj'],
-    ['tužan','sad','TOO-zhan','adj'],
     ['umoran','tired','oo-MOH-ran','adj'],
+    ['gladan','hungry','GLAH-dan','adj'],
+    ['dobar','good','DOH-bar','adj'],
+    ['loš','bad','losh','adj'],
   ],
-  8: [
-    ['vrijeme','weather / time','VREH-meh','noun','n'],
-    ['sunce','sun','SOON-tseh','noun','n'],
-    ['kiša','rain','KEE-shah','noun','f'],
-    ['snijeg','snow','SNYEG','noun','m'],
-    ['vjetar','wind','VYEH-tar','noun','m'],
-    ['oblačno','cloudy','oh-BLACH-noh','adj'],
-    ['sunčano','sunny','SOON-chah-noh','adj'],
-    ['ljeto','summer','LYEH-toh','noun','n'],
-    ['zima','winter','ZEE-mah','noun','f'],
-    ['proljeće','spring','proh-LYEH-cheh','noun','n'],
-    ['jesen','autumn','YEH-sen','noun','f'],
-    ['more','sea','MOH-reh','noun','n'],
-    ['planina','mountain','plah-NEE-nah','noun','f'],
-    ['šuma','forest','SHOO-mah','noun','f'],
-    ['rijeka','river','ree-YEH-kah','noun','f'],
-    ['pas','dog','pas','noun','m'],
-    ['mačka','cat','MACH-kah','noun','f'],
+  // Unit 10 — Greetings (moved later, learner has context now!)
+  10: [
+    ['zdravo','hello','ZDRA-voh','phrase'],
+    ['bok','hi / bye','bok','phrase'],
+    ['dobar dan','good day','DOH-bar dan','phrase'],
+    ['dobro jutro','good morning','DOH-broh YOO-troh','phrase'],
+    ['dobra večer','good evening','DOH-bra VEH-chehr','phrase'],
+    ['laku noć','good night','LAH-koo noch','phrase'],
+    ['hvala','thank you','HVA-lah','phrase'],
+    ['molim','please / you\'re welcome','MOH-leem','phrase'],
+    ['oprosti','sorry','oh-PROH-stee','phrase'],
+    ['do viđenja','goodbye','doh vee-JEH-nyah','phrase'],
   ],
-  9: [
-    ['ponedjeljak','Monday','poh-ned-YELL-yak','noun','m'],
-    ['utorak','Tuesday','OO-toh-rak','noun','m'],
-    ['srijeda','Wednesday','SREE-yeh-dah','noun','f'],
-    ['četvrtak','Thursday','CHEH-tvr-tak','noun','m'],
-    ['petak','Friday','PEH-tak','noun','m'],
-    ['subota','Saturday','SOO-boh-tah','noun','f'],
-    ['nedjelja','Sunday','ned-YELL-yah','noun','f'],
+  // Unit 11 — Getting Around
+  11: [
+    ['gdje','where','gyeh','adv'],
+    ['grad','city','grad','noun','m'],
+    ['ulica','street','OO-lee-tsah','noun','f'],
+    ['auto','car','OW-toh','noun','n'],
+    ['autobus','bus','OW-toh-boos','noun','m'],
+    ['vlak','train','vlak','noun','m'],
+    ['kolodvor','train station','koh-LOH-dvor','noun','m'],
+    ['blizu','nearby','BLEE-zoo','adv'],
+    ['daleko','far','DAH-leh-koh','adv'],
+    ['lijevo','left','LEE-yeh-voh','adv'],
+  ],
+  // Unit 12 — Days & Time
+  12: [
     ['danas','today','DAH-nas','adv'],
     ['sutra','tomorrow','SOO-trah','adv'],
     ['jučer','yesterday','YOO-chehr','adv'],
-    ['sada','now','SAH-dah','adv'],
     ['jutro','morning','YOO-troh','noun','n'],
     ['večer','evening','VEH-chehr','noun','f'],
-    ['noć','night','noch','noun','f'],
     ['tjedan','week','TYEH-dan','noun','m'],
-    ['godina','year','GOH-dee-nah','noun','f'],
+    ['ponedjeljak','Monday','poh-ned-YELL-yak','noun','m'],
+    ['petak','Friday','PEH-tak','noun','m'],
+    ['subota','Saturday','SOO-boh-tah','noun','f'],
+    ['nedjelja','Sunday','ned-YELL-yah','noun','f'],
+  ],
+  // Unit 13 — Home
+  13: [
+    ['kuća','house','KOO-chah','noun','f'],
+    ['soba','room','SOH-bah','noun','f'],
+    ['kuhinja','kitchen','KOO-heen-yah','noun','f'],
+    ['krevet','bed','KREH-vet','noun','m'],
+    ['stol','table','stol','noun','m'],
+    ['stolica','chair','STOH-lee-tsah','noun','f'],
+    ['prozor','window','PROH-zor','noun','m'],
+    ['vrata','door','VRAH-tah','noun','n'],
+    ['stan','apartment','stan','noun','m'],
+    ['park','park','park','noun','m'],
   ],
 };
 
@@ -565,12 +570,11 @@ const CONJUGATIONS = {
   'raditi':  { ja:'radim', ti:'radiš', on:'radi', mi:'radimo', vi:'radite', oni:'rade', note:'Regular -iti verb: stem radi-' },
   'govoriti':{ ja:'govorim', ti:'govoriš', on:'govori', mi:'govorimo', vi:'govorite', oni:'govore', note:'Regular -iti verb' },
   'spavati': { ja:'spavam', ti:'spavaš', on:'spava', mi:'spavamo', vi:'spavate', oni:'spavaju', note:'Regular -ati verb' },
-  'htjeti':  { ja:'hoću', ti:'hoćeš', on:'hoće', mi:'hoćemo', vi:'hoćete', oni:'hoće', note:'"htjeti" (to want) is irregular' },
-  'moći':    { ja:'mogu', ti:'možeš', on:'može', mi:'možemo', vi:'možete', oni:'mogu', note:'"moći" (can) is irregular' },
+  'čitati':  { ja:'čitam', ti:'čitaš', on:'čita', mi:'čitamo', vi:'čitate', oni:'čitaju', note:'Regular -ati verb' },
   'vidjeti': { ja:'vidim', ti:'vidiš', on:'vidi', mi:'vidimo', vi:'vidite', oni:'vide', note:'Regular -jeti/-iti verb' },
   'voljeti': { ja:'volim', ti:'voliš', on:'voli', mi:'volimo', vi:'volite', oni:'vole', note:'"voljeti" — stem vol-' },
   'živjeti': { ja:'živim', ti:'živiš', on:'živi', mi:'živimo', vi:'živite', oni:'žive', note:'Regular -jeti/-iti verb' },
-  'trebati': { ja:'trebam', ti:'trebaš', on:'treba', mi:'trebamo', vi:'trebate', oni:'trebaju', note:'Regular -ati verb' },
+  'razumjeti':{ ja:'razumijem', ti:'razumiješ', on:'razumije', mi:'razumijemo', vi:'razumijete', oni:'razumiju', note:'Irregular -jeti verb' },
   'doći':    { ja:'dođem', ti:'dođeš', on:'dođe', mi:'dođemo', vi:'dođete', oni:'dođu', note:'"doći" (to come) is irregular' },
 };
 
@@ -586,12 +590,12 @@ const GRAMMAR_LESSONS = {
         <div class="grammar-section-title">Special letters to know first</div>
         <table class="grammar-table">
           <tr><th>Letter</th><th>Sounds like</th><th>Example</th></tr>
-          <tr><td>č</td><td>"ch" in <em>church</em></td><td>čaj = tea</td></tr>
-          <tr><td>š</td><td>"sh" in <em>shop</em></td><td>šest = six</td></tr>
+          <tr><td>č</td><td>"ch" in <em>church</em></td><td>čovjek = man</td></tr>
+          <tr><td>š</td><td>"sh" in <em>shop</em></td><td>šećer = sugar</td></tr>
           <tr><td>ž</td><td>"s" in <em>measure</em></td><td>žena = woman</td></tr>
           <tr><td>c</td><td>"ts" in <em>cats</em></td><td>crvena = red</td></tr>
           <tr><td>j</td><td>"y" in <em>yes</em></td><td>ja = I</td></tr>
-          <tr><td>lj</td><td>"lli" in <em>million</em></td><td>ljubav = love</td></tr>
+          <tr><td>lj</td><td>"lli" in <em>million</em></td><td>voljeti = to love</td></tr>
           <tr><td>nj</td><td>"ny" in <em>canyon</em></td><td>njega = him</td></tr>
         </table>
       </div>
@@ -599,9 +603,9 @@ const GRAMMAR_LESSONS = {
         <div class="grammar-section-title">Vowels — always clear and short</div>
         <div class="grammar-note"><strong>a</strong> = "ah" • <strong>e</strong> = "eh" • <strong>i</strong> = "ee" • <strong>o</strong> = "oh" • <strong>u</strong> = "oo"</div>
         <div class="grammar-examples-grid">
-          <div class="grammar-example"><span class="hr">mama</span><span class="en">mum — MAH-mah</span></div>
-          <div class="grammar-example"><span class="hr">pet</span><span class="en">five — pet</span></div>
-          <div class="grammar-example"><span class="hr">ida</span><span class="en">she goes — EE-dah</span></div>
+          <div class="grammar-example"><span class="hr">žena</span><span class="en">woman — ZHEH-nah</span></div>
+          <div class="grammar-example"><span class="hr">jede</span><span class="en">eats — YEH-deh</span></div>
+          <div class="grammar-example"><span class="hr">dijete</span><span class="en">child — dee-YEH-teh</span></div>
           <div class="grammar-example"><span class="hr">sok</span><span class="en">juice — sok</span></div>
         </div>
       </div>
@@ -612,55 +616,53 @@ const GRAMMAR_LESSONS = {
       { type:'mcq_grammar', prompt:'Croatian spelling is:', answer:'Phonetic — each letter has ONE sound always', distractors:['Irregular like English','Silent letters are common','Completely different from how it looks'] },
       { type:'mcq_grammar', prompt:'How do you pronounce the vowel "i" in Croatian?', answer:'"ee" as in "see"', distractors:['"eye" as in "bike"','"ih" as in "bit"','Silent'] },
       { type:'fill_blank', prompt:'The letter "š" sounds like the "___" in "shop"', answer:'sh', distractors:['ch','ts','zh'] },
-      { type:'mcq_grammar', prompt:'How many sounds does the letter "ž" make?', answer:'Just one — always "zh" like in "measure"', distractors:['Two — "z" or "zh"','Three different sounds','It depends on the word'] },
+      { type:'mcq_grammar', prompt:'How many sounds does "ž" make?', answer:'Just one — always "zh" like in "measure"', distractors:['Two — "z" or "zh"','Three different sounds','It depends on the word'] },
     ]
   },
   'g_to_be': {
-    title: '"Biti" — To be (the most important verb!)',
+    title: '"Je / sam / su" — To be',
     content: `
       <div class="grammar-section">
-        <div class="grammar-section-title">Why this matters</div>
-        <div class="grammar-note">"Biti" means "to be". It is used in almost every sentence. Like "am/is/are" in English. It is irregular — you must memorize these forms!</div>
+        <div class="grammar-section-title">You already know some of these!</div>
+        <div class="grammar-note">You have seen <strong>je</strong> (is), <strong>sam</strong> (am), and <strong>su</strong> (are/they). These all come from the verb <strong>biti</strong> — "to be". Here is the full picture:</div>
       </div>
       <div class="grammar-section">
         <div class="grammar-section-title">All forms of biti (present tense)</div>
         <table class="grammar-table">
           <tr><th>Pronoun</th><th>Croatian</th><th>English</th></tr>
-          <tr><td>ja</td><td>ja sam</td><td>I am</td></tr>
-          <tr><td>ti</td><td>ti si</td><td>you are</td></tr>
-          <tr><td>on/ona/ono</td><td>on/ona je</td><td>he/she/it is</td></tr>
-          <tr><td>mi</td><td>mi smo</td><td>we are</td></tr>
-          <tr><td>vi</td><td>vi ste</td><td>you (pl.) are</td></tr>
-          <tr><td>oni/one</td><td>oni su</td><td>they are</td></tr>
+          <tr><td>ja</td><td>ja <strong>sam</strong></td><td>I am</td></tr>
+          <tr><td>ti</td><td>ti <strong>si</strong></td><td>you are</td></tr>
+          <tr><td>on/ona</td><td>on/ona <strong>je</strong></td><td>he/she is</td></tr>
+          <tr><td>mi</td><td>mi <strong>smo</strong></td><td>we are</td></tr>
+          <tr><td>vi</td><td>vi <strong>ste</strong></td><td>you (pl.) are</td></tr>
+          <tr><td>oni</td><td>oni <strong>su</strong></td><td>they are</td></tr>
         </table>
       </div>
       <div class="grammar-section">
-        <div class="grammar-section-title">Example sentences</div>
+        <div class="grammar-section-title">Examples with words you know</div>
         <div class="grammar-examples-grid">
-          <div class="grammar-example"><span class="hr">Ja sam student.</span><span class="en">I am a student.</span></div>
-          <div class="grammar-example"><span class="hr">Ti si dobar.</span><span class="en">You are good.</span></div>
-          <div class="grammar-example"><span class="hr">Ona je lijepa.</span><span class="en">She is beautiful.</span></div>
+          <div class="grammar-example"><span class="hr">Žena je sretan.</span><span class="en">The woman is happy.</span></div>
+          <div class="grammar-example"><span class="hr">Dječak je gladan.</span><span class="en">The boy is hungry.</span></div>
           <div class="grammar-example"><span class="hr">Mi smo ovdje.</span><span class="en">We are here.</span></div>
-          <div class="grammar-example"><span class="hr">Vi ste prijatelji.</span><span class="en">You are friends.</span></div>
-          <div class="grammar-example"><span class="hr">Oni su srećni.</span><span class="en">They are happy.</span></div>
+          <div class="grammar-example"><span class="hr">Oni su djeca.</span><span class="en">They are children.</span></div>
         </div>
       </div>
       <div class="grammar-section">
-        <div class="grammar-section-title">Negation — just add "ni" before!</div>
-        <div class="grammar-note">To say "am not / is not / are not", put <strong>ni</strong> before the form: nisam, nisi, nije, nismo, niste, nisu.</div>
+        <div class="grammar-section-title">Negation — add "ni" before!</div>
+        <div class="grammar-note">To say "am not / is not / are not": <strong>nisam, nisi, nije, nismo, niste, nisu</strong>.</div>
         <div class="grammar-examples-grid">
+          <div class="grammar-example"><span class="hr">Dječak nije gladan.</span><span class="en">The boy is not hungry.</span></div>
           <div class="grammar-example"><span class="hr">Ja nisam umoran.</span><span class="en">I am not tired.</span></div>
-          <div class="grammar-example"><span class="hr">Ona nije kod kuće.</span><span class="en">She is not at home.</span></div>
         </div>
       </div>
     `,
     questions: [
       { type:'fill_blank', prompt:'Ja ___ student. (I am a student)', answer:'sam', distractors:['si','je','smo'] },
-      { type:'fill_blank', prompt:'Ona ___ lijepa. (She is beautiful)', answer:'je', distractors:['sam','si','smo'] },
+      { type:'fill_blank', prompt:'Ona ___ sretna. (She is happy)', answer:'je', distractors:['sam','si','smo'] },
       { type:'mcq_grammar', prompt:'How do you say "We are here"?', answer:'Mi smo ovdje.', distractors:['Mi su ovdje.','Mi sam ovdje.','Mi je ovdje.'] },
       { type:'fill_blank', prompt:'Ti ___ dobar. (You are good)', answer:'si', distractors:['sam','je','ste'] },
       { type:'mcq_grammar', prompt:'How do you make "biti" negative?', answer:'Add "ni" before the form (nisam, nije…)', distractors:['Add "ne" after the verb','Put "ne" at the end','Use a different verb'] },
-      { type:'fill_blank', prompt:'Ja ___ umoran. (I am NOT tired)', answer:'nisam', distractors:['ne sam','sam ne','nismo'] },
+      { type:'fill_blank', prompt:'Dječak ___ gladan. (The boy is NOT hungry)', answer:'nije', distractors:['ne je','je ne','nismo'] },
     ]
   },
   'g_gender': {
@@ -673,28 +675,28 @@ const GRAMMAR_LESSONS = {
       <div class="grammar-section">
         <div class="grammar-section-title">The pattern</div>
         <table class="grammar-table">
-          <tr><th>Gender</th><th>Typical ending</th><th>Examples</th></tr>
-          <tr><td>Masculine (m)</td><td>consonant</td><td>grad, pas, brat, kruh</td></tr>
-          <tr><td>Feminine (f)</td><td>-a</td><td>žena, kuća, majka, voda</td></tr>
-          <tr><td>Neuter (n)</td><td>-o or -e</td><td>more, dijete, jutro, ime</td></tr>
+          <tr><th>Gender</th><th>Typical ending</th><th>Examples from what you know</th></tr>
+          <tr><td>Masculine (m)</td><td>consonant</td><td>čovjek, dječak, pas, kruh, brat</td></tr>
+          <tr><td>Feminine (f)</td><td>-a</td><td>žena, majka, mačka, jabuka, voda</td></tr>
+          <tr><td>Neuter (n)</td><td>-o or -e</td><td>dijete, mlijeko, meso, jaje</td></tr>
         </table>
       </div>
       <div class="grammar-section">
         <div class="grammar-section-title">Why does it matter?</div>
-        <div class="grammar-note">Adjectives change their ending to match the noun's gender! Example: <strong>velik</strong> (m), <strong>velika</strong> (f), <strong>veliko</strong> (n).</div>
+        <div class="grammar-note">Adjectives change their ending to match the noun's gender! Example: <strong>sretan</strong> (m), <strong>sretna</strong> (f), <strong>sretno</strong> (n).</div>
         <div class="grammar-examples-grid">
-          <div class="grammar-example"><span class="hr">velik grad (m)</span><span class="en">a big city</span></div>
-          <div class="grammar-example"><span class="hr">velika kuća (f)</span><span class="en">a big house</span></div>
-          <div class="grammar-example"><span class="hr">veliko more (n)</span><span class="en">a big sea</span></div>
+          <div class="grammar-example"><span class="hr">sretan dječak (m)</span><span class="en">a happy boy</span></div>
+          <div class="grammar-example"><span class="hr">sretna žena (f)</span><span class="en">a happy woman</span></div>
+          <div class="grammar-example"><span class="hr">sretno dijete (n)</span><span class="en">a happy child</span></div>
         </div>
       </div>
     `,
     questions: [
       { type:'mcq_grammar', prompt:'What gender is "žena" (woman)?', answer:'Feminine — ends in -a', distractors:['Masculine — consonant ending','Neuter — ends in -o','It has no gender'] },
-      { type:'mcq_grammar', prompt:'What gender is "grad" (city)?', answer:'Masculine — ends in a consonant', distractors:['Feminine','Neuter','Cannot tell'] },
-      { type:'mcq_grammar', prompt:'"More" (sea) ends in -e. What gender is it?', answer:'Neuter', distractors:['Feminine','Masculine','Gender depends on context'] },
-      { type:'fill_blank', prompt:'velika ___ (big house — f) — what word goes here?', answer:'kuća', distractors:['grad','more','brat'] },
-      { type:'mcq_grammar', prompt:'How does "velik" (big) change for feminine nouns?', answer:'velika', distractors:['velkia','veliko','velik stays the same'] },
+      { type:'mcq_grammar', prompt:'What gender is "čovjek" (man)?', answer:'Masculine — ends in a consonant', distractors:['Feminine','Neuter','Cannot tell'] },
+      { type:'mcq_grammar', prompt:'"Dijete" (child) ends in -e. What gender is it?', answer:'Neuter', distractors:['Feminine','Masculine','Gender depends on context'] },
+      { type:'fill_blank', prompt:'sretna ___ (happy woman — f) — what word goes here?', answer:'žena', distractors:['čovjek','dijete','brat'] },
+      { type:'mcq_grammar', prompt:'How does "sretan" (happy) change for feminine nouns?', answer:'sretna', distractors:['sretnia','sretno','sretan stays the same'] },
       { type:'mcq_grammar', prompt:'Nouns ending in -o or -e are usually:', answer:'Neuter gender', distractors:['Masculine','Feminine','None of the above'] },
     ]
   },
@@ -706,93 +708,408 @@ const GRAMMAR_LESSONS = {
         <div class="grammar-note">Croatian verbs fall into groups by their infinitive ending. The two most common: <strong>-ati verbs</strong> and <strong>-iti/-jeti verbs</strong>. Each group has its own pattern of endings.</div>
       </div>
       <div class="grammar-section">
-        <div class="grammar-section-title">-ati verbs (e.g. spavati — to sleep)</div>
+        <div class="grammar-section-title">-ati verbs (e.g. čitati — to read)</div>
         <table class="grammar-table">
-          <tr><th>Person</th><th>Ending</th><th>spavati</th></tr>
-          <tr><td>ja</td><td>-am</td><td>spavam</td></tr>
-          <tr><td>ti</td><td>-aš</td><td>spavaš</td></tr>
-          <tr><td>on/ona</td><td>-a</td><td>spava</td></tr>
-          <tr><td>mi</td><td>-amo</td><td>spavamo</td></tr>
-          <tr><td>vi</td><td>-ate</td><td>spavate</td></tr>
-          <tr><td>oni</td><td>-aju</td><td>spavaju</td></tr>
+          <tr><th>Person</th><th>Ending</th><th>čitati</th></tr>
+          <tr><td>ja</td><td>-am</td><td>čitam</td></tr>
+          <tr><td>ti</td><td>-aš</td><td>čitaš</td></tr>
+          <tr><td>on/ona</td><td>-a</td><td>čita</td></tr>
+          <tr><td>mi</td><td>-amo</td><td>čitamo</td></tr>
+          <tr><td>vi</td><td>-ate</td><td>čitate</td></tr>
+          <tr><td>oni</td><td>-aju</td><td>čitaju</td></tr>
         </table>
       </div>
       <div class="grammar-section">
-        <div class="grammar-section-title">-iti/-jeti verbs (e.g. raditi — to work)</div>
+        <div class="grammar-section-title">-iti/-jeti verbs (e.g. govoriti — to speak)</div>
         <table class="grammar-table">
-          <tr><th>Person</th><th>Ending</th><th>raditi</th></tr>
-          <tr><td>ja</td><td>-im</td><td>radim</td></tr>
-          <tr><td>ti</td><td>-iš</td><td>radiš</td></tr>
-          <tr><td>on/ona</td><td>-i</td><td>radi</td></tr>
-          <tr><td>mi</td><td>-imo</td><td>radimo</td></tr>
-          <tr><td>vi</td><td>-ite</td><td>radite</td></tr>
-          <tr><td>oni</td><td>-e</td><td>rade</td></tr>
+          <tr><th>Person</th><th>Ending</th><th>govoriti</th></tr>
+          <tr><td>ja</td><td>-im</td><td>govorim</td></tr>
+          <tr><td>ti</td><td>-iš</td><td>govoriš</td></tr>
+          <tr><td>on/ona</td><td>-i</td><td>govori</td></tr>
+          <tr><td>mi</td><td>-imo</td><td>govorimo</td></tr>
+          <tr><td>vi</td><td>-ite</td><td>govorite</td></tr>
+          <tr><td>oni</td><td>-e</td><td>govore</td></tr>
         </table>
       </div>
       <div class="grammar-section">
         <div class="grammar-section-title">Negation: add "ne" before the verb</div>
-        <div class="grammar-note">To make any verb negative, simply put <strong>ne</strong> in front of it.</div>
+        <div class="grammar-note">To make any verb negative, put <strong>ne</strong> in front of it.</div>
         <div class="grammar-examples-grid">
-          <div class="grammar-example"><span class="hr">Ja radim.</span><span class="en">I work.</span></div>
-          <div class="grammar-example"><span class="hr">Ja ne radim.</span><span class="en">I don't work.</span></div>
+          <div class="grammar-example"><span class="hr">On jede kruh.</span><span class="en">He eats bread.</span></div>
+          <div class="grammar-example"><span class="hr">On ne jede kruh.</span><span class="en">He does not eat bread.</span></div>
+          <div class="grammar-example"><span class="hr">Žena pije vodu.</span><span class="en">The woman drinks water.</span></div>
+          <div class="grammar-example"><span class="hr">Žena ne pije vodu.</span><span class="en">The woman does not drink water.</span></div>
         </div>
       </div>
     `,
     questions: [
-      { type:'fill_blank', prompt:'Ja ___ (raditi — I work)', answer:'radim', distractors:['radi','radiš','radimo'] },
-      { type:'fill_blank', prompt:'Ona ___ (spavati — she sleeps)', answer:'spava', distractors:['spavam','spavaš','spavaju'] },
-      { type:'mcq_grammar', prompt:'How do you say "I don\'t eat"?', answer:'Ja ne jedem.', distractors:['Ja nisam jedem.','Ja jedem ne.','Ne ja jedem.'] },
+      { type:'fill_blank', prompt:'Ja ___ (čitati — I read)', answer:'čitam', distractors:['čita','čitaš','čitamo'] },
+      { type:'fill_blank', prompt:'Ona ___ (govoriti — she speaks)', answer:'govori', distractors:['govorim','govoriš','govore'] },
+      { type:'mcq_grammar', prompt:'How do you say "He does not eat"?', answer:'On ne jede.', distractors:['On nisam jede.','On jede ne.','Ne on jede.'] },
       { type:'fill_blank', prompt:'Mi ___ (govoriti — we speak)', answer:'govorimo', distractors:['govori','govorim','govore'] },
-      { type:'mcq_grammar', prompt:'For -iti verbs, what ending does "ti" (you) take?', answer:'-iš (e.g. radiš)', distractors:['-aš','-i','-imo'] },
-      { type:'fill_blank', prompt:'Oni ___ (spavati — they sleep)', answer:'spavaju', distractors:['spavamo','spava','spavam'] },
+      { type:'mcq_grammar', prompt:'For -iti verbs, what ending does "ti" (you) take?', answer:'-iš (e.g. govoriš)', distractors:['-aš','-i','-imo'] },
+      { type:'fill_blank', prompt:'Oni ___ (čitati — they read)', answer:'čitaju', distractors:['čitamo','čita','čitam'] },
     ]
   },
 };
 
 const SENTENCE_TEMPLATES = [
-  { en:'I have a {N}.', hr:['Ja','imam','{N}.'], words:['psa','mačku','auto','kuću','brata','sestru'], en_words:['dog','cat','car','house','brother','sister'] },
-  { en:'She is {A}.', hr:['Ona','je','{A}.'], words:['dobra','lijepa','umorna','tužna','sretna','mlada'], en_words:['good','beautiful','tired','sad','happy','young'] },
-  { en:'I drink water.', hr:['Ja','pijem','vodu.'], words:[], en_words:[] },
-  { en:'We speak Croatian.', hr:['Mi','govorimo','hrvatski.'], words:[], en_words:[] },
-  { en:'He wants to eat.', hr:['On','hoće','jesti.'], words:[], en_words:[] },
+  { en:'The woman drinks water.', hr:['Žena','pije','vodu.'], words:[], en_words:[] },
+  { en:'The boy eats bread.', hr:['Dječak','jede','kruh.'], words:[], en_words:[] },
+  { en:'I have a {N}.', hr:['Ja','imam','{N}.'], words:['psa','mačku','brata','sestru'], en_words:['dog','cat','brother','sister'] },
+  { en:'She is {A}.', hr:['Ona','je','{A}.'], words:['sretna','umorna','mlada','dobra'], en_words:['happy','tired','young','good'] },
+  { en:'He eats {N}.', hr:['On','jede','{N}.'], words:['kruh','jabuku','juhu','meso'], en_words:['bread','an apple','soup','meat'] },
+  { en:'We drink {N}.', hr:['Mi','pijemo','{N}.'], words:['vodu','mlijeko','sok','čaj'], en_words:['water','milk','juice','tea'] },
+  { en:'The child is {A}.', hr:['Dijete','je','{A}.'], words:['sretno','umorno','mlado','dobro'], en_words:['happy','tired','young','good'] },
+  { en:'They are children.', hr:['Oni','su','djeca.'], words:[], en_words:[] },
+  { en:'The woman and the man.', hr:['Žena','i','čovjek.'], words:[], en_words:[] },
   { en:'Where is the {N}?', hr:['Gdje','je','{N}?'], words:['auto','vlak','autobus','kolodvor'], en_words:['car','train','bus','train station'] },
-  { en:'I don\'t understand.', hr:['Ja','ne','razumijem.'], words:[], en_words:[] },
-  { en:'The weather is {A} today.', hr:['Danas','je','vrijeme','{A}.'], words:['lijepo','loše','toplo','hladno','oblačno'], en_words:['nice','bad','warm','cold','cloudy'] },
-  { en:'I live in {P}.', hr:['Ja','živim','u','{P}.'], words:['Zagrebu','Splitu','Dubrovniku','Hrvatskoj'], en_words:['Zagreb','Split','Dubrovnik','Croatia'] },
-  { en:'Can you help me?', hr:['Možeš','li','mi','pomoći?'], words:[], en_words:[] },
 ];
 
 const FILL_TEMPLATES = [
-  { sentence_hr:'Ja ___ student.', answer:'sam', hint:'biti — ja form', category:'verb' },
-  { sentence_hr:'Ona ___ vodu.', answer:'pije', hint:'piti — ona form', category:'verb' },
-  { sentence_hr:'Mi ___ hrvatski.', answer:'govorimo', hint:'govoriti — mi form', category:'verb' },
-  { sentence_hr:'On ___ u Zagrebu.', answer:'živi', hint:'živjeti — on form', category:'verb' },
-  { sentence_hr:'___ ideš?', answer:'Gdje', hint:'Where...?', category:'question' },
-  { sentence_hr:'Ja ne ___ umoran.', answer:'sam', hint:'biti — negative (ja)', category:'negation' },
-  { sentence_hr:'Oni ___ sretni.', answer:'su', hint:'biti — oni form (they are)', category:'verb' },
-  { sentence_hr:'Ja ___ kavu.', answer:'pijem', hint:'piti — ja form', category:'verb' },
-  { sentence_hr:'Ti ___ dobar.', answer:'si', hint:'biti — ti form', category:'verb' },
-  { sentence_hr:'Ona ___ u školi.', answer:'je', hint:'biti — ona form', category:'verb' },
-  { sentence_hr:'Mi ne ___ kasno.', answer:'spavamo', hint:'spavati negative — mi form', category:'verb' },
-  { sentence_hr:'Ja ___ kavu svaki dan.', answer:'pijem', hint:'piti — ja form', category:'verb' },
+  { sentence_hr:'Žena ___ vodu. (drinks)', answer:'pije', hint:'piti — ona/žena form', category:'verb' },
+  { sentence_hr:'Dječak ___ kruh. (eats)', answer:'jede', hint:'jesti — on/dječak form', category:'verb' },
+  { sentence_hr:'Ja ___ student. (am)', answer:'sam', hint:'biti — ja form', category:'verb' },
+  { sentence_hr:'Ona ___ sretna. (is)', answer:'je', hint:'biti — ona form', category:'verb' },
+  { sentence_hr:'Mi ___ vodu. (drink)', answer:'pijemo', hint:'piti — mi form', category:'verb' },
+  { sentence_hr:'Oni ___ djeca. (are)', answer:'su', hint:'biti — oni form', category:'verb' },
+  { sentence_hr:'___ jede jabuku? (Who)', answer:'Tko', hint:'Who eats the apple?', category:'question' },
+  { sentence_hr:'Dječak ___ gladan. (is NOT)', answer:'nije', hint:'biti negative — on form', category:'negation' },
+  { sentence_hr:'Ja ___ psa. (have)', answer:'imam', hint:'imati — ja form', category:'verb' },
+  { sentence_hr:'Ti ___ dobar. (are)', answer:'si', hint:'biti — ti form', category:'verb' },
+  { sentence_hr:'Dijete ___ mlijeko. (drinks)', answer:'pije', hint:'piti — ono/dijete form', category:'verb' },
+  { sentence_hr:'Žena ___ kruh. (eats)', answer:'jede', hint:'jesti — ona/žena form', category:'verb' },
 ];
 
 const UNIT_META = [
-  { name:'Greetings & Basics', icon:'👋', color:'#ff4b4b', type:'vocab', tip:'Start here! These are the most used phrases in Croatian.' },
-  { name:'Numbers & Colours', icon:'🔢', color:'#ffc800', type:'vocab', tip:'Numbers and colours — great building blocks!' },
-  { name:'People & Pronouns', icon:'👨‍👩‍👧', color:'#ce82ff', type:'vocab', tip:'Learn "I, you, he, she" — essential for every sentence.' },
-  { name:'Food & Drink', icon:'🍽️', color:'#ff9600', type:'vocab', tip:'Order food and drinks like a local!' },
-  { name:'Getting Around', icon:'🚌', color:'#1cb0f6', type:'vocab', tip:'Navigate cities and use transport.' },
-  { name:'Home & Daily Life', icon:'🏠', color:'#ff9600', type:'vocab', tip:'Describe your home and daily routine.' },
+  { name:'People & Things', icon:'👥', color:'#ff4b4b', type:'vocab', vocabKey:0, tip:'Start here! Man, woman, boy, girl, child — the very first building blocks.' },
+  { name:'Eat & Drink', icon:'🍽️', color:'#ff9600', type:'vocab', vocabKey:1, tip:'Learn the two most useful verbs: jede (eats) and pije (drinks).' },
+  { name:'I / He / She', icon:'👤', color:'#ce82ff', type:'vocab', vocabKey:2, tip:'Learn "I, he, she, they, we" and the forms of "to be".' },
+  { name:'Pronouns & Have', icon:'🤝', color:'#1cb0f6', type:'vocab', vocabKey:3, tip:'"You" + "have" — now you can make real sentences!' },
   { name:'Pronunciation', icon:'🗣️', color:'#ce82ff', type:'grammar', grammarId:'g_pronunciation', tip:'Learn to read Croatian — it\'s easier than you think!' },
-  { name:'"Biti" — To Be', icon:'⚡', color:'#ff4b4b', type:'grammar', grammarId:'g_to_be', tip:'The single most important verb in Croatian.' },
-  { name:'Noun Genders', icon:'📖', color:'#ffc800', type:'grammar', grammarId:'g_gender', tip:'Learn why words change endings.' },
-  { name:'Core Verbs', icon:'🔄', color:'#58cc02', type:'vocab', tip:'The essential action words.' },
-  { name:'Adjectives', icon:'🎨', color:'#ce82ff', type:'vocab', tip:'Describe people and things.' },
-  { name:'Weather & Nature', icon:'☁️', color:'#1cb0f6', type:'vocab', tip:'Talk about the weather and nature.' },
-  { name:'Days & Time', icon:'📅', color:'#ffc800', type:'vocab', tip:'Talk about when things happen.' },
-  { name:'Present Tense Verbs', icon:'✏️', color:'#58cc02', type:'grammar', grammarId:'g_present_tense', tip:'Learn the pattern for conjugating verbs in the present.' },
+  { name:'More Food & Drink', icon:'☕', color:'#ff9600', type:'vocab', vocabKey:4, tip:'Expand your food vocabulary with coffee, tea, and more.' },
+  { name:'Family', icon:'👨‍👩‍👧', color:'#58cc02', type:'vocab', vocabKey:5, tip:'Mother, father, brother, sister and the rest of the family.' },
+  { name:'"Is / Am / Are"', icon:'⚡', color:'#ff4b4b', type:'grammar', grammarId:'g_to_be', tip:'The full "biti" table — built on words you already know.' },
+  { name:'Colours', icon:'🎨', color:'#ffc800', type:'vocab', vocabKey:6, tip:'Red, blue, green — describe the world around you.' },
+  { name:'Numbers 1–10', icon:'🔢', color:'#ffc800', type:'vocab', vocabKey:7, tip:'Count from one to ten in Croatian.' },
+  { name:'Core Verbs', icon:'🔄', color:'#58cc02', type:'vocab', vocabKey:8, tip:'Go, come, speak, read — essential action words.' },
+  { name:'Present Tense', icon:'✏️', color:'#58cc02', type:'grammar', grammarId:'g_present_tense', tip:'Learn the pattern for conjugating verbs in the present.' },
+  { name:'Adjectives', icon:'✨', color:'#ce82ff', type:'vocab', vocabKey:9, tip:'Big, small, happy, tired — describe people and things.' },
+  { name:'Greetings', icon:'👋', color:'#ff4b4b', type:'vocab', vocabKey:10, tip:'Hello, goodbye, thank you — greetings with real context now.' },
+  { name:'Getting Around', icon:'🚌', color:'#1cb0f6', type:'vocab', vocabKey:11, tip:'Navigate cities and use transport.' },
+  { name:'Days & Time', icon:'📅', color:'#ffc800', type:'vocab', vocabKey:12, tip:'Today, tomorrow, morning — talk about when things happen.' },
+  { name:'Home', icon:'🏠', color:'#ff9600', type:'vocab', vocabKey:13, tip:'House, room, kitchen, bed — describe your home.' },
+  { name:'Noun Genders', icon:'📖', color:'#ffc800', type:'grammar', grammarId:'g_gender', tip:'Learn why words change endings — masculine, feminine, neuter.' },
 ];
+
+// ═══════════════════════════════════════════════════════
+// EXAMPLE SENTENCES
+// ═══════════════════════════════════════════════════════
+const EXAMPLE_SENTENCES = {
+  // Unit 0 — People & Things
+  'čovjek': 'Čovjek jede kruh.',
+  'žena': 'Žena pije vodu.',
+  'dječak': 'Dječak je gladan.',
+  'djevojčica': 'Djevojčica pije mlijeko.',
+  'dijete': 'Dijete je sretan.',
+  'djeca': 'Djeca su ovdje.',
+  'je': 'Žena je dobra.',
+  'i': 'Dječak i djevojčica.',
+  'ili': 'Voda ili sok?',
+  'to': 'To je kruh.',
+  // Unit 1 — Eat & Drink
+  'jede': 'Dječak jede jabuku.',
+  'pije': 'Žena pije vodu.',
+  'voda': 'Ona pije vodu.',
+  'mlijeko': 'Dijete pije mlijeko.',
+  'kruh': 'On jede kruh.',
+  'jabuka': 'Žena jede jabuku.',
+  'juha': 'Dječak jede juhu.',
+  'sok': 'Ona pije sok.',
+  'meso': 'Čovjek jede meso.',
+  'sir': 'Ona jede sir s kruhom.',
+  // Unit 2 — I / He / She
+  'ja': 'Ja jedem kruh.',
+  'on': 'On je sretan.',
+  'ona': 'Ona pije vodu.',
+  'oni': 'Oni su djeca.',
+  'mi': 'Mi jedemo juhu.',
+  'sam': 'Ja sam gladan.',
+  'smo': 'Mi smo ovdje.',
+  'su': 'Oni su sretni.',
+  'ne': 'On ne jede meso.',
+  'da': 'Da, ja pijem vodu.',
+  // Unit 3 — Pronouns & Have
+  'ti': 'Ti jedeš jabuku.',
+  'vi': 'Vi pijete sok.',
+  'si': 'Ti si dobar.',
+  'ste': 'Vi ste sretni.',
+  'imam': 'Ja imam psa.',
+  'ima': 'Ona ima mačku.',
+  'pas': 'Pas jede meso.',
+  'mačka': 'Mačka pije mlijeko.',
+  'ptica': 'Ptica je mala.',
+  'riba': 'Riba je u vodi.',
+  // Unit 4 — More Food & Drink
+  'kava': 'Volim kavu ujutro.',
+  'čaj': 'Ona pije čaj.',
+  'naranča': 'Naranča je žuta.',
+  'banana': 'Dijete jede bananu.',
+  'pizza': 'Pizza je ukusna.',
+  'salata': 'Žena jede salatu.',
+  'jaje': 'On jede jaje.',
+  'maslac': 'Kruh s maslacem je dobar.',
+  'šećer': 'Čaj s šećerom.',
+  // Unit 5 — Family
+  'majka': 'Majka pije kavu.',
+  'otac': 'Otac jede kruh.',
+  'brat': 'Moj brat je mlad.',
+  'sestra': 'Sestra pije sok.',
+  'djed': 'Djed je star.',
+  'baka': 'Baka je dobra.',
+  'sin': 'Sin jede jabuku.',
+  'kći': 'Kći pije mlijeko.',
+  'muž': 'Muž jede meso.',
+  'supruga': 'Supruga je sretna.',
+  // Unit 6 — Colours
+  'crvena': 'Jabuka je crvena.',
+  'plava': 'More je plavo.',
+  'zelena': 'Trava je zelena.',
+  'žuta': 'Naranča je žuta.',
+  'bijela': 'Mlijeko je bijelo.',
+  'crna': 'Imam crnu mačku.',
+  'smeđa': 'Pas je smeđ.',
+  'narančasta': 'Naranča je narančasta.',
+  'ružičasta': 'Dijete voli ružičastu boju.',
+  'siva': 'Oblaci su sivi.',
+  // Unit 7 — Numbers
+  'jedan': 'Imam jedan kruh.',
+  'dva': 'Dva dječaka jedu.',
+  'tri': 'Tri djevojčice piju sok.',
+  'četiri': 'Četiri jabuke su na stolu.',
+  'pet': 'Pet minuta, molim.',
+  'šest': 'Ima šest djece.',
+  'sedam': 'Vlak dolazi u sedam.',
+  'osam': 'Osam sati spavam.',
+  'devet': 'Devet kava, molim.',
+  'deset': 'Imam deset godina.',
+  // Unit 8 — Core Verbs
+  'ići': 'Idem u grad.',
+  'doći': 'Ona dolazi sutra.',
+  'govoriti': 'Govorim hrvatski.',
+  'čitati': 'On čita knjigu.',
+  'spavati': 'Dijete spava.',
+  'raditi': 'Otac radi.',
+  'živjeti': 'Živim u Zagrebu.',
+  'vidjeti': 'Vidim mačku.',
+  'voljeti': 'Volim kavu.',
+  'razumjeti': 'Razumijem te.',
+  // Unit 9 — Adjectives
+  'velik': 'Pas je velik.',
+  'mali': 'Mačka je mala.',
+  'lijep': 'Djevojčica je lijepa.',
+  'star': 'Djed je star.',
+  'mlad': 'Dječak je mlad.',
+  'sretan': 'Dijete je sretno.',
+  'umoran': 'Otac je umoran.',
+  'gladan': 'Dječak je gladan.',
+  'dobar': 'Ona je dobra.',
+  'loš': 'Danas je loše vrijeme.',
+  // Unit 10 — Greetings
+  'zdravo': 'Zdravo! Kako si?',
+  'bok': 'Bok, kako si?',
+  'dobar dan': 'Dobar dan! Govorite li engleski?',
+  'dobro jutro': 'Dobro jutro! Jedeš li kruh?',
+  'dobra večer': 'Dobra večer! Jesi li gladan?',
+  'laku noć': 'Laku noć! Vidimo se ujutro.',
+  'hvala': 'Hvala za kruh!',
+  'molim': 'Jednu kavu, molim.',
+  'oprosti': 'Oprosti, gdje je kolodvor?',
+  'do viđenja': 'Do viđenja! Vidimo se sutra.',
+  // Unit 11 — Getting Around
+  'gdje': 'Gdje je kolodvor?',
+  'grad': 'Zagreb je velik grad.',
+  'ulica': 'Ova ulica je duga.',
+  'auto': 'Imam crni auto.',
+  'autobus': 'Autobus dolazi za pet minuta.',
+  'vlak': 'Vlak je brz.',
+  'kolodvor': 'Kolodvor je blizu.',
+  'blizu': 'Hotel je blizu mora.',
+  'daleko': 'Grad je daleko.',
+  'lijevo': 'Skrenite lijevo.',
+  // Unit 12 — Days & Time
+  'danas': 'Danas je lijep dan.',
+  'sutra': 'Sutra idemo u grad.',
+  'jučer': 'Jučer sam bio gladan.',
+  'jutro': 'Ujutro pijem kavu.',
+  'večer': 'Navečer jedemo juhu.',
+  'tjedan': 'Ovaj tjedan je bio dobar.',
+  'ponedjeljak': 'Ponedjeljak je prvi radni dan.',
+  'petak': 'U petak idemo van.',
+  'subota': 'Subotom spim dulje.',
+  'nedjelja': 'Nedjelja je slobodan dan.',
+  // Unit 13 — Home
+  'kuća': 'Naša kuća je bijela.',
+  'soba': 'Moja soba je mala.',
+  'kuhinja': 'Majka je u kuhinji.',
+  'krevet': 'Dijete spava u krevetu.',
+  'stol': 'Kruh je na stolu.',
+  'stolica': 'Sjedi na stolicu.',
+  'prozor': 'Prozor je otvoren.',
+  'vrata': 'Vrata su zatvorena.',
+  'stan': 'Imam mali stan.',
+  'park': 'Djeca se igraju u parku.',
+};
+
+const EXAMPLE_TRANSLATIONS = {
+  'čovjek': 'The man eats bread.',
+  'žena': 'The woman drinks water.',
+  'dječak': 'The boy is hungry.',
+  'djevojčica': 'The girl drinks milk.',
+  'dijete': 'The child is happy.',
+  'djeca': 'The children are here.',
+  'je': 'The woman is good.',
+  'i': 'The boy and the girl.',
+  'ili': 'Water or juice?',
+  'to': 'That is bread.',
+  'jede': 'The boy eats an apple.',
+  'pije': 'The woman drinks water.',
+  'voda': 'She drinks water.',
+  'mlijeko': 'The child drinks milk.',
+  'kruh': 'He eats bread.',
+  'jabuka': 'The woman eats an apple.',
+  'juha': 'The boy eats soup.',
+  'sok': 'She drinks juice.',
+  'meso': 'The man eats meat.',
+  'sir': 'She eats cheese with bread.',
+  'ja': 'I eat bread.',
+  'on': 'He is happy.',
+  'ona': 'She drinks water.',
+  'oni': 'They are children.',
+  'mi': 'We eat soup.',
+  'sam': 'I am hungry.',
+  'smo': 'We are here.',
+  'su': 'They are happy.',
+  'ne': 'He does not eat meat.',
+  'da': 'Yes, I drink water.',
+  'ti': 'You eat an apple.',
+  'vi': 'You drink juice.',
+  'si': 'You are good.',
+  'ste': 'You (all) are happy.',
+  'imam': 'I have a dog.',
+  'ima': 'She has a cat.',
+  'pas': 'The dog eats meat.',
+  'mačka': 'The cat drinks milk.',
+  'ptica': 'The bird is small.',
+  'riba': 'The fish is in the water.',
+  'kava': 'I love coffee in the morning.',
+  'čaj': 'She drinks tea.',
+  'naranča': 'The orange is yellow.',
+  'banana': 'The child eats a banana.',
+  'pizza': 'The pizza is tasty.',
+  'salata': 'The woman eats a salad.',
+  'jaje': 'He eats an egg.',
+  'maslac': 'Bread with butter is good.',
+  'šećer': 'Tea with sugar.',
+  'majka': 'Mother drinks coffee.',
+  'otac': 'Father eats bread.',
+  'brat': 'My brother is young.',
+  'sestra': 'Sister drinks juice.',
+  'djed': 'Grandfather is old.',
+  'baka': 'Grandmother is good.',
+  'sin': 'The son eats an apple.',
+  'kći': 'The daughter drinks milk.',
+  'muž': 'The husband eats meat.',
+  'supruga': 'The wife is happy.',
+  'crvena': 'The apple is red.',
+  'plava': 'The sea is blue.',
+  'zelena': 'The grass is green.',
+  'žuta': 'The orange is yellow.',
+  'bijela': 'The milk is white.',
+  'crna': 'I have a black cat.',
+  'smeđa': 'The dog is brown.',
+  'narančasta': 'The orange is orange.',
+  'ružičasta': 'The child likes pink.',
+  'siva': 'The clouds are grey.',
+  'jedan': 'I have one bread.',
+  'dva': 'Two boys are eating.',
+  'tri': 'Three girls drink juice.',
+  'četiri': 'Four apples are on the table.',
+  'pet': 'Five minutes, please.',
+  'šest': 'There are six children.',
+  'sedam': 'The train comes at seven.',
+  'osam': 'I sleep eight hours.',
+  'devet': 'Nine coffees, please.',
+  'deset': 'I am ten years old.',
+  'ići': 'I am going to the city.',
+  'doći': 'She comes tomorrow.',
+  'govoriti': 'I speak Croatian.',
+  'čitati': 'He reads a book.',
+  'spavati': 'The child sleeps.',
+  'raditi': 'Father works.',
+  'živjeti': 'I live in Zagreb.',
+  'vidjeti': 'I see the cat.',
+  'voljeti': 'I love coffee.',
+  'razumjeti': 'I understand you.',
+  'velik': 'The dog is big.',
+  'mali': 'The cat is small.',
+  'lijep': 'The girl is beautiful.',
+  'star': 'Grandfather is old.',
+  'mlad': 'The boy is young.',
+  'sretan': 'The child is happy.',
+  'umoran': 'Father is tired.',
+  'gladan': 'The boy is hungry.',
+  'dobar': 'She is good.',
+  'loš': 'The weather is bad today.',
+  'zdravo': 'Hello! How are you?',
+  'bok': 'Hi, how are you?',
+  'dobar dan': 'Good day! Do you speak English?',
+  'dobro jutro': 'Good morning! Are you eating bread?',
+  'dobra večer': 'Good evening! Are you hungry?',
+  'laku noć': 'Good night! See you in the morning.',
+  'hvala': 'Thank you for the bread!',
+  'molim': 'One coffee, please.',
+  'oprosti': 'Sorry, where is the station?',
+  'do viđenja': 'Goodbye! See you tomorrow.',
+  'gdje': 'Where is the station?',
+  'grad': 'Zagreb is a big city.',
+  'ulica': 'This street is long.',
+  'auto': 'I have a black car.',
+  'autobus': 'The bus comes in five minutes.',
+  'vlak': 'The train is fast.',
+  'kolodvor': 'The station is nearby.',
+  'blizu': 'The hotel is near the sea.',
+  'daleko': 'The city is far.',
+  'lijevo': 'Turn left.',
+  'danas': 'Today is a nice day.',
+  'sutra': 'Tomorrow we go to the city.',
+  'jučer': 'Yesterday I was hungry.',
+  'jutro': 'In the morning I drink coffee.',
+  'večer': 'In the evening we eat soup.',
+  'tjedan': 'This week was good.',
+  'ponedjeljak': 'Monday is the first work day.',
+  'petak': 'On Friday we go out.',
+  'subota': 'On Saturday I sleep longer.',
+  'nedjelja': 'Sunday is a free day.',
+  'kuća': 'Our house is white.',
+  'soba': 'My room is small.',
+  'kuhinja': 'Mother is in the kitchen.',
+  'krevet': 'The child sleeps in the bed.',
+  'stol': 'The bread is on the table.',
+  'stolica': 'Sit on the chair.',
+  'prozor': 'The window is open.',
+  'vrata': 'The door is closed.',
+  'stan': 'I have a small flat.',
+  'park': 'The children play in the park.',
+};
+
+function getExampleSentence(croatian) {
+  return EXAMPLE_SENTENCES[croatian] || null;
+}
+
+function getExampleTranslation(croatian) {
+  return EXAMPLE_TRANSLATIONS[croatian] || null;
+}
 
 // ═══════════════════════════════════════════════════════
 // STATE & PERSISTENCE
@@ -822,11 +1139,7 @@ let session = {
 // ═══════════════════════════════════════════════════════
 // ELEVENLABS AUDIO
 // ═══════════════════════════════════════════════════════
-
-// ── PASTE YOUR ELEVENLABS API KEY HERE ──────────────────
 const ELEVENLABS_API_KEY = 'cb378890fb43496121712bc9a30449a281a2370a724f01f6b828f54b674c453f';
-// ────────────────────────────────────────────────────────
-
 let elevenApiKey = ELEVENLABS_API_KEY;
 let elevenVoiceId = 'cgSgspJ2msm6clMCkdW9';
 const audioCache = new Map();
@@ -858,10 +1171,8 @@ async function speakCroatian(text) {
   if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE' || !text) return;
   const cacheKey = `${elevenVoiceId}::${text}`;
   try {
-    // Disable all audio buttons while loading
     const btns = document.querySelectorAll('.audio-btn');
     btns.forEach(b => { b.disabled = true; b.classList.add('loading'); });
-
     let blob;
     if (audioCache.has(cacheKey)) {
       blob = audioCache.get(cacheKey);
@@ -886,7 +1197,6 @@ async function speakCroatian(text) {
       blob = await resp.blob();
       audioCache.set(cacheKey, blob);
     }
-
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
     audio.onended = () => URL.revokeObjectURL(url);
@@ -899,29 +1209,23 @@ async function speakCroatian(text) {
   }
 }
 
-// Settings screen logic
 function showSettings() {
   document.getElementById('voiceSelect').value = elevenVoiceId;
   showScreen('settings');
 }
 
-function onVoiceChange(val) {
-  // live preview optional — do nothing until save
-}
+function onVoiceChange(val) {}
 
 async function testVoice() {
   const voice = document.getElementById('voiceSelect').value;
   const statusEl = document.getElementById('testStatus');
-
   if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE') {
     statusEl.textContent = '⚠️ No API key set in the script';
     statusEl.style.color = 'var(--orange)';
     return;
   }
-
   statusEl.textContent = '⏳ Contacting ElevenLabs…';
   statusEl.style.color = 'var(--text2)';
-
   try {
     const resp = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voice}`,
@@ -939,18 +1243,15 @@ async function testVoice() {
         }),
       }
     );
-
     if (!resp.ok) {
       const errBody = await resp.json().catch(() => ({}));
       throw new Error(errBody.detail?.message || 'HTTP ' + resp.status);
     }
-
     const blob = await resp.blob();
     const url  = URL.createObjectURL(blob);
     const audio = new Audio(url);
     audio.onended = () => URL.revokeObjectURL(url);
     audio.play();
-
     statusEl.textContent = '✅ Working! You should hear Croatian now.';
     statusEl.style.color = 'var(--green)';
   } catch (err) {
@@ -961,11 +1262,9 @@ async function testVoice() {
 
 function saveSettings() {
   const voice = document.getElementById('voiceSelect').value;
-  try {
-    localStorage.setItem('eleven_voice_id', voice);
-  } catch(e) {}
+  try { localStorage.setItem('eleven_voice_id', voice); } catch(e) {}
   elevenVoiceId = voice;
-  audioCache.clear(); // clear cache so new voice takes effect
+  audioCache.clear();
   updateVoiceUI();
   showScreen('home');
   renderHome();
@@ -1006,188 +1305,6 @@ function levenshtein(a, b) {
   for (let i=1;i<=m;i++) for (let j=1;j<=n;j++)
     dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
   return dp[m][n];
-}
-
-// ═══════════════════════════════════════════════════════
-// EXAMPLE SENTENCES
-// ═══════════════════════════════════════════════════════
-const EXAMPLE_SENTENCES = {
-  // Unit 0 — Greetings
-  'zdravo': 'Zdravo! Kako se zoveš?',
-  'bok': 'Bok, kako si?',
-  'dobar dan': 'Dobar dan! Govorite li engleski?',
-  'dobro jutro': 'Dobro jutro! Želiš li kavu?',
-  'dobra večer': 'Dobra večer! Lijep je zalazak sunca.',
-  'laku noć': 'Laku noć! Vidimo se ujutro.',
-  'hvala': 'Hvala lijepa za pomoć!',
-  'molim': 'Jednu kavu, molim.',
-  'da': 'Da, razumijem te.',
-  'ne': 'Ne, hvala, nisam gladan.',
-  'oprosti': 'Oprosti, gdje je kolodvor?',
-  'kako se zoveš?': 'Kako se zoveš? Ja se zovem Ana.',
-  'zovem se...': 'Zovem se Marko, a ti?',
-  'kako si?': 'Kako si? Dobro sam, hvala!',
-  'dobro': 'Ja sam dobro, hvala.',
-  'vidimo se': 'Vidimo se sutra u kafiću!',
-  'do viđenja': 'Do viđenja! Bilo je lijepo.',
-  // Unit 1 — Numbers & colours
-  'jedan': 'Imam jedan brat i jednu sestru.',
-  'dva': 'Kupila sam dva kruha.',
-  'tri': 'Trebam tri minute.',
-  'četiri': 'Imamo četiri stolice.',
-  'pet': 'Pet kava, molim!',
-  'šest': 'Trgovina se otvara u šest.',
-  'sedam': 'Vlak polazi u sedam.',
-  'osam': 'Radim od osam do četiri.',
-  'devet': 'Imate li broj devet?',
-  'deset': 'Deset kuna, molim.',
-  'crvena': 'Ona nosi crvenu haljinu.',
-  'plava': 'More je plavo i lijepo.',
-  'zelena': 'Trava je zelena u proljeće.',
-  'žuta': 'Sunce je žuto i toplo.',
-  'bijela': 'Kuća je bijela i velika.',
-  'crna': 'Imam crnu mačku.',
-  // Unit 2 — People & pronouns
-  'ja': 'Ja sam student iz Zagreba.',
-  'ti': 'Ti govoriš lijepo hrvatski.',
-  'on': 'On je moj brat.',
-  'ona': 'Ona je lijepa i pametna.',
-  'mi': 'Mi govorimo hrvatski svaki dan.',
-  'vi': 'Vi ste naši novi susjedi.',
-  'oni': 'Oni dolaze iz Splita.',
-  'majka': 'Moja majka kuha ručak.',
-  'otac': 'Otac čita novine.',
-  'brat': 'Moj brat igra nogomet.',
-  'sestra': 'Sestra studira u Zagrebu.',
-  'prijatelj': 'Moj prijatelj stanuje blizu.',
-  'prijateljica': 'Moja prijateljica voli kavu.',
-  'dijete': 'Dijete se igra u parku.',
-  'čovjek': 'Taj čovjek govori tiho.',
-  'žena': 'Žena čita knjigu.',
-  // Unit 3 — Food & drink
-  'voda': 'Pijem vodu svaki dan.',
-  'kava': 'Volim kavu ujutro.',
-  'čaj': 'Pijem čaj kad sam bolestan.',
-  'sok': 'Daj mi sok od naranče, molim.',
-  'kruh': 'Jedem kruh s maslacem.',
-  'sir': 'Volim sir s kruhom.',
-  'meso': 'On ne jede meso.',
-  'riba': 'Riba je svježa danas.',
-  'jabuka': 'Jabuka je crvena i slatka.',
-  'naranča': 'Naranča je puna vitamina.',
-  'salata': 'Salata je zdrava i ukusna.',
-  'juha': 'Juha je topla i dobra.',
-  'pizza': 'Pizza je moje omiljeno jelo.',
-  'ukusno': 'Ovo je jako ukusno!',
-  'gladna': 'Jesam li gladna? Da, jako!',
-  'žedna': 'Žedna sam — daj mi vode.',
-  // Unit 4 — Getting around
-  'gdje': 'Gdje je najbliži bankomat?',
-  'lijevo': 'Skrenite lijevo kod semafora.',
-  'desno': 'Idite desno pa ravno.',
-  'ravno': 'Idite ravno sto metara.',
-  'auto': 'Moj auto je parkirani ispred.',
-  'autobus': 'Autobus dolazi za pet minuta.',
-  'vlak': 'Vlak za Split polazi u deset.',
-  'tramvaj': 'Tramvaj broj šest ide do centra.',
-  'avion': 'Avion leti iznad oblaka.',
-  'kolodvor': 'Kolodvor je blizu centra grada.',
-  'autobusna stanica': 'Autobusna stanica je lijevo.',
-  'ulica': 'Ova ulica je jako prometna.',
-  'grad': 'Zagreb je lijep grad.',
-  'park': 'Djeca se igraju u parku.',
-  'blizu': 'Hotel je blizu mora.',
-  'daleko': 'Dubrovnik je daleko od Zagreba.',
-  // Unit 5 — Home & daily life
-  'kuća': 'Naša kuća je velika i bijela.',
-  'stan': 'Imam mali stan u centru.',
-  'soba': 'Moja soba je uredna.',
-  'kuhinja': 'Majka kuha u kuhinji.',
-  'spavaća soba': 'Spavaća soba je na katu.',
-  'kupaonica': 'Kupaonica je mala ali moderna.',
-  'stol': 'Knjige su na stolu.',
-  'stolica': 'Sjedi na stolicu.',
-  'krevet': 'Krevet je mekan i udoban.',
-  'prozor': 'Prozor gleda na more.',
-  'vrata': 'Vrata su otvorena.',
-  'ujutro': 'Ujutro pijem kavu.',
-  'navečer': 'Navečer gledamo televiziju.',
-  'uvijek': 'Uvijek sam na vrijeme.',
-  'nikad': 'Nikad ne kasnim.',
-  'ponekad': 'Ponekad idem u kino.',
-  // Unit 6 — Core verbs
-  'biti': 'Ja sam ovdje. Ti si tamo.',
-  'imati': 'Imam psa i mačku.',
-  'ići': 'Idem u trgovinu.',
-  'doći': 'Doći ću sutra.',
-  'jesti': 'Jedemo ručak u podne.',
-  'piti': 'Pijem čaj svako jutro.',
-  'spavati': 'Spavam osam sati svaku noć.',
-  'raditi': 'Radim od ponedjeljka do petka.',
-  'govoriti': 'Govorim malo hrvatski.',
-  'razumjeti': 'Razumijem te savršeno.',
-  'htjeti': 'Hoću kavu, molim.',
-  'moći': 'Mogu ti pomoći.',
-  'trebati': 'Trebam malo vode.',
-  'vidjeti': 'Vidim more s prozora.',
-  'voljeti': 'Volim čokoladu.',
-  'živjeti': 'Živim u Zagrebu već deset godina.',
-  // Unit 7 — Adjectives
-  'velik': 'Zagreb je velik grad.',
-  'mali': 'Imam mali stan.',
-  'dobar': 'On je dobar čovjek.',
-  'loš': 'Danas je loše vrijeme.',
-  'lijep': 'Dubrovnik je lijep grad.',
-  'star': 'Ova crkva je jako stara.',
-  'mlad': 'Ona je mlada i energična.',
-  'brz': 'Vlak je brz i udoban.',
-  'spor': 'Internet je danas jako spor.',
-  'toplo': 'Danas je toplo i sunčano.',
-  'hladno': 'Zimi je hladno u Zagrebu.',
-  'lako': 'Hrvatski nije lako naučiti.',
-  'teško': 'Gramatika je teška.',
-  'sretan': 'On je sretan danas.',
-  'tužan': 'Ona je tužna zbog vijesti.',
-  'umoran': 'Umoran sam nakon posla.',
-  // Unit 8 — Weather & nature
-  'vrijeme': 'Kakvo je vrijeme danas?',
-  'sunce': 'Sunce sija cijeli dan.',
-  'kiša': 'Kiša pada od jutra.',
-  'snijeg': 'Djeca se igraju u snijegu.',
-  'vjetar': 'Vjetar puše s mora.',
-  'oblačno': 'Danas je oblačno i hladno.',
-  'sunčano': 'Sutra će biti sunčano.',
-  'ljeto': 'Ljeti idemo na more.',
-  'zima': 'Zima je hladna ove godine.',
-  'proljeće': 'U proljeće cvjetaju ruže.',
-  'jesen': 'Jesen je moje omiljeno godišnje doba.',
-  'more': 'More je mirno i toplo.',
-  'planina': 'Planina je pokrivena snijegom.',
-  'šuma': 'Šuma je puna ptica.',
-  'rijeka': 'Rijeka Sava prolazi kroz Zagreb.',
-  'pas': 'Moj pas je velik i smeđ.',
-  'mačka': 'Mačka spava na krevetu.',
-  // Unit 9 — Days & time
-  'ponedjeljak': 'Ponedjeljak je prvi radni dan.',
-  'utorak': 'U utorak imam sastanak.',
-  'srijeda': 'Srijedom idem na tečaj.',
-  'četvrtak': 'Četvrtak je skoro vikend!',
-  'petak': 'U petak idemo van.',
-  'subota': 'Subotom spim dulje.',
-  'nedjelja': 'Nedjeljna ručak je tradicija.',
-  'danas': 'Danas je lijep dan.',
-  'sutra': 'Sutra idemo na izlet.',
-  'jučer': 'Jučer sam bio u kinu.',
-  'sada': 'Sada učim hrvatski.',
-  'jutro': 'Jutro je moje omiljeno doba dana.',
-  'večer': 'Večer provodimo u miru.',
-  'noć': 'Noć je tiha i mirna.',
-  'tjedan': 'Ovaj tjedan je bio naporan.',
-  'godina': 'Ove godine putujem u Dubrovnik.',
-};
-
-function getExampleSentence(croatian) {
-  return EXAMPLE_SENTENCES[croatian] || null;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1256,129 +1373,177 @@ function loadSavedSession(unitId) {
 // ═══════════════════════════════════════════════════════
 // QUESTION GENERATION
 // ═══════════════════════════════════════════════════════
+// ─── Highlight helper ────────────────────────────────────────
+function buildHighlightedSentence(exSentence, croatian) {
+  const escaped = croatian.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let hl = exSentence.replace(
+    new RegExp(`(${escaped})`, 'i'),
+    `<strong style="color:var(--gold)">$1</strong>`
+  );
+  if (hl === exSentence) {
+    const firstWord = croatian.split(' ')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    hl = exSentence.replace(
+      new RegExp(`\\b(${firstWord})\\b`, 'i'),
+      `<strong style="color:var(--gold)">$1</strong>`
+    );
+  }
+  return hl;
+}
+
 function generateLessonQuestions(unitId, seed) {
   const meta = UNIT_META[unitId];
   if (meta.type === 'grammar') return generateGrammarLesson(meta.grammarId);
 
   const rng = seededRandom(seed);
-  const vocabList = VOCAB[unitId] || [];
+  const vocabKey = meta.vocabKey !== undefined ? meta.vocabKey : unitId;
+  const vocabList = VOCAB[vocabKey] || [];
   const allVocab = Object.values(VOCAB).flat();
   if (vocabList.length === 0) return [];
 
-  const qs = [];
   const shuffled = shuffleWithRng(vocabList, rng);
-  const lessonWords = shuffled.slice(0, Math.min(8, shuffled.length));
+  // 6 words per lesson: enough to be satisfying, not overwhelming
+  const lessonWords = shuffled.slice(0, Math.min(6, shuffled.length));
+  const qs = [];
 
-  lessonWords.forEach((item) => {
+  // seenWords grows as we introduce each word — all distractor pools
+  // only ever draw from words the learner has actually seen
+  const seenWords = [];
+
+  // ═══════════════════════════════════════════════════════════
+  // PHASE 1 — INTRODUCE + IMMEDIATE EASY CHECK, ONE WORD AT A TIME
+  //
+  // For each word:
+  //   1. vocab_intro card   (word, meaning, phonetic, example + translation)
+  //   2. mcq_hr → en        (very easy — just saw the word, pick its meaning)
+  //   3. mcq_en → hr        (slightly harder — from word #2 onward)
+  //   4. every 3rd word: a quick review MCQ on a word seen earlier
+  // ═══════════════════════════════════════════════════════════
+  lessonWords.forEach((item, wordIndex) => {
     const [croatian, english, phonetic, wordType, gender] = item;
-    const correctObj = { croatian, english, wordType };
-    const unseen = !state.wordsLearned.includes(croatian);
     const exSentence = getExampleSentence(croatian);
 
-    // Vocab intro card (always for new words, sometimes for known)
-    if (unseen || rng() > 0.5) {
-      qs.push({
-        type:'vocab_intro', word:croatian, phonetic, meaning:english,
-        wordType, gender: gender||null,
-        sentence: exSentence,
-      });
-    }
+    // ── A: Introduce the word ──────────────────────────────────
+    qs.push({
+      type: 'vocab_intro',
+      word: croatian, phonetic, meaning: english,
+      wordType, gender: gender || null,
+      sentence: exSentence,
+    });
+    seenWords.push(item);
 
-    // Build contextual distractors — semantically distinct options
-    const contextDistr_en = pickContextualDistractors(allVocab, correctObj, 3, 'en_from_hr');
-    const contextDistr_hr = pickContextualDistractors(allVocab, correctObj, 3, 'hr_from_en');
+    // ── B: Immediate HR→EN MCQ (just saw it — easiest possible check) ──
+    // Distractors: words NOT yet seen (so learner doesn't confuse new words),
+    // drawn randomly from the full vocab pool
+    const unseenPool = allVocab.filter(v => v[1] !== english && !seenWords.find(s => s[1] === v[1]));
+    const easyDist = shuffle(unseenPool).slice(0, 3).map(v => v[1]);
+    // If not enough unseen words, pad with seen (but not correct)
+    const seenDist = seenWords.filter(w => w[1] !== english).map(w => w[1]);
+    const dist_en = [...easyDist, ...seenDist].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
 
-    // MCQ: Show Croatian word in context → pick English meaning
-    // If there's an example sentence, use it; otherwise show plain word
     if (exSentence) {
-      const highlightedSentence = exSentence.replace(
-        new RegExp(`(${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'i'),
-        `<strong style="color:var(--gold)">$1</strong>`
-      );
       qs.push({
-        type:'mcq_hr_en',
-        prompt:`What does the highlighted word mean?`,
-        context_sentence: highlightedSentence,
-        answer: english,
-        distractors: contextDistr_en,
+        type: 'mcq_hr_en',
+        prompt: 'What does the highlighted word mean?',
+        context_sentence: buildHighlightedSentence(exSentence, croatian),
+        answer: english, distractors: dist_en,
         audio: exSentence,
-        hint: `Pronunciation: /${phonetic}/`,
+        hint: `/${phonetic}/`,
+        _wordKey: croatian,
       });
     } else {
       qs.push({
-        type:'mcq_hr_en',
-        prompt:`What does "<strong style="color:var(--gold)">${croatian}</strong>" mean?`,
-        answer: english,
-        distractors: contextDistr_en,
+        type: 'mcq_hr_en',
+        prompt: `What does <strong style="color:var(--gold)">${croatian}</strong> mean?`,
+        answer: english, distractors: dist_en,
         audio: croatian,
-        hint: `Pronunciation: /${phonetic}/`,
+        hint: `/${phonetic}/`,
+        _wordKey: croatian,
       });
     }
 
-    // MCQ: English → Croatian (pick the right Croatian word)
-    qs.push({
-      type:'mcq_en_hr',
-      prompt:`Which Croatian word means "${cap(english)}"?`,
-      answer: croatian, distractors: contextDistr_hr, audio: croatian,
-      hint: phonetic ? `Sounds like: /${phonetic}/` : '',
-    });
+    // ── C: EN→HR MCQ — only from word #2 onward, using seen words as distractors ──
+    if (seenWords.length >= 2) {
+      const seenHr = seenWords.filter(w => w[0] !== croatian).map(w => w[0]);
+      const dist_hr = shuffle(seenHr).slice(0, 3);
+      // Pad with unseen vocab if needed
+      const extraHr = allVocab
+        .filter(v => v[0] !== croatian && !seenHr.includes(v[0]))
+        .sort(()=>rng()-0.5).slice(0, 3 - dist_hr.length).map(v => v[0]);
 
-    // Alternately: type the Croatian word OR fill-blank with the word in its example sentence
-    if (exSentence && rng() > 0.4) {
-      // Fill-in-blank using real example sentence
+      qs.push({
+        type: 'mcq_en_hr',
+        prompt: `Which Croatian word means "${cap(english)}"?`,
+        answer: croatian,
+        distractors: [...dist_hr, ...extraHr].slice(0, 3),
+        audio: croatian,
+        hint: phonetic ? `Sounds like: /${phonetic}/` : '',
+        _wordKey: croatian,
+      });
+    }
+
+    // ── D: Every 3rd new word — review one earlier word briefly ──
+    if (wordIndex === 2 || wordIndex === 4) {
+      const earlier = seenWords[Math.floor(rng() * (seenWords.length - 1))];
+      const [rc, re, rp] = earlier;
+      const revDist = shuffle(seenWords.filter(w=>w[1]!==re).map(w=>w[1])).slice(0,3);
+      qs.push({
+        type: 'mcq_hr_en',
+        prompt: `Quick check — what does <strong style="color:var(--gold)">${rc}</strong> mean?`,
+        answer: re, distractors: revDist,
+        audio: rc,
+        hint: rp ? `/${rp}/` : '',
+        _wordKey: rc,
+      });
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  // PHASE 2 — ACTIVE RECALL  (all words introduced by this point)
+  //
+  // Harder question types: typing, fill-in-blank.
+  // The learner has now seen each word 2–3 times.
+  // ═══════════════════════════════════════════════════════════
+  const phase2Words = shuffle([...lessonWords]);
+  phase2Words.forEach((item) => {
+    const [croatian, english, phonetic] = item;
+    const exSentence = getExampleSentence(croatian);
+
+    if (exSentence) {
       const blanked = exSentence.replace(
         new RegExp(`\\b${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`, 'i'),
         '___'
       );
       if (blanked !== exSentence) {
         qs.push({
-          type:'fill_blank_free',
+          type: 'fill_blank_free',
           sentence_hr: blanked,
-          sentence_en: `"${cap(english)}" — ${phonetic ? `/${phonetic}/` : ''}`,
+          sentence_en: `"${cap(english)}" — /${phonetic || '...'}/`,
           answer: croatian.toLowerCase(),
           hint: phonetic ? `/${phonetic}/` : '',
           audio: exSentence,
+          _wordKey: croatian,
         });
-      } else {
-        qs.push({
-          type:'type_hr',
-          prompt:'Type in Croatian:',
-          context:`"${cap(english)}"`,
-          answer: croatian.toLowerCase(),
-          acceptableAnswers: [croatian.toLowerCase()],
-          audio: croatian, hint: phonetic ? `/${phonetic}/` : '',
-        });
+        return;
       }
-    } else {
-      qs.push({
-        type:'type_hr',
-        prompt:'Type in Croatian:',
-        context:`"${cap(english)}"`,
-        answer: croatian.toLowerCase(),
-        acceptableAnswers: [croatian.toLowerCase()],
-        audio: croatian, hint: phonetic ? `/${phonetic}/` : '',
-      });
     }
-  });
-
-  // Fill-in-blank from templates
-  const fills = shuffle(FILL_TEMPLATES).slice(0, 2);
-  fills.forEach(tmpl => {
     qs.push({
-      type:'fill_blank_free',
-      sentence_hr: tmpl.sentence_hr,
-      answer: tmpl.answer.toLowerCase(),
-      hint: tmpl.hint,
-      audio: tmpl.sentence_hr.replace('___', tmpl.answer),
+      type: 'type_hr',
+      prompt: 'Type in Croatian:',
+      context: `"${cap(english)}"`,
+      answer: croatian.toLowerCase(),
+      acceptableAnswers: [croatian.toLowerCase()],
+      audio: croatian,
+      hint: phonetic ? `/${phonetic}/` : '',
+      _wordKey: croatian,
     });
   });
 
-  // Sentence builder
-  const templates = shuffleWithRng(SENTENCE_TEMPLATES, rng).slice(0, 2);
-  templates.forEach(tmpl => {
+  // Sentence builder — 1 at the end of phase 2
+  const tmplList = shuffleWithRng(SENTENCE_TEMPLATES, rng).slice(0, 1);
+  tmplList.forEach(tmpl => {
     if (tmpl.words.length === 0) {
       qs.push({
-        type:'build_hr', sentence_en: tmpl.en, answer: tmpl.hr,
+        type: 'build_hr', sentence_en: tmpl.en, answer: tmpl.hr,
         distractors: shuffle([...new Set([...tmpl.hr, 'ne','je','sam','imam','gdje'])]),
         audio: tmpl.hr.join(' '),
       });
@@ -1390,21 +1555,27 @@ function generateLessonQuestions(unitId, seed) {
       const filled_en = tmpl.en.replace(/\{[A-Z]\}/g, enWord);
       const extraWords = shuffle(tmpl.words.filter((_,i)=>i!==ri)).slice(0,3);
       qs.push({
-        type:'build_hr', sentence_en: filled_en, answer: filled_hr,
+        type: 'build_hr', sentence_en: filled_en, answer: filled_hr,
         distractors: shuffle([...new Set([...filled_hr, ...extraWords])]),
         audio: filled_hr.join(' '),
       });
     }
   });
 
-  // Matching exercise
+  // ═══════════════════════════════════════════════════════════
+  // PHASE 3 — FINAL MATCHING  (comes last, when all words are familiar)
+  // ═══════════════════════════════════════════════════════════
   if (lessonWords.length >= 4) {
     const pairWords = shuffleWithRng(lessonWords, rng).slice(0, 4);
-    qs.push({ type:'matching', pairs: pairWords.map(([c,e]) => ({ croatian:c, english:e })) });
+    qs.push({
+      type: 'matching',
+      pairs: pairWords.map(([c, e]) => ({ croatian: c, english: e })),
+    });
   }
 
-  return shuffleWithRng(qs, rng);
+  return qs;
 }
+
 
 // Pick distractors that are semantically distinct — different word type category,
 // different meaning domain — so learners can make educated guesses, not blind ones
@@ -1615,9 +1786,13 @@ function renderVocabIntro(q) {
 
   let sentenceHtml = '';
   if (q.sentence) {
+    const translation = getExampleTranslation(q.word);
     sentenceHtml = `
-      <div class="vocab-example-label">Example sentence</div>
-      <div class="vocab-sentence">${q.sentence}</div>
+      <div class="vocab-example-label">Example</div>
+      <div class="vocab-sentence">
+        <span class="vocab-sentence-hr">${q.sentence}</span>
+        ${translation ? `<span class="vocab-sentence-en">${translation}</span>` : ''}
+      </div>
     `;
   }
 
@@ -1742,13 +1917,12 @@ function renderTypeAnswer(q) {
     <div class="lesson-type-badge">${badge}</div>
     <div class="lesson-question">${q.prompt}</div>
     ${q.context ? `<div class="vocab-card" style="margin-bottom:16px;padding:18px">
-      <div style="font-size:${isHr?'18px':'28px'};font-weight:800">${q.context}</div>
+      <div style="font-size:${isHr?'22px':'28px'};font-weight:800">${q.context}</div>
+      ${isHr && q.hint ? `<div style="font-size:14px;color:var(--blue);font-style:italic;margin-top:6px;font-weight:600">📢 ${q.hint}</div>` : ''}
       ${q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
-    </div>` : ''}
-    ${q.hint ? `<div class="lesson-hint">📢 ${q.hint}</div>` : ''}
+    </div>` : (q.hint ? `<div class="lesson-hint">📢 ${q.hint}</div>` : '')}
     <input type="text" class="text-input" id="typeInput" placeholder="${placeholder}" autocomplete="off" autocorrect="off" spellcheck="false">
     <div class="input-hint">Press ENTER or tap CHECK • Accents like č, š, ž are accepted but not required</div>
-    ${isHr && q.audio ? `<button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hint sound</button>` : ''}
   `;
   body.appendChild(div);
 
@@ -1842,8 +2016,9 @@ function renderFillBlank(q) {
     div.innerHTML = `
       <div class="lesson-type-badge">⌨️ Fill in the blank</div>
       ${q.sentence_en ? `<div class="lesson-hint" style="margin-bottom:12px">💡 ${q.sentence_en}</div>` : ''}
+      ${q.hint && q.sentence_en ? `<div class="lesson-hint" style="margin-bottom:12px;color:var(--blue)">📢 ${q.hint}</div>` : ''}
       <div class="blank-sentence">${parts[0]}<input type="text" class="blank-input" id="blankInput" autocomplete="off" autocorrect="off" spellcheck="false" size="${Math.max(6, (q.answer||'').length+2)}">${parts[1] || ''}</div>
-      ${q.hint && !q.sentence_en ? `<div class="lesson-hint" style="margin-top:14px">💡 Hint: ${q.hint}</div>` : (q.hint ? `<div class="lesson-hint" style="margin-top:14px;color:var(--text3)">📢 ${q.hint}</div>` : '')}
+      ${q.hint && !q.sentence_en ? `<div class="lesson-hint" style="margin-top:14px">💡 Hint: ${q.hint}</div>` : ''}
       ${q.audio ? `<div style="margin-top:10px;text-align:center"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear full sentence</button></div>` : ''}
     `;
     body.appendChild(div);
@@ -2041,17 +2216,25 @@ function showFeedback(isCorrect, correctAnswer, q) {
   const icon  = document.getElementById('feedbackIcon');
   const title = document.getElementById('feedbackTitle');
   const ans   = document.getElementById('feedbackAnswer');
+  const reviewBtn = document.getElementById('reviewWordBtn');
 
   if (isCorrect) {
     bar.className    = 'feedback-bar correct-bar show';
     icon.textContent = '✅';
     title.textContent = getCorrectPhrase();
     ans.textContent  = '';
+    reviewBtn.style.display = 'none';
   } else {
     bar.className    = 'feedback-bar wrong-bar show';
     icon.textContent = '❌';
     title.textContent = 'Not quite!';
     ans.textContent  = correctAnswer ? 'Correct answer: ' + correctAnswer : 'Keep trying!';
+    if (q && q._wordKey) {
+      reviewBtn.style.display = 'block';
+      reviewBtn.dataset.wordKey = q._wordKey;
+    } else {
+      reviewBtn.style.display = 'none';
+    }
   }
 
   document.getElementById('checkBtn').disabled = true;
@@ -2062,6 +2245,13 @@ function showFeedback(isCorrect, correctAnswer, q) {
     document.getElementById('continueBtnFb').textContent = 'CONTINUE';
     document.getElementById('continueBtnFb').onclick = nextQuestion;
   }
+}
+
+function reviewWordFromFeedback() {
+  const btn = document.getElementById('reviewWordBtn');
+  const wordKey = btn && btn.dataset.wordKey;
+  if (!wordKey) return;
+  showWordPopup(wordKey, '', '', '');
 }
 
 const CORRECT_PHRASES = [
@@ -2155,11 +2345,13 @@ function showWordPopup(croatian, english, phonetic, wordType) {
 
   const exSent = getExampleSentence(croatian);
   if (exSent) {
+    const exTrans = getExampleTranslation(croatian);
     html += `
       <div class="word-popup-section">
-        <div class="word-popup-section-title">Example sentence</div>
+        <div class="word-popup-section-title">Example</div>
         <div class="grammar-example">
           <span class="hr" style="cursor:pointer" onclick="speakCroatian('${esc(exSent)}')">🔊 ${exSent}</span>
+          ${exTrans ? `<span class="en">${exTrans}</span>` : ''}
         </div>
       </div>
     `;
@@ -2219,4 +2411,3 @@ renderHome();
 </script>
 </body>
 </html>
-
