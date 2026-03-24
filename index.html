@@ -1012,30 +1012,178 @@ function levenshtein(a, b) {
 // EXAMPLE SENTENCES
 // ═══════════════════════════════════════════════════════
 const EXAMPLE_SENTENCES = {
+  // Unit 0 — Greetings
   'zdravo': 'Zdravo! Kako se zoveš?',
+  'bok': 'Bok, kako si?',
+  'dobar dan': 'Dobar dan! Govorite li engleski?',
+  'dobro jutro': 'Dobro jutro! Želiš li kavu?',
+  'dobra večer': 'Dobra večer! Lijep je zalazak sunca.',
+  'laku noć': 'Laku noć! Vidimo se ujutro.',
   'hvala': 'Hvala lijepa za pomoć!',
   'molim': 'Jednu kavu, molim.',
-  'da': 'Da, razumijem.',
-  'ne': 'Ne, hvala.',
+  'da': 'Da, razumijem te.',
+  'ne': 'Ne, hvala, nisam gladan.',
+  'oprosti': 'Oprosti, gdje je kolodvor?',
+  'kako se zoveš?': 'Kako se zoveš? Ja se zovem Ana.',
+  'zovem se...': 'Zovem se Marko, a ti?',
+  'kako si?': 'Kako si? Dobro sam, hvala!',
   'dobro': 'Ja sam dobro, hvala.',
-  'ja': 'Ja sam student.',
-  'ti': 'Ti si dobar prijatelj.',
+  'vidimo se': 'Vidimo se sutra u kafiću!',
+  'do viđenja': 'Do viđenja! Bilo je lijepo.',
+  // Unit 1 — Numbers & colours
+  'jedan': 'Imam jedan brat i jednu sestru.',
+  'dva': 'Kupila sam dva kruha.',
+  'tri': 'Trebam tri minute.',
+  'četiri': 'Imamo četiri stolice.',
+  'pet': 'Pet kava, molim!',
+  'šest': 'Trgovina se otvara u šest.',
+  'sedam': 'Vlak polazi u sedam.',
+  'osam': 'Radim od osam do četiri.',
+  'devet': 'Imate li broj devet?',
+  'deset': 'Deset kuna, molim.',
+  'crvena': 'Ona nosi crvenu haljinu.',
+  'plava': 'More je plavo i lijepo.',
+  'zelena': 'Trava je zelena u proljeće.',
+  'žuta': 'Sunce je žuto i toplo.',
+  'bijela': 'Kuća je bijela i velika.',
+  'crna': 'Imam crnu mačku.',
+  // Unit 2 — People & pronouns
+  'ja': 'Ja sam student iz Zagreba.',
+  'ti': 'Ti govoriš lijepo hrvatski.',
   'on': 'On je moj brat.',
-  'ona': 'Ona je lijepa.',
-  'mi': 'Mi govorimo hrvatski.',
-  'biti': 'Ja sam ovdje. Ti si tamo.',
-  'imati': 'Imam psa i mačku.',
+  'ona': 'Ona je lijepa i pametna.',
+  'mi': 'Mi govorimo hrvatski svaki dan.',
+  'vi': 'Vi ste naši novi susjedi.',
+  'oni': 'Oni dolaze iz Splita.',
+  'majka': 'Moja majka kuha ručak.',
+  'otac': 'Otac čita novine.',
+  'brat': 'Moj brat igra nogomet.',
+  'sestra': 'Sestra studira u Zagrebu.',
+  'prijatelj': 'Moj prijatelj stanuje blizu.',
+  'prijateljica': 'Moja prijateljica voli kavu.',
+  'dijete': 'Dijete se igra u parku.',
+  'čovjek': 'Taj čovjek govori tiho.',
+  'žena': 'Žena čita knjigu.',
+  // Unit 3 — Food & drink
   'voda': 'Pijem vodu svaki dan.',
   'kava': 'Volim kavu ujutro.',
+  'čaj': 'Pijem čaj kad sam bolestan.',
+  'sok': 'Daj mi sok od naranče, molim.',
   'kruh': 'Jedem kruh s maslacem.',
+  'sir': 'Volim sir s kruhom.',
+  'meso': 'On ne jede meso.',
+  'riba': 'Riba je svježa danas.',
+  'jabuka': 'Jabuka je crvena i slatka.',
+  'naranča': 'Naranča je puna vitamina.',
+  'salata': 'Salata je zdrava i ukusna.',
+  'juha': 'Juha je topla i dobra.',
+  'pizza': 'Pizza je moje omiljeno jelo.',
+  'ukusno': 'Ovo je jako ukusno!',
+  'gladna': 'Jesam li gladna? Da, jako!',
+  'žedna': 'Žedna sam — daj mi vode.',
+  // Unit 4 — Getting around
+  'gdje': 'Gdje je najbliži bankomat?',
+  'lijevo': 'Skrenite lijevo kod semafora.',
+  'desno': 'Idite desno pa ravno.',
+  'ravno': 'Idite ravno sto metara.',
+  'auto': 'Moj auto je parkirani ispred.',
+  'autobus': 'Autobus dolazi za pet minuta.',
+  'vlak': 'Vlak za Split polazi u deset.',
+  'tramvaj': 'Tramvaj broj šest ide do centra.',
+  'avion': 'Avion leti iznad oblaka.',
+  'kolodvor': 'Kolodvor je blizu centra grada.',
+  'autobusna stanica': 'Autobusna stanica je lijevo.',
+  'ulica': 'Ova ulica je jako prometna.',
+  'grad': 'Zagreb je lijep grad.',
+  'park': 'Djeca se igraju u parku.',
+  'blizu': 'Hotel je blizu mora.',
+  'daleko': 'Dubrovnik je daleko od Zagreba.',
+  // Unit 5 — Home & daily life
+  'kuća': 'Naša kuća je velika i bijela.',
+  'stan': 'Imam mali stan u centru.',
+  'soba': 'Moja soba je uredna.',
+  'kuhinja': 'Majka kuha u kuhinji.',
+  'spavaća soba': 'Spavaća soba je na katu.',
+  'kupaonica': 'Kupaonica je mala ali moderna.',
+  'stol': 'Knjige su na stolu.',
+  'stolica': 'Sjedi na stolicu.',
+  'krevet': 'Krevet je mekan i udoban.',
+  'prozor': 'Prozor gleda na more.',
+  'vrata': 'Vrata su otvorena.',
+  'ujutro': 'Ujutro pijem kavu.',
+  'navečer': 'Navečer gledamo televiziju.',
+  'uvijek': 'Uvijek sam na vrijeme.',
+  'nikad': 'Nikad ne kasnim.',
+  'ponekad': 'Ponekad idem u kino.',
+  // Unit 6 — Core verbs
+  'biti': 'Ja sam ovdje. Ti si tamo.',
+  'imati': 'Imam psa i mačku.',
+  'ići': 'Idem u trgovinu.',
+  'doći': 'Doći ću sutra.',
+  'jesti': 'Jedemo ručak u podne.',
+  'piti': 'Pijem čaj svako jutro.',
+  'spavati': 'Spavam osam sati svaku noć.',
+  'raditi': 'Radim od ponedjeljka do petka.',
+  'govoriti': 'Govorim malo hrvatski.',
+  'razumjeti': 'Razumijem te savršeno.',
+  'htjeti': 'Hoću kavu, molim.',
+  'moći': 'Mogu ti pomoći.',
+  'trebati': 'Trebam malo vode.',
+  'vidjeti': 'Vidim more s prozora.',
+  'voljeti': 'Volim čokoladu.',
+  'živjeti': 'Živim u Zagrebu već deset godina.',
+  // Unit 7 — Adjectives
   'velik': 'Zagreb je velik grad.',
   'mali': 'Imam mali stan.',
   'dobar': 'On je dobar čovjek.',
+  'loš': 'Danas je loše vrijeme.',
+  'lijep': 'Dubrovnik je lijep grad.',
+  'star': 'Ova crkva je jako stara.',
+  'mlad': 'Ona je mlada i energična.',
+  'brz': 'Vlak je brz i udoban.',
+  'spor': 'Internet je danas jako spor.',
+  'toplo': 'Danas je toplo i sunčano.',
+  'hladno': 'Zimi je hladno u Zagrebu.',
+  'lako': 'Hrvatski nije lako naučiti.',
+  'teško': 'Gramatika je teška.',
+  'sretan': 'On je sretan danas.',
+  'tužan': 'Ona je tužna zbog vijesti.',
+  'umoran': 'Umoran sam nakon posla.',
+  // Unit 8 — Weather & nature
+  'vrijeme': 'Kakvo je vrijeme danas?',
+  'sunce': 'Sunce sija cijeli dan.',
+  'kiša': 'Kiša pada od jutra.',
+  'snijeg': 'Djeca se igraju u snijegu.',
+  'vjetar': 'Vjetar puše s mora.',
+  'oblačno': 'Danas je oblačno i hladno.',
+  'sunčano': 'Sutra će biti sunčano.',
+  'ljeto': 'Ljeti idemo na more.',
+  'zima': 'Zima je hladna ove godine.',
+  'proljeće': 'U proljeće cvjetaju ruže.',
+  'jesen': 'Jesen je moje omiljeno godišnje doba.',
+  'more': 'More je mirno i toplo.',
+  'planina': 'Planina je pokrivena snijegom.',
+  'šuma': 'Šuma je puna ptica.',
+  'rijeka': 'Rijeka Sava prolazi kroz Zagreb.',
   'pas': 'Moj pas je velik i smeđ.',
   'mačka': 'Mačka spava na krevetu.',
-  'govoriti': 'Govorim malo hrvatski.',
-  'jesti': 'Jedemo ručak u podne.',
-  'piti': 'Pijem čaj svako jutro.',
+  // Unit 9 — Days & time
+  'ponedjeljak': 'Ponedjeljak je prvi radni dan.',
+  'utorak': 'U utorak imam sastanak.',
+  'srijeda': 'Srijedom idem na tečaj.',
+  'četvrtak': 'Četvrtak je skoro vikend!',
+  'petak': 'U petak idemo van.',
+  'subota': 'Subotom spim dulje.',
+  'nedjelja': 'Nedjeljna ručak je tradicija.',
+  'danas': 'Danas je lijep dan.',
+  'sutra': 'Sutra idemo na izlet.',
+  'jučer': 'Jučer sam bio u kinu.',
+  'sada': 'Sada učim hrvatski.',
+  'jutro': 'Jutro je moje omiljeno doba dana.',
+  'večer': 'Večer provodimo u miru.',
+  'noć': 'Noć je tiha i mirna.',
+  'tjedan': 'Ovaj tjedan je bio naporan.',
+  'godina': 'Ove godine putujem u Dubrovnik.',
 };
 
 function getExampleSentence(croatian) {
@@ -1064,6 +1212,48 @@ function pickSmartDistractors(allVocab, correct, count, mode) {
 }
 
 // ═══════════════════════════════════════════════════════
+// SESSION PERSISTENCE (per-question progress)
+// ═══════════════════════════════════════════════════════
+const SESSION_KEY = 'govori_session_v1';
+
+function saveSession() {
+  try {
+    // Only save if we have a real in-progress lesson (not at index 0 before anything answered)
+    if (session.unitId === undefined || session.questions.length === 0) return;
+    const toSave = {
+      unitId: session.unitId,
+      questions: session.questions,
+      index: session.index,
+      hearts: session.hearts,
+      correct: session.correct,
+      total: session.total,
+      xpEarned: session.xpEarned,
+      startTime: session.startTime,
+      failQueue: session.failQueue,
+      wordsThisLesson: session.wordsThisLesson,
+      lessonSeed: session.lessonSeed,
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(toSave));
+  } catch(e) {}
+}
+
+function clearSavedSession() {
+  try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
+}
+
+function loadSavedSession(unitId) {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (s.unitId !== unitId) return null;
+    // Don't resume if the lesson is essentially at the start
+    if (s.index <= 0) return null;
+    return s;
+  } catch(e) { return null; }
+}
+
+// ═══════════════════════════════════════════════════════
 // QUESTION GENERATION
 // ═══════════════════════════════════════════════════════
 function generateLessonQuestions(unitId, seed) {
@@ -1083,34 +1273,82 @@ function generateLessonQuestions(unitId, seed) {
     const [croatian, english, phonetic, wordType, gender] = item;
     const correctObj = { croatian, english, wordType };
     const unseen = !state.wordsLearned.includes(croatian);
+    const exSentence = getExampleSentence(croatian);
 
-    // Vocab intro card
+    // Vocab intro card (always for new words, sometimes for known)
     if (unseen || rng() > 0.5) {
       qs.push({
         type:'vocab_intro', word:croatian, phonetic, meaning:english,
         wordType, gender: gender||null,
-        sentence: getExampleSentence(croatian),
+        sentence: exSentence,
       });
     }
 
-    // MCQ: English → Croatian
-    const hrDistr = pickSmartDistractors(allVocab, correctObj, 3, 'hr_from_en');
+    // Build contextual distractors — semantically distinct options
+    const contextDistr_en = pickContextualDistractors(allVocab, correctObj, 3, 'en_from_hr');
+    const contextDistr_hr = pickContextualDistractors(allVocab, correctObj, 3, 'hr_from_en');
+
+    // MCQ: Show Croatian word in context → pick English meaning
+    // If there's an example sentence, use it; otherwise show plain word
+    if (exSentence) {
+      const highlightedSentence = exSentence.replace(
+        new RegExp(`(${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'i'),
+        `<strong style="color:var(--gold)">$1</strong>`
+      );
+      qs.push({
+        type:'mcq_hr_en',
+        prompt:`What does the highlighted word mean?`,
+        context_sentence: highlightedSentence,
+        answer: english,
+        distractors: contextDistr_en,
+        audio: exSentence,
+        hint: `Pronunciation: /${phonetic}/`,
+      });
+    } else {
+      qs.push({
+        type:'mcq_hr_en',
+        prompt:`What does "<strong style="color:var(--gold)">${croatian}</strong>" mean?`,
+        answer: english,
+        distractors: contextDistr_en,
+        audio: croatian,
+        hint: `Pronunciation: /${phonetic}/`,
+      });
+    }
+
+    // MCQ: English → Croatian (pick the right Croatian word)
     qs.push({
       type:'mcq_en_hr',
       prompt:`Which Croatian word means "${cap(english)}"?`,
-      answer: croatian, distractors: hrDistr, audio: croatian,
-      hint: phonetic ? `Pronunciation: /${phonetic}/` : '',
+      answer: croatian, distractors: contextDistr_hr, audio: croatian,
+      hint: phonetic ? `Sounds like: /${phonetic}/` : '',
     });
 
-    // MCQ: Croatian → English OR Type answer
-    if (rng() > 0.5) {
-      const enDistr = pickSmartDistractors(allVocab, correctObj, 3, 'en_from_hr');
-      qs.push({
-        type:'mcq_hr_en',
-        prompt:`What does "${croatian}" mean?`,
-        answer: english, distractors: enDistr, audio: croatian,
-        hint:'',
-      });
+    // Alternately: type the Croatian word OR fill-blank with the word in its example sentence
+    if (exSentence && rng() > 0.4) {
+      // Fill-in-blank using real example sentence
+      const blanked = exSentence.replace(
+        new RegExp(`\\b${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`, 'i'),
+        '___'
+      );
+      if (blanked !== exSentence) {
+        qs.push({
+          type:'fill_blank_free',
+          sentence_hr: blanked,
+          sentence_en: `"${cap(english)}" — ${phonetic ? `/${phonetic}/` : ''}`,
+          answer: croatian.toLowerCase(),
+          hint: phonetic ? `/${phonetic}/` : '',
+          audio: exSentence,
+        });
+      } else {
+        qs.push({
+          type:'type_hr',
+          prompt:'Type in Croatian:',
+          context:`"${cap(english)}"`,
+          answer: croatian.toLowerCase(),
+          acceptableAnswers: [croatian.toLowerCase()],
+          audio: croatian, hint: phonetic ? `/${phonetic}/` : '',
+        });
+      }
     } else {
       qs.push({
         type:'type_hr',
@@ -1123,7 +1361,7 @@ function generateLessonQuestions(unitId, seed) {
     }
   });
 
-  // Fill-in-blank
+  // Fill-in-blank from templates
   const fills = shuffle(FILL_TEMPLATES).slice(0, 2);
   fills.forEach(tmpl => {
     qs.push({
@@ -1159,13 +1397,54 @@ function generateLessonQuestions(unitId, seed) {
     }
   });
 
-  // Matching
+  // Matching exercise
   if (lessonWords.length >= 4) {
     const pairWords = shuffleWithRng(lessonWords, rng).slice(0, 4);
     qs.push({ type:'matching', pairs: pairWords.map(([c,e]) => ({ croatian:c, english:e })) });
   }
 
   return shuffleWithRng(qs, rng);
+}
+
+// Pick distractors that are semantically distinct — different word type category,
+// different meaning domain — so learners can make educated guesses, not blind ones
+function pickContextualDistractors(allVocab, correct, count, mode) {
+  const isEnMode = mode === 'en_from_hr';
+  const correctVal = isEnMode ? correct.english : correct.croatian;
+  const wordType = correct.wordType;
+
+  // First try same word type (feels like a real choice) but clearly different meanings
+  let pool = allVocab.filter(v => {
+    const val = isEnMode ? v[1] : v[0];
+    if (val === correctVal) return false;
+    if (v[3] === wordType) return true;
+    return false;
+  });
+
+  // If not enough same-type, pull from different types but avoid confusingly similar words
+  if (pool.length < count) {
+    const extra = allVocab.filter(v => {
+      const val = isEnMode ? v[1] : v[0];
+      return val !== correctVal && !pool.find(p => (isEnMode ? p[1] : p[0]) === val);
+    });
+    pool = [...pool, ...shuffle(extra)];
+  }
+
+  // Prefer distractors from different "semantic clusters" — pick spread across pool
+  const shuffled = shuffle(pool);
+  const chosen = [];
+  const usedMeanings = new Set([correctVal]);
+
+  for (const v of shuffled) {
+    if (chosen.length >= count) break;
+    const val = isEnMode ? v[1] : v[0];
+    if (!usedMeanings.has(val)) {
+      chosen.push(val);
+      usedMeanings.add(val);
+    }
+  }
+
+  return chosen.slice(0, count);
 }
 
 function generateGrammarLesson(grammarId) {
@@ -1210,6 +1489,10 @@ function renderHome() {
     else if (progress === 0) badge = '<span class="unit-badge badge-new">NEW</span>';
     else                     badge = '<span class="unit-badge badge-active">▶ Active</span>';
 
+    // Check if there's a saved in-progress session for this unit
+    const hasSaved = !isLocked && loadSavedSession(i) !== null;
+    if (hasSaved) badge = '<span class="unit-badge badge-active" style="background:var(--orange)">⏸ Resume</span>';
+
     btn.innerHTML = `
       <div class="unit-icon">${meta.icon}</div>
       <div class="unit-info">
@@ -1238,6 +1521,30 @@ function startNextLesson() {
 // LESSON FLOW
 // ═══════════════════════════════════════════════════════
 function startLesson(unitId) {
+  const saved = loadSavedSession(unitId);
+  if (saved) {
+    // Resume in-progress lesson
+    session = {
+      unitId: saved.unitId,
+      questions: saved.questions,
+      index: saved.index,
+      hearts: saved.hearts,
+      correct: saved.correct,
+      total: saved.total,
+      xpEarned: saved.xpEarned,
+      startTime: saved.startTime,
+      answered: false,
+      selectedOption: null,
+      builtSentence: [],
+      failQueue: saved.failQueue || [],
+      wordsThisLesson: saved.wordsThisLesson || [],
+      lessonSeed: saved.lessonSeed,
+    };
+    showScreen('lesson');
+    renderQuestion();
+    return;
+  }
+  // Fresh lesson
   const seed = Date.now() ^ (unitId * 9999 + (state.totalLessons * 1337));
   session = {
     unitId, questions: generateLessonQuestions(unitId, seed),
@@ -1370,18 +1677,27 @@ function renderGrammarIntro(q) {
 function renderMCQ(q) {
   const body = document.getElementById('lessonBody');
   let badge = '🇬🇧 → 🇭🇷 Translate to Croatian';
-  if (q.type === 'mcq_hr_en')   badge = '🇭🇷 → 🇬🇧 Translate to English';
+  if (q.type === 'mcq_hr_en')   badge = '🇭🇷 → 🇬🇧 What does it mean?';
   if (q.type === 'mcq_grammar') badge = '📝 Grammar Question';
 
   const options = shuffle([q.answer, ...q.distractors]);
   const div = document.createElement('div');
   div.style.width = '100%';
+
+  // Context sentence block (shows the word in a real sentence)
+  const contextBlock = q.context_sentence
+    ? `<div class="vocab-card" style="margin-bottom:16px;padding:18px;text-align:left">
+        <div style="font-size:17px;font-weight:700;line-height:1.6">${q.context_sentence}</div>
+        ${q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
+      </div>`
+    : (q.audio ? `<button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>` : '');
+
   div.innerHTML = `
     <div class="lesson-type-badge">${badge}</div>
     <div class="lesson-question">${q.prompt}</div>
     ${q.hint ? `<div class="lesson-hint">${q.hint}</div>` : ''}
+    ${contextBlock}
     <div class="options-grid" id="optionsGrid"></div>
-    ${q.audio ? `<button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>` : ''}
   `;
   body.appendChild(div);
 
@@ -1525,8 +1841,9 @@ function renderFillBlank(q) {
   } else {
     div.innerHTML = `
       <div class="lesson-type-badge">⌨️ Fill in the blank</div>
+      ${q.sentence_en ? `<div class="lesson-hint" style="margin-bottom:12px">💡 ${q.sentence_en}</div>` : ''}
       <div class="blank-sentence">${parts[0]}<input type="text" class="blank-input" id="blankInput" autocomplete="off" autocorrect="off" spellcheck="false" size="${Math.max(6, (q.answer||'').length+2)}">${parts[1] || ''}</div>
-      ${q.hint ? `<div class="lesson-hint" style="margin-top:14px">💡 Hint: ${q.hint}</div>` : ''}
+      ${q.hint && !q.sentence_en ? `<div class="lesson-hint" style="margin-top:14px">💡 Hint: ${q.hint}</div>` : (q.hint ? `<div class="lesson-hint" style="margin-top:14px;color:var(--text3)">📢 ${q.hint}</div>` : '')}
       ${q.audio ? `<div style="margin-top:10px;text-align:center"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear full sentence</button></div>` : ''}
     `;
     body.appendChild(div);
@@ -1756,6 +2073,7 @@ function getCorrectPhrase() { return CORRECT_PHRASES[Math.floor(Math.random() * 
 function nextQuestion() {
   document.getElementById('feedbackBar').className = 'feedback-bar';
   session.index++;
+  saveSession();
   setTimeout(renderQuestion, 180);
 }
 
@@ -1773,6 +2091,7 @@ function endLesson(outOfHearts = false) {
     state.unitProgress[session.unitId] = (state.unitProgress[session.unitId] || 0) + 1;
   }
   saveState();
+  clearSavedSession();
   showConfetti();
   showScreen('complete');
 
@@ -1861,8 +2180,12 @@ function closeWordPopup(event) {
 // ═══════════════════════════════════════════════════════
 function showPauseMenu() { document.getElementById('pauseModal').classList.add('show'); }
 function resumeLesson()  { document.getElementById('pauseModal').classList.remove('show'); }
-function quitLesson()    { document.getElementById('pauseModal').classList.remove('show'); showScreen('home'); renderHome(); }
-function returnHome()    { showScreen('home'); renderHome(); }
+function quitLesson()    {
+  document.getElementById('pauseModal').classList.remove('show');
+  saveSession(); // save progress so it can be resumed
+  showScreen('home'); renderHome();
+}
+function returnHome()    { clearSavedSession(); showScreen('home'); renderHome(); }
 
 // ═══════════════════════════════════════════════════════
 // CONFETTI
