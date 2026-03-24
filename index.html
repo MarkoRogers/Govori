@@ -284,21 +284,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="settings-body">
 
     <div class="settings-section">
-      <div class="settings-section-title">ElevenLabs API Key</div>
-      <div class="settings-label">
-        Get a free key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" style="color:var(--blue)">elevenlabs.io</a>.
-        Paste it below — it's saved only in your browser and sent only to ElevenLabs for audio generation.
-      </div>
-      <input id="apiKeyInput" type="password" class="settings-input" placeholder="sk_... or your ElevenLabs API key"
-        oninput="onApiKeyInput(this.value)">
-      <div id="apiKeyStatus" class="settings-status"></div>
-      <div style="display:flex;gap:8px">
-        <button class="audio-btn" style="flex:1;justify-content:center" onclick="testApiKey()">🔊 Test — hear Croatian</button>
-        <button class="audio-btn" style="flex:1;justify-content:center;background:var(--bg3);color:var(--text2);box-shadow:none" onclick="toggleApiKeyVisibility()">👁 Show/Hide</button>
-      </div>
-    </div>
-
-    <div class="settings-section">
       <div class="settings-section-title">Voice</div>
       <div class="settings-label">All voices speak Croatian naturally using the multilingual v2 model.</div>
       <select id="voiceSelect" class="settings-select" onchange="onVoiceChange(this.value)">
@@ -311,16 +296,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       </select>
       <div class="voice-indicator">
         <div class="voice-dot" id="voiceDot"></div>
-        <span id="voiceStatusText">No API key — audio disabled</span>
+        <span id="voiceStatusText">Loading…</span>
       </div>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-section-title">Without API Key</div>
-      <div class="settings-label" style="margin-bottom:0">
-        The app works fully — all exercises, progress tracking and grammar lessons work.
-        Every Croatian word shows a phonetic hint like <strong style="color:var(--blue)">/ZDRA-voh/</strong> so you can pronounce it yourself.
-        ElevenLabs adds native-quality Croatian audio.
+      <div style="margin-top:12px">
+        <button class="audio-btn" style="width:100%;justify-content:center" onclick="testVoice()">🔊 Test — hear Croatian</button>
+        <div id="testStatus" class="settings-status" style="margin-top:8px"></div>
       </div>
     </div>
 
@@ -842,13 +822,17 @@ let session = {
 // ═══════════════════════════════════════════════════════
 // ELEVENLABS AUDIO
 // ═══════════════════════════════════════════════════════
-let elevenApiKey = 'cb378890fb43496121712bc9a30449a281a2370a724f01f6b828f54b674c453f';
+
+// ── PASTE YOUR ELEVENLABS API KEY HERE ──────────────────
+const ELEVENLABS_API_KEY = 'cb378890fb43496121712bc9a30449a281a2370a724f01f6b828f54b674c453f';
+// ────────────────────────────────────────────────────────
+
+let elevenApiKey = ELEVENLABS_API_KEY;
 let elevenVoiceId = 'cgSgspJ2msm6clMCkdW9';
 const audioCache = new Map();
 
 function loadAudioSettings() {
   try {
-    elevenApiKey  = localStorage.getItem('eleven_api_key')  || '';
     elevenVoiceId = localStorage.getItem('eleven_voice_id') || 'cgSgspJ2msm6clMCkdW9';
   } catch(e) {}
   updateVoiceUI();
@@ -859,19 +843,19 @@ function updateVoiceUI() {
   const text = document.getElementById('voiceStatusText');
   const badge = document.getElementById('voiceStatusBadge');
   if (!dot || !text) return;
-  if (elevenApiKey) {
+  if (elevenApiKey && elevenApiKey !== 'YOUR_API_KEY_HERE') {
     dot.className  = 'voice-dot active';
     text.textContent = 'ElevenLabs connected — native Croatian audio';
     if (badge) badge.textContent = '🟢';
   } else {
     dot.className  = 'voice-dot';
-    text.textContent = 'No API key — audio disabled';
+    text.textContent = 'No API key set in script — audio disabled';
     if (badge) badge.textContent = '⚪';
   }
 }
 
 async function speakCroatian(text) {
-  if (!elevenApiKey || !text) return;
+  if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE' || !text) return;
   const cacheKey = `${elevenVoiceId}::${text}`;
   try {
     // Disable all audio buttons while loading
@@ -917,33 +901,20 @@ async function speakCroatian(text) {
 
 // Settings screen logic
 function showSettings() {
-  document.getElementById('apiKeyInput').value = elevenApiKey;
   document.getElementById('voiceSelect').value = elevenVoiceId;
-  document.getElementById('apiKeyStatus').textContent = '';
-  document.getElementById('apiKeyStatus').style.color = '';
   showScreen('settings');
-}
-
-function onApiKeyInput(val) {
-  document.getElementById('apiKeyStatus').textContent = '';
 }
 
 function onVoiceChange(val) {
   // live preview optional — do nothing until save
 }
 
-function toggleApiKeyVisibility() {
-  const inp = document.getElementById('apiKeyInput');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-}
-
-async function testApiKey() {
-  const key   = document.getElementById('apiKeyInput').value.trim();
+async function testVoice() {
   const voice = document.getElementById('voiceSelect').value;
-  const statusEl = document.getElementById('apiKeyStatus');
+  const statusEl = document.getElementById('testStatus');
 
-  if (!key) {
-    statusEl.textContent = '⚠️ Enter an API key first';
+  if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE') {
+    statusEl.textContent = '⚠️ No API key set in the script';
     statusEl.style.color = 'var(--orange)';
     return;
   }
@@ -957,7 +928,7 @@ async function testApiKey() {
       {
         method: 'POST',
         headers: {
-          'xi-api-key': key,
+          'xi-api-key': elevenApiKey,
           'Content-Type': 'application/json',
           'Accept': 'audio/mpeg',
         },
@@ -989,13 +960,10 @@ async function testApiKey() {
 }
 
 function saveSettings() {
-  const key   = document.getElementById('apiKeyInput').value.trim();
   const voice = document.getElementById('voiceSelect').value;
   try {
-    localStorage.setItem('eleven_api_key',  key);
     localStorage.setItem('eleven_voice_id', voice);
   } catch(e) {}
-  elevenApiKey  = key;
   elevenVoiceId = voice;
   audioCache.clear(); // clear cache so new voice takes effect
   updateVoiceUI();
