@@ -63,6 +63,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .start-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--red-dark)}
 .start-btn.blue{background:var(--blue);box-shadow:0 4px 0 var(--blue-dark)}
 .start-btn.blue:hover{background:#3ec4ff}
+.start-btn.grey{background:var(--bg3);color:var(--text2);box-shadow:none;font-size:14px}
+.start-btn.grey:hover{background:var(--card2);transform:translateY(-1px)}
 
 /* ── LESSON SCREEN ── */
 #lesson{background:var(--bg)}
@@ -91,6 +93,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .audio-btn{background:var(--blue);border:none;border-radius:99px;padding:9px 18px;cursor:pointer;color:white;display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;margin:0 auto;transition:all .1s;box-shadow:0 3px 0 var(--blue-dark)}
 .audio-btn:hover{background:#3ec4ff;transform:translateY(-1px)}
 .audio-btn:active{transform:translateY(1px);box-shadow:none}
+.audio-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.audio-btn.loading{background:#0a6a90}
 
 /* Tip box */
 .tip-box{background:#1a1a3d;border:1px solid #3d3d7a;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#a0a0ff;font-weight:600;line-height:1.6;width:100%;text-align:left}
@@ -222,6 +226,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .mastered-chip{background:#3d1a1a;border:1px solid #7a2a2a;color:var(--red);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;cursor:pointer}
 .mastered-chip:hover{background:#5a2a2a}
 
+/* Settings screen */
+#settings{background:var(--bg);overflow-y:auto}
+.settings-body{padding:0 0 40px;max-width:480px;margin:0 auto;width:100%}
+.settings-section{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;margin:16px 20px 0}
+.settings-section-title{font-size:16px;font-weight:900;margin-bottom:8px}
+.settings-label{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6}
+.settings-input{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:12px 14px;color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;transition:border-color .15s}
+.settings-input:focus{border-color:var(--blue)}
+.settings-select{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;cursor:pointer}
+.settings-status{font-size:13px;font-weight:700;margin-bottom:12px;min-height:18px;padding:0 2px}
+.voice-indicator{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text2);margin-bottom:0;padding:8px 12px;background:var(--bg3);border-radius:8px}
+.voice-dot{width:8px;height:8px;border-radius:50%;background:var(--text3)}
+.voice-dot.active{background:var(--green);box-shadow:0 0 6px var(--green)}
+
 /* Confetti */
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 .confetti-piece{position:fixed;pointer-events:none;animation:confettiFall 2.5s ease-in forwards;z-index:999}
@@ -254,6 +272,63 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="section-label">📚 Your Units</div>
   <div class="unit-grid" id="unitGrid"></div>
   <button class="start-btn" id="startBtn" onclick="startNextLesson()">▶ Continue Learning</button>
+  <button class="start-btn grey" style="margin-top:10px" onclick="showSettings()">⚙️ Voice Settings <span id="voiceStatusBadge" style="font-size:11px;margin-left:4px"></span></button>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings" class="screen">
+  <div class="lesson-header">
+    <button class="close-btn" onclick="showScreen('home');renderHome()">✕</button>
+    <span style="font-weight:800;font-size:16px;flex:1;text-align:center">🔊 Voice Settings</span>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-title">ElevenLabs API Key</div>
+      <div class="settings-label">
+        Get a free key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" style="color:var(--blue)">elevenlabs.io</a>.
+        Paste it below — it's saved only in your browser and sent only to ElevenLabs for audio generation.
+      </div>
+      <input id="apiKeyInput" type="password" class="settings-input" placeholder="sk_... or your ElevenLabs API key"
+        oninput="onApiKeyInput(this.value)">
+      <div id="apiKeyStatus" class="settings-status"></div>
+      <div style="display:flex;gap:8px">
+        <button class="audio-btn" style="flex:1;justify-content:center" onclick="testApiKey()">🔊 Test — hear Croatian</button>
+        <button class="audio-btn" style="flex:1;justify-content:center;background:var(--bg3);color:var(--text2);box-shadow:none" onclick="toggleApiKeyVisibility()">👁 Show/Hide</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Voice</div>
+      <div class="settings-label">All voices speak Croatian naturally using the multilingual v2 model.</div>
+      <select id="voiceSelect" class="settings-select" onchange="onVoiceChange(this.value)">
+        <option value="cgSgspJ2msm6clMCkdW9">Jessica — warm female</option>
+        <option value="JBFqnCBsd6RMkjVDRZzb">George — deep male</option>
+        <option value="N2lVS1w4EtoT3dr4eOWO">Callum — authoritative male</option>
+        <option value="XB0fDUnXU5powFXDhCwa">Charlotte — expressive female</option>
+        <option value="pFZP5JQG7iQjIQuC4Bku">Lily — natural female</option>
+        <option value="onwK4e9ZLuTAKqWW03F9">Daniel — British male</option>
+      </select>
+      <div class="voice-indicator">
+        <div class="voice-dot" id="voiceDot"></div>
+        <span id="voiceStatusText">No API key — audio disabled</span>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Without API Key</div>
+      <div class="settings-label" style="margin-bottom:0">
+        The app works fully — all exercises, progress tracking and grammar lessons work.
+        Every Croatian word shows a phonetic hint like <strong style="color:var(--blue)">/ZDRA-voh/</strong> so you can pronounce it yourself.
+        ElevenLabs adds native-quality Croatian audio.
+      </div>
+    </div>
+
+    <div style="padding:0 20px">
+      <button class="start-btn" style="margin-top:20px" onclick="saveSettings()">💾 Save &amp; Return</button>
+    </div>
+
+  </div>
 </div>
 
 <!-- LESSON -->
@@ -316,11 +391,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 // ═══════════════════════════════════════════════════════
 // VOCABULARY DATABASE
 // ═══════════════════════════════════════════════════════
-// Format: [croatian, english, phonetic, wordType, gender?]
-// wordType: 'noun','verb','adj','phrase','pronoun','conj','adv','num'
-// gender: 'm' = masculine, 'f' = feminine, 'n' = neuter
 const VOCAB = {
-  // Unit 0: Greetings & Basics — absolute beginner, very simple
   0: [
     ['zdravo','hello','ZDRA-voh','phrase'],
     ['bok','hi / bye','bok','phrase'],
@@ -340,7 +411,6 @@ const VOCAB = {
     ['vidimo se','see you','VEE-dee-moh seh','phrase'],
     ['do viđenja','goodbye','doh vee-JEH-nyah','phrase'],
   ],
-  // Unit 1: Numbers & Colours — simple concrete words
   1: [
     ['jedan','one','YEH-dan','num'],
     ['dva','two','dvah','num'],
@@ -359,7 +429,6 @@ const VOCAB = {
     ['bijela','white','bee-YEH-lah','adj'],
     ['crna','black','TSRR-nah','adj'],
   ],
-  // Unit 2: People & Pronouns
   2: [
     ['ja','I','yah','pronoun'],
     ['ti','you (informal)','tee','pronoun'],
@@ -378,7 +447,6 @@ const VOCAB = {
     ['čovjek','man / person','CHOH-vyehk','noun','m'],
     ['žena','woman','ZHEH-nah','noun','f'],
   ],
-  // Unit 3: Food & Drink
   3: [
     ['voda','water','VOH-dah','noun','f'],
     ['kava','coffee','KAH-vah','noun','f'],
@@ -397,7 +465,6 @@ const VOCAB = {
     ['gladna','hungry (f)','GLAD-nah','adj'],
     ['žedna','thirsty (f)','ZHEHD-nah','adj'],
   ],
-  // Unit 4: Getting Around
   4: [
     ['gdje','where','gyeh','adv'],
     ['lijevo','left','LEE-yeh-voh','adv'],
@@ -416,7 +483,6 @@ const VOCAB = {
     ['blizu','nearby / close','BLEE-zoo','adv'],
     ['daleko','far','DAH-leh-koh','adv'],
   ],
-  // Unit 5: Home & Daily Life
   5: [
     ['kuća','house','KOO-chah','noun','f'],
     ['stan','apartment','stan','noun','m'],
@@ -435,7 +501,6 @@ const VOCAB = {
     ['nikad','never','NEE-kad','adv'],
     ['ponekad','sometimes','POH-neh-kad','adv'],
   ],
-  // Unit 6: Core Verbs
   6: [
     ['biti','to be','BEE-tee','verb'],
     ['imati','to have','EE-mah-tee','verb'],
@@ -454,7 +519,6 @@ const VOCAB = {
     ['voljeti','to love / to like','VOH-lyeh-tee','verb'],
     ['živjeti','to live','ZHEE-vyeh-tee','verb'],
   ],
-  // Unit 7: Adjectives
   7: [
     ['velik','big','VEH-leek','adj'],
     ['mali','small','MAH-lee','adj'],
@@ -473,7 +537,6 @@ const VOCAB = {
     ['tužan','sad','TOO-zhan','adj'],
     ['umoran','tired','oo-MOH-ran','adj'],
   ],
-  // Unit 8: Weather & Nature
   8: [
     ['vrijeme','weather / time','VREH-meh','noun','n'],
     ['sunce','sun','SOON-tseh','noun','n'],
@@ -493,7 +556,6 @@ const VOCAB = {
     ['pas','dog','pas','noun','m'],
     ['mačka','cat','MACH-kah','noun','f'],
   ],
-  // Unit 9: Days, Months & Time
   9: [
     ['ponedjeljak','Monday','poh-ned-YELL-yak','noun','m'],
     ['utorak','Tuesday','OO-toh-rak','noun','m'],
@@ -514,8 +576,6 @@ const VOCAB = {
   ],
 };
 
-// ─── VERB CONJUGATIONS ──────────────────────────────────
-// Present tense (ja/ti/on-ona-ono/mi/vi/oni)
 const CONJUGATIONS = {
   'biti':    { ja:'sam', ti:'si', on:'je', mi:'smo', vi:'ste', oni:'su', note:'The verb "biti" (to be) is very irregular — memorize these!' },
   'imati':   { ja:'imam', ti:'imaš', on:'ima', mi:'imamo', vi:'imate', oni:'imaju', note:'Regular -ati verb: stem ima- + endings' },
@@ -534,7 +594,6 @@ const CONJUGATIONS = {
   'doći':    { ja:'dođem', ti:'dođeš', on:'dođe', mi:'dođemo', vi:'dođete', oni:'dođu', note:'"doći" (to come) is irregular' },
 };
 
-// ─── GRAMMAR LESSONS ────────────────────────────────────
 const GRAMMAR_LESSONS = {
   'g_pronunciation': {
     title: 'Croatian pronunciation — read what you see!',
@@ -642,7 +701,7 @@ const GRAMMAR_LESSONS = {
       </div>
       <div class="grammar-section">
         <div class="grammar-section-title">Why does it matter?</div>
-        <div class="grammar-note">Adjectives change their ending to match the noun's gender! A different ending for m/f/n. Example: <strong>velik</strong> (m), <strong>velika</strong> (f), <strong>veliko</strong> (n).</div>
+        <div class="grammar-note">Adjectives change their ending to match the noun's gender! Example: <strong>velik</strong> (m), <strong>velika</strong> (f), <strong>veliko</strong> (n).</div>
         <div class="grammar-examples-grid">
           <div class="grammar-example"><span class="hr">velik grad (m)</span><span class="en">a big city</span></div>
           <div class="grammar-example"><span class="hr">velika kuća (f)</span><span class="en">a big house</span></div>
@@ -655,7 +714,7 @@ const GRAMMAR_LESSONS = {
       { type:'mcq_grammar', prompt:'What gender is "grad" (city)?', answer:'Masculine — ends in a consonant', distractors:['Feminine','Neuter','Cannot tell'] },
       { type:'mcq_grammar', prompt:'"More" (sea) ends in -e. What gender is it?', answer:'Neuter', distractors:['Feminine','Masculine','Gender depends on context'] },
       { type:'fill_blank', prompt:'velika ___ (big house — f) — what word goes here?', answer:'kuća', distractors:['grad','more','brat'] },
-      { type:'mcq_grammar', prompt:'How does "velik" (big) change for feminine nouns?', answer:'velika', distractors:['velika','veliko','velik stays the same'] },
+      { type:'mcq_grammar', prompt:'How does "velik" (big) change for feminine nouns?', answer:'velika', distractors:['velkia','veliko','velik stays the same'] },
       { type:'mcq_grammar', prompt:'Nouns ending in -o or -e are usually:', answer:'Neuter gender', distractors:['Masculine','Feminine','None of the above'] },
     ]
   },
@@ -696,8 +755,6 @@ const GRAMMAR_LESSONS = {
         <div class="grammar-examples-grid">
           <div class="grammar-example"><span class="hr">Ja radim.</span><span class="en">I work.</span></div>
           <div class="grammar-example"><span class="hr">Ja ne radim.</span><span class="en">I don't work.</span></div>
-          <div class="grammar-example"><span class="hr">Ona spava.</span><span class="en">She sleeps.</span></div>
-          <div class="grammar-example"><span class="hr">Ona ne spava.</span><span class="en">She doesn't sleep.</span></div>
         </div>
       </div>
     `,
@@ -712,7 +769,6 @@ const GRAMMAR_LESSONS = {
   },
 };
 
-// ─── SENTENCE TEMPLATES ──────────────────────────────────
 const SENTENCE_TEMPLATES = [
   { en:'I have a {N}.', hr:['Ja','imam','{N}.'], words:['psa','mačku','auto','kuću','brata','sestru'], en_words:['dog','cat','car','house','brother','sister'] },
   { en:'She is {A}.', hr:['Ona','je','{A}.'], words:['dobra','lijepa','umorna','tužna','sretna','mlada'], en_words:['good','beautiful','tired','sad','happy','young'] },
@@ -726,7 +782,6 @@ const SENTENCE_TEMPLATES = [
   { en:'Can you help me?', hr:['Možeš','li','mi','pomoći?'], words:[], en_words:[] },
 ];
 
-// ─── FILL-IN-THE-BLANK TEMPLATES ─────────────────────────
 const FILL_TEMPLATES = [
   { sentence_hr:'Ja ___ student.', answer:'sam', hint:'biti — ja form', category:'verb' },
   { sentence_hr:'Ona ___ vodu.', answer:'pije', hint:'piti — ona form', category:'verb' },
@@ -734,15 +789,14 @@ const FILL_TEMPLATES = [
   { sentence_hr:'On ___ u Zagrebu.', answer:'živi', hint:'živjeti — on form', category:'verb' },
   { sentence_hr:'___ ideš?', answer:'Gdje', hint:'Where...?', category:'question' },
   { sentence_hr:'Ja ne ___ umoran.', answer:'sam', hint:'biti — negative (ja)', category:'negation' },
-  { sentence_hr:'Oni ___ happy.', answer:'su', hint:'biti — oni form (they are)', category:'verb' },
-  { sentence_hr:'Ja ___ kafu.', answer:'pijem', hint:'piti — ja form', category:'verb' },
+  { sentence_hr:'Oni ___ sretni.', answer:'su', hint:'biti — oni form (they are)', category:'verb' },
+  { sentence_hr:'Ja ___ kavu.', answer:'pijem', hint:'piti — ja form', category:'verb' },
   { sentence_hr:'Ti ___ dobar.', answer:'si', hint:'biti — ti form', category:'verb' },
   { sentence_hr:'Ona ___ u školi.', answer:'je', hint:'biti — ona form', category:'verb' },
-  { sentence_hr:'Mi ne ___ umorno.', answer:'spavamo', hint:'spavati negative — mi form', category:'verb' },
+  { sentence_hr:'Mi ne ___ kasno.', answer:'spavamo', hint:'spavati negative — mi form', category:'verb' },
   { sentence_hr:'Ja ___ kavu svaki dan.', answer:'pijem', hint:'piti — ja form', category:'verb' },
 ];
 
-// ─── UNIT METADATA ───────────────────────────────────────
 const UNIT_META = [
   { name:'Greetings & Basics', icon:'👋', color:'#ff4b4b', type:'vocab', tip:'Start here! These are the most used phrases in Croatian.' },
   { name:'Numbers & Colours', icon:'🔢', color:'#ffc800', type:'vocab', tip:'Numbers and colours — great building blocks!' },
@@ -762,7 +816,6 @@ const UNIT_META = [
 
 // ═══════════════════════════════════════════════════════
 // STATE & PERSISTENCE
-// Single-user: saved in localStorage, works on GitHub Pages
 // ═══════════════════════════════════════════════════════
 const SAVE_KEY = 'govori_hr_v1';
 let state = {
@@ -785,6 +838,170 @@ let session = {
   xpEarned:0, startTime:0, answered:false, selectedOption:null,
   builtSentence:[], failQueue:[], wordsThisLesson:[], lessonSeed:0,
 };
+
+// ═══════════════════════════════════════════════════════
+// ELEVENLABS AUDIO
+// ═══════════════════════════════════════════════════════
+let elevenApiKey = 'cb378890fb43496121712bc9a30449a281a2370a724f01f6b828f54b674c453f';
+let elevenVoiceId = 'cgSgspJ2msm6clMCkdW9';
+const audioCache = new Map();
+
+function loadAudioSettings() {
+  try {
+    elevenApiKey  = localStorage.getItem('eleven_api_key')  || '';
+    elevenVoiceId = localStorage.getItem('eleven_voice_id') || 'cgSgspJ2msm6clMCkdW9';
+  } catch(e) {}
+  updateVoiceUI();
+}
+
+function updateVoiceUI() {
+  const dot  = document.getElementById('voiceDot');
+  const text = document.getElementById('voiceStatusText');
+  const badge = document.getElementById('voiceStatusBadge');
+  if (!dot || !text) return;
+  if (elevenApiKey) {
+    dot.className  = 'voice-dot active';
+    text.textContent = 'ElevenLabs connected — native Croatian audio';
+    if (badge) badge.textContent = '🟢';
+  } else {
+    dot.className  = 'voice-dot';
+    text.textContent = 'No API key — audio disabled';
+    if (badge) badge.textContent = '⚪';
+  }
+}
+
+async function speakCroatian(text) {
+  if (!elevenApiKey || !text) return;
+  const cacheKey = `${elevenVoiceId}::${text}`;
+  try {
+    // Disable all audio buttons while loading
+    const btns = document.querySelectorAll('.audio-btn');
+    btns.forEach(b => { b.disabled = true; b.classList.add('loading'); });
+
+    let blob;
+    if (audioCache.has(cacheKey)) {
+      blob = audioCache.get(cacheKey);
+    } else {
+      const resp = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${elevenVoiceId}`,
+        {
+          method: 'POST',
+          headers: {
+            'xi-api-key': elevenApiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'audio/mpeg',
+          },
+          body: JSON.stringify({
+            text: text,
+            model_id: 'eleven_multilingual_v2',
+            voice_settings: { stability: 0.5, similarity_boost: 0.75 },
+          }),
+        }
+      );
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      blob = await resp.blob();
+      audioCache.set(cacheKey, blob);
+    }
+
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = () => URL.revokeObjectURL(url);
+    await audio.play();
+  } catch (err) {
+    console.warn('ElevenLabs TTS error:', err);
+  } finally {
+    const btns = document.querySelectorAll('.audio-btn');
+    btns.forEach(b => { b.disabled = false; b.classList.remove('loading'); });
+  }
+}
+
+// Settings screen logic
+function showSettings() {
+  document.getElementById('apiKeyInput').value = elevenApiKey;
+  document.getElementById('voiceSelect').value = elevenVoiceId;
+  document.getElementById('apiKeyStatus').textContent = '';
+  document.getElementById('apiKeyStatus').style.color = '';
+  showScreen('settings');
+}
+
+function onApiKeyInput(val) {
+  document.getElementById('apiKeyStatus').textContent = '';
+}
+
+function onVoiceChange(val) {
+  // live preview optional — do nothing until save
+}
+
+function toggleApiKeyVisibility() {
+  const inp = document.getElementById('apiKeyInput');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+async function testApiKey() {
+  const key   = document.getElementById('apiKeyInput').value.trim();
+  const voice = document.getElementById('voiceSelect').value;
+  const statusEl = document.getElementById('apiKeyStatus');
+
+  if (!key) {
+    statusEl.textContent = '⚠️ Enter an API key first';
+    statusEl.style.color = 'var(--orange)';
+    return;
+  }
+
+  statusEl.textContent = '⏳ Contacting ElevenLabs…';
+  statusEl.style.color = 'var(--text2)';
+
+  try {
+    const resp = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voice}`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': key,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg',
+        },
+        body: JSON.stringify({
+          text: 'Dobar dan! Govorim hrvatski.',
+          model_id: 'eleven_multilingual_v2',
+          voice_settings: { stability: 0.5, similarity_boost: 0.75 },
+        }),
+      }
+    );
+
+    if (!resp.ok) {
+      const errBody = await resp.json().catch(() => ({}));
+      throw new Error(errBody.detail?.message || 'HTTP ' + resp.status);
+    }
+
+    const blob = await resp.blob();
+    const url  = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = () => URL.revokeObjectURL(url);
+    audio.play();
+
+    statusEl.textContent = '✅ Working! You should hear Croatian now.';
+    statusEl.style.color = 'var(--green)';
+  } catch (err) {
+    statusEl.textContent = '❌ Error: ' + err.message;
+    statusEl.style.color = 'var(--red)';
+  }
+}
+
+function saveSettings() {
+  const key   = document.getElementById('apiKeyInput').value.trim();
+  const voice = document.getElementById('voiceSelect').value;
+  try {
+    localStorage.setItem('eleven_api_key',  key);
+    localStorage.setItem('eleven_voice_id', voice);
+  } catch(e) {}
+  elevenApiKey  = key;
+  elevenVoiceId = voice;
+  audioCache.clear(); // clear cache so new voice takes effect
+  updateVoiceUI();
+  showScreen('home');
+  renderHome();
+}
 
 // ═══════════════════════════════════════════════════════
 // HELPERS
@@ -824,7 +1041,7 @@ function levenshtein(a, b) {
 }
 
 // ═══════════════════════════════════════════════════════
-// EXAMPLE SENTENCES DATABASE
+// EXAMPLE SENTENCES
 // ═══════════════════════════════════════════════════════
 const EXAMPLE_SENTENCES = {
   'zdravo': 'Zdravo! Kako se zoveš?',
@@ -894,15 +1111,12 @@ function generateLessonQuestions(unitId, seed) {
   const shuffled = shuffleWithRng(vocabList, rng);
   const lessonWords = shuffled.slice(0, Math.min(8, shuffled.length));
 
-  // For beginners: start every unit with a welcome/tip card
-  qs.push({ type:'unit_intro', unitId });
-
   lessonWords.forEach((item) => {
     const [croatian, english, phonetic, wordType, gender] = item;
     const correctObj = { croatian, english, wordType };
     const unseen = !state.wordsLearned.includes(croatian);
 
-    // 1. Vocab intro — always shown for new words, sometimes for review
+    // Vocab intro card
     if (unseen || rng() > 0.5) {
       qs.push({
         type:'vocab_intro', word:croatian, phonetic, meaning:english,
@@ -911,7 +1125,7 @@ function generateLessonQuestions(unitId, seed) {
       });
     }
 
-    // 2. MCQ: English → Croatian (pick the correct Croatian word)
+    // MCQ: English → Croatian
     const hrDistr = pickSmartDistractors(allVocab, correctObj, 3, 'hr_from_en');
     qs.push({
       type:'mcq_en_hr',
@@ -920,7 +1134,7 @@ function generateLessonQuestions(unitId, seed) {
       hint: phonetic ? `Pronunciation: /${phonetic}/` : '',
     });
 
-    // 3. MCQ: Croatian → English (50%) or Type answer (50%)
+    // MCQ: Croatian → English OR Type answer
     if (rng() > 0.5) {
       const enDistr = pickSmartDistractors(allVocab, correctObj, 3, 'en_from_hr');
       qs.push({
@@ -930,7 +1144,6 @@ function generateLessonQuestions(unitId, seed) {
         hint:'',
       });
     } else {
-      // Type the Croatian word
       qs.push({
         type:'type_hr',
         prompt:'Type in Croatian:',
@@ -942,7 +1155,7 @@ function generateLessonQuestions(unitId, seed) {
     }
   });
 
-  // Fill-in-blank exercises
+  // Fill-in-blank
   const fills = shuffle(FILL_TEMPLATES).slice(0, 2);
   fills.forEach(tmpl => {
     qs.push({
@@ -978,13 +1191,13 @@ function generateLessonQuestions(unitId, seed) {
     }
   });
 
-  // Matching exercise
+  // Matching
   if (lessonWords.length >= 4) {
     const pairWords = shuffleWithRng(lessonWords, rng).slice(0, 4);
     qs.push({ type:'matching', pairs: pairWords.map(([c,e]) => ({ croatian:c, english:e })) });
   }
 
-  return shuffleWithRng(qs.filter(q => q.type !== 'unit_intro'), rng);
+  return shuffleWithRng(qs, rng);
 }
 
 function generateGrammarLesson(grammarId) {
@@ -1023,11 +1236,11 @@ function renderHome() {
     btn.className = 'unit-btn' + (isLocked ? ' locked' : '') + (isDone ? ' done' : '') + (isGrammar ? ' grammar-unit' : '');
 
     let badge = '';
-    if (isLocked) badge = '<span class="unit-badge badge-locked">🔒 Locked</span>';
-    else if (isDone) badge = '<span class="unit-badge badge-done">✓ Done</span>';
+    if (isLocked)            badge = '<span class="unit-badge badge-locked">🔒 Locked</span>';
+    else if (isDone)         badge = '<span class="unit-badge badge-done">✓ Done</span>';
     else if (isGrammar && progress === 0) badge = '<span class="unit-badge badge-grammar">📝 Grammar</span>';
     else if (progress === 0) badge = '<span class="unit-badge badge-new">NEW</span>';
-    else badge = '<span class="unit-badge badge-active">▶ Active</span>';
+    else                     badge = '<span class="unit-badge badge-active">▶ Active</span>';
 
     btn.innerHTML = `
       <div class="unit-icon">${meta.icon}</div>
@@ -1041,6 +1254,8 @@ function renderHome() {
     if (!isLocked) btn.onclick = () => startLesson(i);
     grid.appendChild(btn);
   });
+
+  updateVoiceUI();
 }
 
 function startNextLesson() {
@@ -1104,13 +1319,13 @@ function renderQuestion() {
     body.appendChild(rb);
   }
 
-  if (q.type === 'vocab_intro') renderVocabIntro(q);
+  if (q.type === 'vocab_intro')        renderVocabIntro(q);
   else if (q.type === 'grammar_intro') renderGrammarIntro(q);
   else if (q.type === 'mcq_en_hr' || q.type === 'mcq_hr_en' || q.type === 'mcq_grammar') renderMCQ(q);
   else if (q.type === 'type_hr' || q.type === 'type_en') renderTypeAnswer(q);
   else if (q.type === 'fill_blank' || q.type === 'fill_blank_free') renderFillBlank(q);
-  else if (q.type === 'build_hr') renderBuilder(q);
-  else if (q.type === 'matching') renderMatching(q);
+  else if (q.type === 'build_hr')      renderBuilder(q);
+  else if (q.type === 'matching')      renderMatching(q);
 }
 
 // ─── Vocab Intro ─────────────────────────────────────────
@@ -1131,7 +1346,7 @@ function renderVocabIntro(q) {
     `;
   }
 
-  const conjHint = conj ? `<div style="font-size:12px;color:var(--text3);margin-top:6px;font-weight:600">💡 Tap the word to see all conjugations</div>` : '';
+  const noAudioNote = elevenApiKey ? '' : `<div style="font-size:11px;color:var(--text3);margin-top:8px">No API key — set up ElevenLabs in ⚙️ Voice Settings for audio</div>`;
 
   const card = document.createElement('div');
   card.innerHTML = `
@@ -1142,11 +1357,12 @@ function renderVocabIntro(q) {
       <div class="vocab-meaning">${q.meaning}</div>
       ${genderLabel ? `<div class="vocab-gender" style="color:${genderColor}">${genderLabel}</div>` : ''}
       ${sentenceHtml}
-      <button class="audio-btn" onclick="speakCroatian('${esc(q.word)}')">🔊 Hear it</button>
-      ${conjHint}
+      <button class="audio-btn" onclick="speakCroatian('${esc(q.word)}')" ${!elevenApiKey ? 'title="Add ElevenLabs API key in settings for audio"' : ''}>🔊 Hear it</button>
+      ${noAudioNote}
+      ${conj ? `<div style="font-size:12px;color:var(--text3);margin-top:6px;font-weight:600">💡 Tap the word to see all conjugations</div>` : ''}
     </div>
     <div class="tip-box">
-      💡 <strong>Tip:</strong> Say it out loud as you read it! Croatian pronunciation is consistent — 
+      💡 <strong>Tip:</strong> Say it out loud! Croatian pronunciation is consistent —
       ${q.phonetic ? `this word sounds like <strong>/${q.phonetic}/</strong>` : 'each letter always makes the same sound'}.
     </div>
     <p class="tap-hint">Tap the word to explore its forms</p>
@@ -1186,7 +1402,7 @@ function renderGrammarIntro(q) {
 function renderMCQ(q) {
   const body = document.getElementById('lessonBody');
   let badge = '🇬🇧 → 🇭🇷 Translate to Croatian';
-  if (q.type === 'mcq_hr_en') badge = '🇭🇷 → 🇬🇧 Translate to English';
+  if (q.type === 'mcq_hr_en')   badge = '🇭🇷 → 🇬🇧 Translate to English';
   if (q.type === 'mcq_grammar') badge = '📝 Grammar Question';
 
   const options = shuffle([q.answer, ...q.distractors]);
@@ -1242,12 +1458,12 @@ function renderTypeAnswer(q) {
     <div class="lesson-type-badge">${badge}</div>
     <div class="lesson-question">${q.prompt}</div>
     ${q.context ? `<div class="vocab-card" style="margin-bottom:16px;padding:18px">
-      <div style="font-size:${isHr?'18px':'28px'};font-weight:800;cursor:pointer" ${!isHr ? `onclick="speakCroatian('${esc(q.context)}')" title="Click to hear"` : ''}>${q.context}</div>
-      ${!isHr && q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
+      <div style="font-size:${isHr?'18px':'28px'};font-weight:800">${q.context}</div>
+      ${q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
     </div>` : ''}
     ${q.hint ? `<div class="lesson-hint">📢 ${q.hint}</div>` : ''}
     <input type="text" class="text-input" id="typeInput" placeholder="${placeholder}" autocomplete="off" autocorrect="off" spellcheck="false">
-    <div class="input-hint">Press ENTER or tap CHECK when done • Accents like č, š, ž are accepted but not required</div>
+    <div class="input-hint">Press ENTER or tap CHECK • Accents like č, š, ž are accepted but not required</div>
     ${isHr && q.audio ? `<button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hint sound</button>` : ''}
   `;
   body.appendChild(div);
@@ -1266,7 +1482,6 @@ function renderTypeAnswer(q) {
 }
 
 function normalizeAccents(s) {
-  // Allow answers without diacritics to still match
   return s
     .replace(/č/g,'c').replace(/š/g,'s').replace(/ž/g,'z')
     .replace(/ć/g,'c').replace(/đ/g,'d').replace(/dž/g,'dz');
@@ -1298,7 +1513,7 @@ function checkTypeAnswer(q, input) {
 function renderFillBlank(q) {
   const body = document.getElementById('lessonBody');
   const isMCQ = q.type === 'fill_blank' && q.distractors;
-  const parts = (q.sentence_hr || q.sentence_nl || '').split('___');
+  const parts = (q.sentence_hr || '').split('___');
 
   const div = document.createElement('div');
   div.style.width = '100%';
@@ -1385,7 +1600,7 @@ function renderBuilder(q) {
     <div class="lesson-hint">Tap words in the right order to build the Croatian sentence</div>
     <div class="sentence-display" id="sentDisplay"><span style="color:var(--text3);font-size:13px">Tap words below ↓</span></div>
     <div class="word-bank" id="wordBank"></div>
-    <button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc((q.audio||q.answer.join(' ')).replace(/'/g,"\\'")||'')}')">🔊 Hear answer</button>
+    <button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc((q.audio||q.answer.join(' ')).replace(/'/g,"\\'"))}')">🔊 Hear answer</button>
   `;
   body.appendChild(div);
 
@@ -1440,7 +1655,7 @@ function removeBuilderWord(idx) {
 
 function checkBuilder(q) {
   session.answered = true; session.total++;
-  const built = normalizeAccents(session.builtSentence.join(' ').toLowerCase().replace(/[.,!?]/g,''));
+  const built   = normalizeAccents(session.builtSentence.join(' ').toLowerCase().replace(/[.,!?]/g,''));
   const correct = normalizeAccents(q.answer.join(' ').toLowerCase().replace(/[.,!?]/g,''));
   showFeedback(built === correct, q.answer.join(' '), q);
 }
@@ -1537,21 +1752,21 @@ function showFeedback(isCorrect, correctAnswer, q) {
     if (q && q.audio) speakCroatian(q.audio);
   }
 
-  const bar = document.getElementById('feedbackBar');
-  const icon = document.getElementById('feedbackIcon');
+  const bar   = document.getElementById('feedbackBar');
+  const icon  = document.getElementById('feedbackIcon');
   const title = document.getElementById('feedbackTitle');
-  const ans = document.getElementById('feedbackAnswer');
+  const ans   = document.getElementById('feedbackAnswer');
 
   if (isCorrect) {
-    bar.className = 'feedback-bar correct-bar show';
+    bar.className    = 'feedback-bar correct-bar show';
     icon.textContent = '✅';
     title.textContent = getCorrectPhrase();
-    ans.textContent = '';
+    ans.textContent  = '';
   } else {
-    bar.className = 'feedback-bar wrong-bar show';
+    bar.className    = 'feedback-bar wrong-bar show';
     icon.textContent = '❌';
     title.textContent = 'Not quite!';
-    ans.textContent = correctAnswer ? 'Correct answer: ' + correctAnswer : 'Keep trying!';
+    ans.textContent  = correctAnswer ? 'Correct answer: ' + correctAnswer : 'Keep trying!';
   }
 
   document.getElementById('checkBtn').disabled = true;
@@ -1600,16 +1815,16 @@ function endLesson(outOfHearts = false) {
   document.getElementById('completeSub').textContent = outOfHearts
     ? 'You ran out of hearts — keep practicing, you\'re making progress!'
     : `Lesson complete! ${session.correct} of ${session.total} correct`;
-  document.getElementById('statXp').textContent = '+' + session.xpEarned;
-  document.getElementById('statAcc').textContent = acc + '%';
+  document.getElementById('statXp').textContent   = '+' + session.xpEarned;
+  document.getElementById('statAcc').textContent  = acc + '%';
   document.getElementById('statTime').textContent = elapsed < 60 ? elapsed + 's' : Math.round(elapsed/60) + 'm';
 
   if (session.wordsThisLesson.length > 0) {
-    const row = document.getElementById('masteredRow');
+    const row   = document.getElementById('masteredRow');
     const words = document.getElementById('masteredWords');
     row.style.display = 'block';
     words.innerHTML = session.wordsThisLesson.map(w =>
-      `<span class="mastered-chip" onclick="showWordPopup('${esc(w)}','','','')">  ${w}</span>`
+      `<span class="mastered-chip" onclick="showWordPopup('${esc(w)}','','','')">${w}</span>`
     ).join('');
   }
 }
@@ -1619,14 +1834,13 @@ function endLesson(outOfHearts = false) {
 // ═══════════════════════════════════════════════════════
 function showWordPopup(croatian, english, phonetic, wordType) {
   if (!croatian) return;
-  // Find word in vocab if details not passed
   if (!english) {
     const all = Object.values(VOCAB).flat();
     const entry = all.find(v => v[0] === croatian);
     if (entry) { croatian=entry[0]; english=entry[1]; phonetic=entry[2]; wordType=entry[3]; }
   }
   const inner = document.getElementById('wordPopupInner');
-  const conj = CONJUGATIONS[croatian];
+  const conj  = CONJUGATIONS[croatian];
 
   let html = `
     <div class="word-popup-croatian">${croatian}</div>
@@ -1678,46 +1892,9 @@ function closeWordPopup(event) {
 // PAUSE / QUIT
 // ═══════════════════════════════════════════════════════
 function showPauseMenu() { document.getElementById('pauseModal').classList.add('show'); }
-function resumeLesson() { document.getElementById('pauseModal').classList.remove('show'); }
-function quitLesson() { document.getElementById('pauseModal').classList.remove('show'); showScreen('home'); renderHome(); }
-function returnHome() { showScreen('home'); renderHome(); }
-
-// ═══════════════════════════════════════════════════════
-// AUDIO — Croatian Text-to-Speech
-// ═══════════════════════════════════════════════════════
-let croatianVoice = null;
-function initVoices() {
-  const voices = window.speechSynthesis.getVoices();
-  if (!voices.length) return;
-  // Prefer Croatian voice, fall back to any Slavic, then any available
-  const preferred = [
-    v => v.lang === 'hr-HR',
-    v => v.lang === 'hr',
-    v => v.lang.startsWith('hr'),
-    v => v.lang === 'sr-RS', // Serbian is mutually intelligible
-    v => v.lang === 'bs-BA', // Bosnian too
-  ];
-  for (const test of preferred) {
-    const f = voices.find(test);
-    if (f) { croatianVoice = f; break; }
-  }
-}
-function speakCroatian(text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'hr-HR';
-  utt.rate = 0.80;
-  utt.pitch = 1.0;
-  utt.volume = 1.0;
-  if (croatianVoice) utt.voice = croatianVoice;
-  window.speechSynthesis.speak(utt);
-}
-if (window.speechSynthesis) {
-  initVoices();
-  window.speechSynthesis.addEventListener('voiceschanged', initVoices);
-  window.speechSynthesis.getVoices();
-}
+function resumeLesson()  { document.getElementById('pauseModal').classList.remove('show'); }
+function quitLesson()    { document.getElementById('pauseModal').classList.remove('show'); showScreen('home'); renderHome(); }
+function returnHome()    { showScreen('home'); renderHome(); }
 
 // ═══════════════════════════════════════════════════════
 // CONFETTI
@@ -1746,6 +1923,7 @@ function showScreen(id) {
 // INIT
 // ═══════════════════════════════════════════════════════
 loadState();
+loadAudioSettings();
 renderHome();
 </script>
 </body>
