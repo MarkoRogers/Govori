@@ -6,6 +6,9 @@
 <title>Govori — Learn Croatian</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════
+   THEME VARIABLES — dark mode default
+═══════════════════════════════════════════════ */
 :root {
   --red:#ff4b4b; --red-dark:#cc3333; --red-light:#ffd6d6;
   --blue:#1cb0f6; --blue-dark:#0994d0;
@@ -16,29 +19,46 @@
   --card:#2e1c22; --card2:#3a2530;
   --text:#ffffff; --text2:#c0a0a8; --text3:#7a5560;
   --border:#4a2a35; --radius:16px;
+  --shadow:0 4px 20px rgba(0,0,0,.4);
+}
+body.light-mode {
+  --bg:#fff5f7; --bg2:#fff0f3; --bg3:#ffe0e8;
+  --card:#ffffff; --card2:#fff0f3;
+  --text:#2a1215; --text2:#8a5060; --text3:#b08090;
+  --border:#f0c0cc; --shadow:0 4px 20px rgba(200,100,120,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 .screen{display:none}
 .screen.active{display:flex;flex-direction:column;min-height:100vh}
 
 /* ── HOME ── */
-#home{background:linear-gradient(160deg,#120c0f 0%,#1a1215 40%,#2a1a1f 100%);align-items:center;padding:32px 20px 40px}
+#home{background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 40%,var(--bg3) 100%);align-items:center;padding:32px 20px 40px}
 .home-logo{font-size:52px;margin-bottom:4px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .home-title{font-size:40px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#ff4b4b,#ffc800);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
-.home-sub{font-size:15px;color:var(--text2);margin-bottom:28px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.top-stats{width:100%;max-width:420px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
-.stat-pill{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center}
+.home-sub{font-size:15px;color:var(--text2);margin-bottom:20px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.top-stats{width:100%;max-width:420px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-pill{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center;transition:background .3s,border-color .3s}
 .stat-pill-val{font-size:22px;font-weight:900}
 .stat-pill-val.orange{color:var(--orange)}
 .stat-pill-val.yellow{color:var(--gold)}
 .stat-pill-val.blue{color:var(--blue)}
 .stat-pill-lbl{font-size:11px;color:var(--text2);font-weight:700;margin-top:2px}
-.xp-bar-wrap{width:100%;max-width:420px;margin-bottom:24px}
+.xp-bar-wrap{width:100%;max-width:420px;margin-bottom:10px}
 .xp-label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--text2);margin-bottom:7px}
 .xp-track{background:var(--bg3);border-radius:99px;height:14px;overflow:hidden}
 .xp-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:99px;transition:width .6s cubic-bezier(.4,2,.6,1)}
+
+/* ── MILESTONE BANNER ── */
+.milestone-banner{width:100%;max-width:420px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:14px;padding:12px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;animation:mileSpin .5s ease;cursor:pointer;border:none;color:#1a0a00;font-family:'Nunito',sans-serif}
+@keyframes mileSpin{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.milestone-banner.hidden{display:none}
+.milestone-icon{font-size:28px}
+.milestone-text{text-align:left}
+.milestone-title{font-size:14px;font-weight:900}
+.milestone-sub{font-size:12px;font-weight:700;opacity:.8}
+
 .section-label{width:100%;max-width:420px;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;padding-left:4px}
 .unit-grid{width:100%;max-width:420px;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
 .unit-btn{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;color:var(--text);text-align:left;position:relative;overflow:hidden}
@@ -65,6 +85,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .start-btn.blue:hover{background:#3ec4ff}
 .start-btn.grey{background:var(--bg3);color:var(--text2);box-shadow:none;font-size:14px}
 .start-btn.grey:hover{background:var(--card2);transform:translateY(-1px)}
+.home-btns{width:100%;max-width:420px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 
 /* ── LESSON SCREEN ── */
 #lesson{background:var(--bg)}
@@ -80,16 +101,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .lesson-hint{font-size:13px;color:var(--text2);margin-bottom:24px;font-weight:600;width:100%}
 
 /* Vocab card */
-.vocab-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:26px 22px;width:100%;margin-bottom:20px;text-align:center}
+.vocab-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:26px 22px;width:100%;margin-bottom:20px;text-align:center;transition:background .3s,border-color .3s}
 .vocab-word{font-size:38px;font-weight:900;margin-bottom:6px;cursor:pointer;transition:color .15s;display:inline-block}
 .vocab-word:hover{color:var(--blue)}
 .vocab-phonetic{font-size:14px;color:var(--blue);font-weight:600;margin-bottom:4px;font-style:italic}
 .vocab-meaning{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:8px}
 .vocab-gender{font-size:12px;color:var(--text2);font-weight:700;margin-bottom:10px;padding:3px 10px;background:var(--bg3);border-radius:99px;display:inline-block}
 .vocab-example-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
-.vocab-sentence{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:14px;display:flex;flex-direction:column;gap:2px}
+.vocab-sentence{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:8px;display:flex;flex-direction:column;gap:2px}
 .vocab-sentence-hr{color:var(--text);font-weight:700}
 .vocab-sentence-en{color:var(--text2);font-size:13px;font-style:italic}
+.vocab-examples-extra{margin-top:8px;border-top:1px solid var(--border);padding-top:8px;text-align:left}
+.vocab-examples-extra-title{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.vocab-extra-row{font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:600}
+.vocab-extra-row .hr{color:var(--text);font-weight:700}
 .vocab-sentence .clickable-word{cursor:pointer;color:var(--text);font-weight:700;border-bottom:1px dashed var(--blue);transition:color .15s;display:inline-block}
 .vocab-sentence .clickable-word:hover{color:var(--blue)}
 .audio-btn{background:var(--blue);border:none;border-radius:99px;padding:9px 18px;cursor:pointer;color:white;display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;margin:0 auto;transition:all .1s;box-shadow:0 3px 0 var(--blue-dark)}
@@ -97,32 +122,35 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .audio-btn:active{transform:translateY(1px);box-shadow:none}
 .audio-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .audio-btn.loading{background:#0a6a90}
+.audio-btn.slow{background:var(--purple);box-shadow:0 3px 0 #9a50cc}
+.audio-btn.slow:hover{background:#da9aff}
+.audio-btns-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:4px}
 
 /* Tip box */
-.tip-box{background:#1a1a3d;border:1px solid #3d3d7a;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#a0a0ff;font-weight:600;line-height:1.6;width:100%;text-align:left}
-.tip-box strong{color:#c0c0ff}
+.tip-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--text2);font-weight:600;line-height:1.6;width:100%;text-align:left;transition:background .3s}
+.tip-box strong{color:var(--text)}
 
 /* MCQ */
 .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-bottom:16px}
 .option-btn{background:var(--card);border:2px solid var(--border);border-radius:13px;padding:15px 10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--text);cursor:pointer;transition:all .12s;text-align:center;line-height:1.3}
 .option-btn:hover:not(:disabled){border-color:var(--blue);background:var(--card2)}
-.option-btn.selected{border-color:var(--blue);background:#1a3d54}
-.option-btn.correct{border-color:var(--green);background:#1a3d1a;color:var(--green)}
-.option-btn.wrong{border-color:var(--red);background:#3d1a1a;color:var(--red)}
+.option-btn.selected{border-color:var(--blue);background:rgba(28,176,246,.12)}
+.option-btn.correct{border-color:var(--green);background:rgba(88,204,2,.12);color:var(--green)}
+.option-btn.wrong{border-color:var(--red);background:rgba(255,75,75,.12);color:var(--red)}
 
 /* Text input */
-.text-input{width:100%;background:var(--card);border:2px solid var(--border);border-radius:13px;padding:14px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:17px;color:var(--text);outline:none;margin-bottom:14px;transition:border-color .15s}
+.text-input{width:100%;background:var(--card);border:2px solid var(--border);border-radius:13px;padding:14px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:17px;color:var(--text);outline:none;margin-bottom:14px;transition:border-color .15s,background .3s}
 .text-input:focus{border-color:var(--blue)}
-.text-input.correct-input{border-color:var(--green);background:#152d15}
-.text-input.wrong-input{border-color:var(--red);background:#2d1515}
+.text-input.correct-input{border-color:var(--green);background:rgba(88,204,2,.08)}
+.text-input.wrong-input{border-color:var(--red);background:rgba(255,75,75,.08)}
 .input-hint{font-size:12px;color:var(--text3);font-weight:600;margin-bottom:16px;width:100%}
 
 /* Fill-in-blank */
 .blank-sentence{font-size:20px;font-weight:800;line-height:1.6;width:100%;margin-bottom:18px;text-align:center}
 .blank-input{background:var(--card2);border:none;border-bottom:3px solid var(--blue);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:20px;min-width:100px;width:auto;padding:4px 8px;text-align:center;outline:none;transition:border-color .2s;display:inline-block}
 .blank-input:focus{border-bottom-color:var(--gold)}
-.blank-input.correct-blank{border-bottom-color:var(--green);background:#152d15;color:var(--green)}
-.blank-input.wrong-blank{border-bottom-color:var(--red);background:#2d1515;color:var(--red)}
+.blank-input.correct-blank{border-bottom-color:var(--green);background:rgba(88,204,2,.08);color:var(--green)}
+.blank-input.wrong-blank{border-bottom-color:var(--red);background:rgba(255,75,75,.08);color:var(--red)}
 
 /* Builder */
 .sentence-display{background:var(--card);border:2px solid var(--border);border-radius:13px;padding:14px;min-height:56px;width:100%;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
@@ -131,14 +159,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .built-word:hover{border-color:var(--red)}
 .word-bank{display:flex;flex-wrap:wrap;gap:7px;width:100%;margin-bottom:16px}
 .bank-word{background:var(--card2);border:2px solid var(--border);border-radius:8px;padding:7px 13px;font-weight:700;font-size:14px;cursor:pointer;transition:all .12s}
-.bank-word:hover{border-color:var(--blue);background:#1a3d54}
+.bank-word:hover{border-color:var(--blue);background:rgba(28,176,246,.1)}
 .bank-word.used{opacity:.2;cursor:default;pointer-events:none}
 
 /* Feedback */
 .feedback-bar{position:fixed;bottom:0;left:0;right:0;padding:18px 20px;display:flex;align-items:center;gap:14px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,2,.6,1);z-index:100}
 .feedback-bar.show{transform:translateY(0)}
-.feedback-bar.correct-bar{background:#152d15;border-top:3px solid var(--green)}
-.feedback-bar.wrong-bar{background:#2d1515;border-top:3px solid var(--red)}
+.feedback-bar.correct-bar{background:rgba(21,45,21,.97);border-top:3px solid var(--green)}
+.feedback-bar.wrong-bar{background:rgba(45,21,21,.97);border-top:3px solid var(--red)}
+body.light-mode .feedback-bar.correct-bar{background:rgba(220,255,200,.97)}
+body.light-mode .feedback-bar.wrong-bar{background:rgba(255,220,220,.97)}
 .feedback-icon{font-size:26px}
 .feedback-text{flex:1}
 .feedback-title{font-size:16px;font-weight:900}
@@ -156,16 +186,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .check-btn:not(:disabled):hover{background:#ff6666;transform:translateY(-1px)}
 .check-btn:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-dark)}
 .tap-hint{font-size:12px;color:var(--text3);margin-top:8px;font-weight:600;text-align:center}
-.repeat-badge{background:#3a1a00;border:1px solid var(--orange);color:var(--orange);font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:10px;letter-spacing:.5px}
+.repeat-badge{background:rgba(58,26,0,.8);border:1px solid var(--orange);color:var(--orange);font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:10px;letter-spacing:.5px}
 
 /* Matching */
 .pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-bottom:16px}
 .pair-btn{background:var(--card);border:2px solid var(--border);border-radius:13px;padding:14px 10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
 .pair-btn:hover:not(:disabled){border-color:var(--purple);background:var(--card2)}
-.pair-btn.selected-a{border-color:var(--blue);background:#1a3d54}
-.pair-btn.selected-b{border-color:var(--purple);background:#2d1a54}
-.pair-btn.matched{border-color:var(--green);background:#1a3d1a;color:var(--green);pointer-events:none}
-.pair-btn.wrong-shake{border-color:var(--red);background:#3d1a1a;animation:shake .3s ease}
+.pair-btn.selected-a{border-color:var(--blue);background:rgba(28,176,246,.12)}
+.pair-btn.selected-b{border-color:var(--purple);background:rgba(206,130,255,.12)}
+.pair-btn.matched{border-color:var(--green);background:rgba(88,204,2,.12);color:var(--green);pointer-events:none}
+.pair-btn.wrong-shake{border-color:var(--red);background:rgba(255,75,75,.12);animation:shake .3s ease}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
 /* Grammar lesson card */
@@ -178,7 +208,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .grammar-table th{background:var(--bg3);color:var(--text2);font-weight:800;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
 .grammar-table td:first-child{color:var(--blue);font-weight:800}
 .grammar-table td:last-child{color:var(--text2);font-weight:600}
-.grammar-note{background:#1a2d38;border-left:3px solid var(--orange);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--text2);font-weight:600;margin-bottom:10px;line-height:1.6}
+.grammar-note{background:rgba(26,45,56,.8);border-left:3px solid var(--orange);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--text2);font-weight:600;margin-bottom:10px;line-height:1.6}
+body.light-mode .grammar-note{background:rgba(255,180,100,.1)}
 .grammar-note strong{color:var(--orange)}
 .grammar-example{background:var(--bg3);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;flex-direction:column;gap:3px}
 .grammar-example .hr{font-size:16px;font-weight:800;color:var(--text)}
@@ -188,7 +219,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Word detail popup */
 .word-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center;padding:0}
 .word-popup-overlay.show{display:flex}
-.word-popup{background:var(--bg2);border:2px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:500px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease}
+.word-popup{background:var(--bg2);border:2px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:500px;max-height:82vh;overflow-y:auto;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .word-popup-handle{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 20px}
 .word-popup-croatian{font-size:32px;font-weight:900;margin-bottom:4px}
@@ -203,6 +234,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .close-popup-btn{background:var(--bg3);border:none;border-radius:99px;padding:10px 24px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--text2);cursor:pointer;width:100%;margin-top:8px;transition:background .15s}
 .close-popup-btn:hover{background:var(--border)}
 
+/* Word examples extra in popup */
+.popup-examples{display:flex;flex-direction:column;gap:6px}
+.popup-example-item{background:var(--bg3);border-radius:8px;padding:8px 12px;cursor:pointer;transition:background .15s}
+.popup-example-item:hover{background:var(--border)}
+.popup-ex-hr{font-size:14px;font-weight:800;color:var(--text)}
+.popup-ex-en{font-size:12px;font-weight:600;color:var(--text2);margin-top:2px}
+
 /* Pause modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.show{display:flex}
@@ -213,9 +251,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .modal-btn.green{background:var(--green);color:#000;box-shadow:0 3px 0 var(--green-dark)}
 .modal-btn.red{background:var(--red);color:#fff;box-shadow:0 3px 0 var(--red-dark)}
 .modal-btn.grey{background:var(--bg3);color:var(--text2)}
+.modal-btn.blue{background:var(--blue);color:#fff;box-shadow:0 3px 0 var(--blue-dark)}
 
 /* Complete screen */
-#complete{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%,#2d1515,var(--bg) 60%);padding:40px 20px;text-align:center}
+#complete{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%,rgba(45,21,21,.8),var(--bg) 60%);padding:40px 20px;text-align:center}
 .complete-emoji{font-size:68px;margin-bottom:14px;animation:pop .5s cubic-bezier(.4,2,.6,1)}
 @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
 .complete-title{font-size:32px;font-weight:900;color:var(--gold);margin-bottom:8px}
@@ -227,26 +266,108 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .mastered-row{width:100%;max-width:420px;background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:20px;text-align:left}
 .mastered-title{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:8px}
 .mastered-words{display:flex;flex-wrap:wrap;gap:6px}
-.mastered-chip{background:#3d1a1a;border:1px solid #7a2a2a;color:var(--red);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;cursor:pointer}
-.mastered-chip:hover{background:#5a2a2a}
+.mastered-chip{background:rgba(61,26,26,.8);border:1px solid #7a2a2a;color:var(--red);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;cursor:pointer}
+.mastered-chip:hover{background:rgba(90,42,42,.8)}
+
+/* Milestone popup */
+.milestone-popup{background:var(--bg2);border:2px solid var(--gold);border-radius:20px;padding:30px 24px;width:100%;max-width:360px;text-align:center}
+.milestone-popup-icon{font-size:60px;margin-bottom:12px;animation:pop .5s cubic-bezier(.4,2,.6,1)}
+.milestone-popup-title{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:6px}
+.milestone-popup-sub{font-size:14px;color:var(--text2);font-weight:600;margin-bottom:20px}
+.milestone-progress-bar{background:var(--bg3);border-radius:99px;height:10px;width:100%;overflow:hidden;margin-bottom:20px}
+.milestone-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:99px}
 
 /* Settings screen */
 #settings{background:var(--bg);overflow-y:auto}
 .settings-body{padding:0 0 40px;max-width:480px;margin:0 auto;width:100%}
-.settings-section{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;margin:16px 20px 0}
+.settings-section{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;margin:16px 20px 0;transition:background .3s}
 .settings-section-title{font-size:16px;font-weight:900;margin-bottom:8px}
 .settings-label{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6}
-.settings-input{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:12px 14px;color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;transition:border-color .15s}
+.settings-input{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;transition:border-color .15s,background .3s}
 .settings-input:focus{border-color:var(--blue)}
-.settings-select{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;cursor:pointer}
+.settings-select{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;margin-bottom:10px;cursor:pointer}
 .settings-status{font-size:13px;font-weight:700;margin-bottom:12px;min-height:18px;padding:0 2px}
 .voice-indicator{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text2);margin-bottom:0;padding:8px 12px;background:var(--bg3);border-radius:8px}
 .voice-dot{width:8px;height:8px;border-radius:50%;background:var(--text3)}
 .voice-dot.active{background:var(--green);box-shadow:0 0 6px var(--green)}
 
-/* Confetti */
+/* Speed control */
+.speed-controls{display:flex;gap:8px;margin-bottom:12px}
+.speed-btn{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:var(--bg3);color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;text-align:center}
+.speed-btn.active{border-color:var(--blue);background:rgba(28,176,246,.15);color:var(--blue)}
+.speed-btn:hover:not(.active){border-color:var(--text3)}
+
+/* Theme toggle */
+.theme-toggle-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.theme-toggle-label{font-size:14px;font-weight:700;color:var(--text2)}
+.toggle-switch{position:relative;width:50px;height:26px;cursor:pointer}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--bg3);border-radius:99px;border:2px solid var(--border);transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.3s}
+input:checked + .toggle-slider{background:var(--gold);border-color:var(--gold-dark)}
+input:checked + .toggle-slider:before{transform:translateX(24px);background:#fff}
+
+/* ── DICTIONARY SCREEN ── */
+#dictionary{background:var(--bg);overflow-y:auto}
+.dict-body{padding:0 0 40px;max-width:560px;margin:0 auto;width:100%}
+.dict-search-wrap{padding:16px 20px 0}
+.dict-search-input{width:100%;background:var(--card);border:2px solid var(--border);border-radius:13px;padding:13px 16px;color:var(--text);font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;outline:none;transition:border-color .15s,background .3s}
+.dict-search-input:focus{border-color:var(--blue)}
+.dict-filter-row{display:flex;gap:7px;padding:10px 20px;flex-wrap:wrap}
+.dict-filter-btn{padding:6px 14px;border-radius:99px;border:2px solid var(--border);background:var(--card);color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .15s}
+.dict-filter-btn.active{border-color:var(--red);background:rgba(255,75,75,.15);color:var(--red)}
+.dict-results{padding:0 20px}
+.dict-entry{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px}
+.dict-entry:hover{border-color:var(--blue);transform:translateY(-1px)}
+.dict-entry.not-learned{opacity:.55}
+.dict-entry-word{font-size:18px;font-weight:900;flex:1}
+.dict-entry-meaning{font-size:13px;color:var(--text2);font-weight:700}
+.dict-entry-phonetic{font-size:11px;color:var(--blue);font-style:italic;font-weight:600}
+.dict-entry-badge{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:800;flex-shrink:0}
+.dict-badge-learned{background:rgba(88,204,2,.2);color:var(--green);border:1px solid var(--green)}
+.dict-badge-locked{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+.dict-empty{text-align:center;padding:40px 20px;color:var(--text3);font-weight:700;font-size:15px}
+.dict-section-header{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:14px 0 6px}
+
+/* ── CONFETTI ── */
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 .confetti-piece{position:fixed;pointer-events:none;animation:confettiFall 2.5s ease-in forwards;z-index:999}
+
+/* ── ANSWER STREAK ── */
+.streak-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:150;pointer-events:none;text-align:center}
+.streak-popup.show{animation:streakPop 1.8s cubic-bezier(.4,2,.5,1) forwards}
+@keyframes streakPop{
+  0%  {transform:translate(-50%,-50%) scale(0) rotate(-8deg);opacity:0}
+  12% {transform:translate(-50%,-54%) scale(1.25) rotate(3deg);opacity:1}
+  22% {transform:translate(-50%,-52%) scale(0.92) rotate(-1deg);opacity:1}
+  32% {transform:translate(-50%,-54%) scale(1.06) rotate(1deg);opacity:1}
+  45% {transform:translate(-50%,-54%) scale(1) rotate(0deg);opacity:1}
+  75% {transform:translate(-50%,-54%) scale(1) rotate(0deg);opacity:1}
+  100%{transform:translate(-50%,-70%) scale(0.85) rotate(0deg);opacity:0}
+}
+.streak-popup-inner{
+  background:linear-gradient(135deg,#c47800,var(--gold),#ffd84d);
+  border-radius:24px;padding:18px 36px 14px;
+  box-shadow:0 0 0 3px rgba(255,200,0,.3),0 0 40px rgba(255,180,0,.5),0 12px 40px rgba(0,0,0,.5);
+  position:relative;overflow:visible;
+}
+.streak-popup-inner::before{
+  content:'';position:absolute;inset:-2px;border-radius:26px;
+  background:linear-gradient(135deg,#ffd84d,#ff9600,#ffd84d);
+  z-index:-1;animation:streakGlow 0.4s ease-in-out infinite alternate;
+}
+@keyframes streakGlow{from{opacity:.5;box-shadow:0 0 12px #ffc800}to{opacity:1;box-shadow:0 0 28px #ffc800,0 0 50px rgba(255,180,0,.4)}}
+.streak-popup-count{font-size:48px;font-weight:900;color:#1a0a00;line-height:1;letter-spacing:-1px;text-shadow:0 2px 0 rgba(0,0,0,.15)}
+.streak-popup-label{font-size:13px;font-weight:900;color:#3a1400;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.streak-popup-flames{font-size:22px;letter-spacing:2px;margin-top:2px;animation:flameWiggle .3s ease-in-out infinite alternate}
+@keyframes flameWiggle{from{transform:scaleY(1)}to{transform:scaleY(1.15)}}
+
+/* Streak particle */
+.streak-particle{position:fixed;pointer-events:none;z-index:149;font-size:20px;animation:particleFly 1s ease-out forwards}
+@keyframes particleFly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--px),var(--py)) scale(0.3)}}
+
+/* continue btn locked state */
+.continue-btn.locked{opacity:.45;cursor:not-allowed}
 
 /* Responsive */
 @media(max-width:400px){
@@ -254,7 +375,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   .pair-grid{grid-template-columns:1fr}
   .lesson-question{font-size:18px}
   .grammar-examples-grid{grid-template-columns:1fr}
+  .home-btns{grid-template-columns:1fr}
 }
+
+/* Light mode overrides */
+body.light-mode .unit-btn.done{border-color:#ffb0b0}
+body.light-mode .badge-done{background:#ffe0e0;color:#cc3333}
+body.light-mode .mastered-chip{background:#ffe0e0;border-color:#ffb0b0;color:var(--red-dark)}
+body.light-mode .grammar-card{border-color:#d0a0ff}
+body.light-mode #complete{background:radial-gradient(ellipse at 50% 0%,rgba(255,200,200,.4),var(--bg) 60%)}
 </style>
 </head>
 <body>
@@ -273,31 +402,62 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="xp-label"><span id="levelLabel">Level 1</span><span id="xpLabel">0 / 200 XP</span></div>
     <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
   </div>
+  <!-- Milestone banner -->
+  <button class="milestone-banner hidden" id="milestoneBanner" onclick="showMilestonePopup()">
+    <div class="milestone-icon" id="milestoneBannerIcon">🏅</div>
+    <div class="milestone-text">
+      <div class="milestone-title" id="milestoneBannerTitle">Milestone reached!</div>
+      <div class="milestone-sub" id="milestoneBannerSub">Tap to celebrate</div>
+    </div>
+    <span style="font-size:18px">→</span>
+  </button>
   <div class="section-label">📚 Your Units</div>
   <div class="unit-grid" id="unitGrid"></div>
   <button class="start-btn" id="startBtn" onclick="startNextLesson()">▶ Continue Learning</button>
-  <button class="start-btn grey" style="margin-top:10px" onclick="showSettings()">⚙️ Voice Settings <span id="voiceStatusBadge" style="font-size:11px;margin-left:4px"></span></button>
+  <div class="home-btns">
+    <button class="start-btn grey" onclick="showDictionary()">📖 Dictionary</button>
+    <button class="start-btn grey" onclick="showSettings()">⚙️ Settings <span id="voiceStatusBadge" style="font-size:11px;margin-left:4px"></span></button>
+  </div>
 </div>
 
 <!-- SETTINGS -->
 <div id="settings" class="screen">
   <div class="lesson-header">
     <button class="close-btn" onclick="showScreen('home');renderHome()">✕</button>
-    <span style="font-weight:800;font-size:16px;flex:1;text-align:center">🔊 Voice Settings</span>
+    <span style="font-weight:800;font-size:16px;flex:1;text-align:center">⚙️ Settings</span>
   </div>
   <div class="settings-body">
 
     <div class="settings-section">
-      <div class="settings-section-title">Voice</div>
+      <div class="settings-section-title">🎨 Appearance</div>
+      <div class="theme-toggle-wrap">
+        <span class="theme-toggle-label">☀️ Light Mode</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="themeToggle" onchange="toggleTheme(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">🔊 Voice</div>
       <div class="settings-label">All voices speak Croatian naturally using the multilingual v2 model.</div>
       <select id="voiceSelect" class="settings-select" onchange="onVoiceChange(this.value)">
-        <option value="cgSgspJ2msm6clMCkdW9">Jessica — warm female</option>
-        <option value="JBFqnCBsd6RMkjVDRZzb">George — deep male</option>
-        <option value="N2lVS1w4EtoT3dr4eOWO">Callum — authoritative male</option>
-        <option value="XB0fDUnXU5powFXDhCwa">Charlotte — expressive female</option>
-        <option value="pFZP5JQG7iQjIQuC4Bku">Lily — natural female</option>
-        <option value="onwK4e9ZLuTAKqWW03F9">Daniel — British male</option>
+        <option value="cgSgspJ2msm6clMCkdW9">Jessica</option>
+        <option value="JBFqnCBsd6RMkjVDRZzb">George</option>
+        <option value="N2lVS1w4EtoT3dr4eOWO">Callum</option>
+        <option value="pFZP5JQG7iQjIQuC4Bku">Lily</option>
+        <option value="onwK4e9ZLuTAKqWW03F9">Daniel</option>
       </select>
+
+      <div class="settings-label" style="margin-top:10px;margin-bottom:8px">Default pronunciation speed — also used by the 🔊 Hear it button:</div>
+      <div class="speed-controls">
+        <button class="speed-btn" id="speedBtnSlow" onclick="setSpeed('slow')">🐢 Slow (0.7×)</button>
+        <button class="speed-btn active" id="speedBtnNormal" onclick="setSpeed('normal')">🐇 Normal (1×)</button>
+        <button class="speed-btn" id="speedBtnFast" onclick="setSpeed('fast')">⚡ Fast (1.2×)</button>
+      </div>
+      <div class="settings-label" style="margin-bottom:8px">The 🐢 Slow button in lessons plays at 0.75× of your chosen speed.</div>
+
       <div class="voice-indicator">
         <div class="voice-dot" id="voiceDot"></div>
         <span id="voiceStatusText">Loading…</span>
@@ -310,8 +470,32 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
     <div style="padding:0 20px">
       <button class="start-btn" style="margin-top:20px" onclick="saveSettings()">💾 Save &amp; Return</button>
+      <button class="start-btn grey" style="margin-top:10px" onclick="confirmReset()">🗑️ Reset All Progress</button>
     </div>
 
+  </div>
+</div>
+
+<!-- DICTIONARY SCREEN -->
+<div id="dictionary" class="screen">
+  <div class="lesson-header">
+    <button class="close-btn" onclick="showScreen('home');renderHome()">✕</button>
+    <span style="font-weight:800;font-size:16px;flex:1;text-align:center">📖 Dictionary</span>
+  </div>
+  <div class="dict-body">
+    <div class="dict-search-wrap">
+      <input type="text" class="dict-search-input" id="dictSearch" placeholder="Search Croatian or English…" oninput="renderDictionary()" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div class="dict-filter-row" id="dictFilterRow">
+      <button class="dict-filter-btn active" onclick="setDictFilter('all',this)">All</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('learned',this)">✅ Learned</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('noun',this)">Nouns</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('verb',this)">Verbs</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('adj',this)">Adj</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('num',this)">Numbers</button>
+      <button class="dict-filter-btn" onclick="setDictFilter('phrase',this)">Phrases</button>
+    </div>
+    <div class="dict-results" id="dictResults"></div>
   </div>
 </div>
 
@@ -353,13 +537,34 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <button class="start-btn blue" onclick="startNextLesson()">▶ Next Lesson</button>
 </div>
 
+<!-- STREAK POPUP -->
+<div class="streak-popup" id="streakPopup">
+  <div class="streak-popup-inner">
+    <div class="streak-popup-flames" id="streakPopupFlames">🔥🔥🔥</div>
+    <div class="streak-popup-count" id="streakPopupCount">3</div>
+    <div class="streak-popup-label" id="streakPopupLabel">ANSWER STREAK!</div>
+  </div>
+</div>
+
 <!-- PAUSE MODAL -->
 <div class="modal-overlay" id="pauseModal">
   <div class="modal-box">
     <div class="modal-title">⏸ Paused</div>
     <div class="modal-sub">Your progress is saved.<br>You can continue any time.</div>
     <button class="modal-btn green" onclick="resumeLesson()">▶ Continue</button>
+    <button class="modal-btn blue" onclick="openDictFromLesson()">📖 Dictionary</button>
     <button class="modal-btn red" onclick="quitLesson()">✕ Quit Lesson</button>
+  </div>
+</div>
+
+<!-- MILESTONE MODAL -->
+<div class="modal-overlay" id="milestoneModal">
+  <div class="milestone-popup">
+    <div class="milestone-popup-icon" id="milestonePopupIcon">🏅</div>
+    <div class="milestone-popup-title" id="milestonePopupTitle">Milestone!</div>
+    <div class="milestone-popup-sub" id="milestonePopupSub">You're making great progress!</div>
+    <div class="milestone-progress-bar"><div class="milestone-progress-fill" id="milestoneProgressFill" style="width:0%"></div></div>
+    <button class="modal-btn green" onclick="closeMilestonePopup()">🎉 Keep Going!</button>
   </div>
 </div>
 
@@ -377,7 +582,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 // VOCABULARY DATABASE
 // ═══════════════════════════════════════════════════════
 const VOCAB = {
-  // Unit 0 — People & Things (čovjek, žena, dječak, djevojčica, dijete + je, i, ili)
   0: [
     ['čovjek','man','CHOH-vyehk','noun','m'],
     ['žena','woman','ZHEH-nah','noun','f'],
@@ -390,7 +594,6 @@ const VOCAB = {
     ['ili','or','EE-lee','conj'],
     ['to','it / that','toh','pronoun'],
   ],
-  // Unit 1 — Eat & Drink (jede, pije + basic foods)
   1: [
     ['jede','eats','YEH-deh','verb'],
     ['pije','drinks','PEE-yeh','verb'],
@@ -403,7 +606,6 @@ const VOCAB = {
     ['meso','meat','MEH-soh','noun','n'],
     ['sir','cheese','seer','noun','m'],
   ],
-  // Unit 2 — I / He / She (ja, on, ona, oni, mi + sam, je, smo)
   2: [
     ['ja','I','yah','pronoun'],
     ['on','he','on','pronoun'],
@@ -416,7 +618,6 @@ const VOCAB = {
     ['ne','no / not','neh','adv'],
     ['da','yes','dah','adv'],
   ],
-  // Unit 3 — Pronouns & Have (ti, vi + imam/ima + pets)
   3: [
     ['ti','you','tee','pronoun'],
     ['vi','you (plural)','vee','pronoun'],
@@ -429,11 +630,9 @@ const VOCAB = {
     ['ptica','bird','PTEE-tsah','noun','f'],
     ['riba','fish','REE-bah','noun','f'],
   ],
-  // Unit 4 — More Food & Drink
   4: [
     ['kava','coffee','KAH-vah','noun','f'],
     ['čaj','tea','chay','noun','m'],
-    ['sir','cheese','seer','noun','m'],
     ['naranča','orange','nah-RAN-chah','noun','f'],
     ['banana','banana','bah-NAH-nah','noun','f'],
     ['pizza','pizza','PEET-zah','noun','f'],
@@ -441,8 +640,8 @@ const VOCAB = {
     ['jaje','egg','YAH-yeh','noun','n'],
     ['maslac','butter','MAS-lats','noun','m'],
     ['šećer','sugar','SHEH-chehr','noun','m'],
+    ['vino','wine','VEE-noh','noun','n'],
   ],
-  // Unit 5 — Family
   5: [
     ['majka','mother','MY-kah','noun','f'],
     ['otac','father','OH-ats','noun','m'],
@@ -455,7 +654,6 @@ const VOCAB = {
     ['muž','husband','moozh','noun','m'],
     ['supruga','wife','soo-PROO-gah','noun','f'],
   ],
-  // Unit 6 — Colours
   6: [
     ['crvena','red','tsr-VEH-nah','adj'],
     ['plava','blue','PLAH-vah','adj'],
@@ -464,11 +662,10 @@ const VOCAB = {
     ['bijela','white','bee-YEH-lah','adj'],
     ['crna','black','TSRR-nah','adj'],
     ['smeđa','brown','SMEH-jah','adj'],
-    ['narančasta','orange','nah-ran-CHA-stah','adj'],
+    ['narančasta','orange (color)','nah-ran-CHA-stah','adj'],
     ['ružičasta','pink','roo-zhee-CHA-stah','adj'],
     ['siva','grey','SEE-vah','adj'],
   ],
-  // Unit 7 — Numbers 1–10
   7: [
     ['jedan','one','YEH-dan','num'],
     ['dva','two','dvah','num'],
@@ -481,7 +678,6 @@ const VOCAB = {
     ['devet','nine','DEH-vet','num'],
     ['deset','ten','DEH-set','num'],
   ],
-  // Unit 8 — Core Verbs
   8: [
     ['ići','to go','EE-chee','verb'],
     ['doći','to come','DOH-chee','verb'],
@@ -494,7 +690,6 @@ const VOCAB = {
     ['voljeti','to love','VOH-lyeh-tee','verb'],
     ['razumjeti','to understand','rah-ZOOM-yeh-tee','verb'],
   ],
-  // Unit 9 — Adjectives
   9: [
     ['velik','big','VEH-leek','adj'],
     ['mali','small','MAH-lee','adj'],
@@ -507,7 +702,6 @@ const VOCAB = {
     ['dobar','good','DOH-bar','adj'],
     ['loš','bad','losh','adj'],
   ],
-  // Unit 10 — Greetings (moved later, learner has context now!)
   10: [
     ['zdravo','hello','ZDRA-voh','phrase'],
     ['bok','hi / bye','bok','phrase'],
@@ -520,7 +714,6 @@ const VOCAB = {
     ['oprosti','sorry','oh-PROH-stee','phrase'],
     ['do viđenja','goodbye','doh vee-JEH-nyah','phrase'],
   ],
-  // Unit 11 — Getting Around
   11: [
     ['gdje','where','gyeh','adv'],
     ['grad','city','grad','noun','m'],
@@ -533,7 +726,6 @@ const VOCAB = {
     ['daleko','far','DAH-leh-koh','adv'],
     ['lijevo','left','LEE-yeh-voh','adv'],
   ],
-  // Unit 12 — Days & Time
   12: [
     ['danas','today','DAH-nas','adv'],
     ['sutra','tomorrow','SOO-trah','adv'],
@@ -546,7 +738,6 @@ const VOCAB = {
     ['subota','Saturday','SOO-boh-tah','noun','f'],
     ['nedjelja','Sunday','ned-YELL-yah','noun','f'],
   ],
-  // Unit 13 — Home
   13: [
     ['kuća','house','KOO-chah','noun','f'],
     ['soba','room','SOH-bah','noun','f'],
@@ -561,21 +752,86 @@ const VOCAB = {
   ],
 };
 
+// Extra grammar examples per word (shown in vocab card and popup)
+const EXTRA_EXAMPLES = {
+  'čovjek': [
+    {hr:'Čovjek je visok.', en:'The man is tall.'},
+    {hr:'Vidim čovjeka.', en:'I see the man.'},
+  ],
+  'žena': [
+    {hr:'Žena je lijepa.', en:'The woman is beautiful.'},
+    {hr:'Žena spava.', en:'The woman sleeps.'},
+  ],
+  'dječak': [
+    {hr:'Dječak je mali.', en:'The boy is small.'},
+    {hr:'Dječak ima psa.', en:'The boy has a dog.'},
+  ],
+  'dijete': [
+    {hr:'Dijete je sretno.', en:'The child is happy.'},
+    {hr:'Dijete pije mlijeko.', en:'The child drinks milk.'},
+  ],
+  'pas': [
+    {hr:'Pas je velik.', en:'The dog is big.'},
+    {hr:'Pas jede meso.', en:'The dog eats meat.'},
+  ],
+  'mačka': [
+    {hr:'Mačka pije mlijeko.', en:'The cat drinks milk.'},
+    {hr:'Imam crnu mačku.', en:'I have a black cat.'},
+  ],
+  'voda': [
+    {hr:'Voda je hladna.', en:'The water is cold.'},
+    {hr:'Pijem vodu.', en:'I drink water.'},
+  ],
+  'kava': [
+    {hr:'Kava je vruća.', en:'The coffee is hot.'},
+    {hr:'Pijem kavu ujutro.', en:'I drink coffee in the morning.'},
+  ],
+  'biti': [
+    {hr:'Ja sam sretan.', en:'I am happy.'},
+    {hr:'Ona je lijepa.', en:'She is beautiful.'},
+    {hr:'Mi smo ovdje.', en:'We are here.'},
+  ],
+  'imati': [
+    {hr:'Imam psa.', en:'I have a dog.'},
+    {hr:'Ima li kruha?', en:'Is there bread?'},
+  ],
+  'ići': [
+    {hr:'Idem u grad.', en:'I am going to the city.'},
+    {hr:'Idemo zajedno.', en:'We go together.'},
+  ],
+  'govoriti': [
+    {hr:'Govorim hrvatski.', en:'I speak Croatian.'},
+    {hr:'Govoriš li engleski?', en:'Do you speak English?'},
+  ],
+  'jesti': [
+    {hr:'Jedem jabuku.', en:'I eat an apple.'},
+    {hr:'Što jedete?', en:'What are you eating?'},
+  ],
+  'piti': [
+    {hr:'Pijem sok.', en:'I drink juice.'},
+    {hr:'Pijemo kavu.', en:'We drink coffee.'},
+  ],
+  'voljeti': [
+    {hr:'Volim kavu.', en:'I love coffee.'},
+    {hr:'Volim te.', en:'I love you.'},
+  ],
+};
+
 const CONJUGATIONS = {
-  'biti':    { ja:'sam', ti:'si', on:'je', mi:'smo', vi:'ste', oni:'su', note:'The verb "biti" (to be) is very irregular — memorize these!' },
-  'imati':   { ja:'imam', ti:'imaš', on:'ima', mi:'imamo', vi:'imate', oni:'imaju', note:'Regular -ati verb: stem ima- + endings' },
-  'ići':     { ja:'idem', ti:'ideš', on:'ide', mi:'idemo', vi:'idete', oni:'idu', note:'"ići" (to go) is irregular' },
-  'jesti':   { ja:'jedem', ti:'jedeš', on:'jede', mi:'jedemo', vi:'jedete', oni:'jedu', note:'"jesti" (to eat) — stem jed-' },
-  'piti':    { ja:'pijem', ti:'piješ', on:'pije', mi:'pijemo', vi:'pijete', oni:'piju', note:'"piti" (to drink) — stem pij-' },
-  'raditi':  { ja:'radim', ti:'radiš', on:'radi', mi:'radimo', vi:'radite', oni:'rade', note:'Regular -iti verb: stem radi-' },
-  'govoriti':{ ja:'govorim', ti:'govoriš', on:'govori', mi:'govorimo', vi:'govorite', oni:'govore', note:'Regular -iti verb' },
-  'spavati': { ja:'spavam', ti:'spavaš', on:'spava', mi:'spavamo', vi:'spavate', oni:'spavaju', note:'Regular -ati verb' },
-  'čitati':  { ja:'čitam', ti:'čitaš', on:'čita', mi:'čitamo', vi:'čitate', oni:'čitaju', note:'Regular -ati verb' },
-  'vidjeti': { ja:'vidim', ti:'vidiš', on:'vidi', mi:'vidimo', vi:'vidite', oni:'vide', note:'Regular -jeti/-iti verb' },
-  'voljeti': { ja:'volim', ti:'voliš', on:'voli', mi:'volimo', vi:'volite', oni:'vole', note:'"voljeti" — stem vol-' },
-  'živjeti': { ja:'živim', ti:'živiš', on:'živi', mi:'živimo', vi:'živite', oni:'žive', note:'Regular -jeti/-iti verb' },
+  'biti':     { ja:'sam', ti:'si', on:'je', mi:'smo', vi:'ste', oni:'su', note:'The verb "biti" (to be) is very irregular — memorize these!' },
+  'imati':    { ja:'imam', ti:'imaš', on:'ima', mi:'imamo', vi:'imate', oni:'imaju', note:'Regular -ati verb: stem ima- + endings' },
+  'ići':      { ja:'idem', ti:'ideš', on:'ide', mi:'idemo', vi:'idete', oni:'idu', note:'"ići" (to go) is irregular' },
+  'jesti':    { ja:'jedem', ti:'jedeš', on:'jede', mi:'jedemo', vi:'jedete', oni:'jedu', note:'"jesti" (to eat) — stem jed-' },
+  'piti':     { ja:'pijem', ti:'piješ', on:'pije', mi:'pijemo', vi:'pijete', oni:'piju', note:'"piti" (to drink) — stem pij-' },
+  'raditi':   { ja:'radim', ti:'radiš', on:'radi', mi:'radimo', vi:'radite', oni:'rade', note:'Regular -iti verb: stem radi-' },
+  'govoriti': { ja:'govorim', ti:'govoriš', on:'govori', mi:'govorimo', vi:'govorite', oni:'govore', note:'Regular -iti verb' },
+  'spavati':  { ja:'spavam', ti:'spavaš', on:'spava', mi:'spavamo', vi:'spavate', oni:'spavaju', note:'Regular -ati verb' },
+  'čitati':   { ja:'čitam', ti:'čitaš', on:'čita', mi:'čitamo', vi:'čitate', oni:'čitaju', note:'Regular -ati verb' },
+  'vidjeti':  { ja:'vidim', ti:'vidiš', on:'vidi', mi:'vidimo', vi:'vidite', oni:'vide', note:'Regular -jeti/-iti verb' },
+  'voljeti':  { ja:'volim', ti:'voliš', on:'voli', mi:'volimo', vi:'volite', oni:'vole', note:'"voljeti" — stem vol-' },
+  'živjeti':  { ja:'živim', ti:'živiš', on:'živi', mi:'živimo', vi:'živite', oni:'žive', note:'Regular -jeti/-iti verb' },
   'razumjeti':{ ja:'razumijem', ti:'razumiješ', on:'razumije', mi:'razumijemo', vi:'razumijete', oni:'razumiju', note:'Irregular -jeti verb' },
-  'doći':    { ja:'dođem', ti:'dođeš', on:'dođe', mi:'dođemo', vi:'dođete', oni:'dođu', note:'"doći" (to come) is irregular' },
+  'doći':     { ja:'dođem', ti:'dođeš', on:'dođe', mi:'dođemo', vi:'dođete', oni:'dođu', note:'"doći" (to come) is irregular' },
 };
 
 const GRAMMAR_LESSONS = {
@@ -737,8 +993,6 @@ const GRAMMAR_LESSONS = {
         <div class="grammar-examples-grid">
           <div class="grammar-example"><span class="hr">On jede kruh.</span><span class="en">He eats bread.</span></div>
           <div class="grammar-example"><span class="hr">On ne jede kruh.</span><span class="en">He does not eat bread.</span></div>
-          <div class="grammar-example"><span class="hr">Žena pije vodu.</span><span class="en">The woman drinks water.</span></div>
-          <div class="grammar-example"><span class="hr">Žena ne pije vodu.</span><span class="en">The woman does not drink water.</span></div>
         </div>
       </div>
     `,
@@ -762,378 +1016,240 @@ const SENTENCE_TEMPLATES = [
   { en:'We drink {N}.', hr:['Mi','pijemo','{N}.'], words:['vodu','mlijeko','sok','čaj'], en_words:['water','milk','juice','tea'] },
   { en:'The child is {A}.', hr:['Dijete','je','{A}.'], words:['sretno','umorno','mlado','dobro'], en_words:['happy','tired','young','good'] },
   { en:'They are children.', hr:['Oni','su','djeca.'], words:[], en_words:[] },
-  { en:'The woman and the man.', hr:['Žena','i','čovjek.'], words:[], en_words:[] },
   { en:'Where is the {N}?', hr:['Gdje','je','{N}?'], words:['auto','vlak','autobus','kolodvor'], en_words:['car','train','bus','train station'] },
 ];
 
-const FILL_TEMPLATES = [
-  { sentence_hr:'Žena ___ vodu. (drinks)', answer:'pije', hint:'piti — ona/žena form', category:'verb' },
-  { sentence_hr:'Dječak ___ kruh. (eats)', answer:'jede', hint:'jesti — on/dječak form', category:'verb' },
-  { sentence_hr:'Ja ___ student. (am)', answer:'sam', hint:'biti — ja form', category:'verb' },
-  { sentence_hr:'Ona ___ sretna. (is)', answer:'je', hint:'biti — ona form', category:'verb' },
-  { sentence_hr:'Mi ___ vodu. (drink)', answer:'pijemo', hint:'piti — mi form', category:'verb' },
-  { sentence_hr:'Oni ___ djeca. (are)', answer:'su', hint:'biti — oni form', category:'verb' },
-  { sentence_hr:'___ jede jabuku? (Who)', answer:'Tko', hint:'Who eats the apple?', category:'question' },
-  { sentence_hr:'Dječak ___ gladan. (is NOT)', answer:'nije', hint:'biti negative — on form', category:'negation' },
-  { sentence_hr:'Ja ___ psa. (have)', answer:'imam', hint:'imati — ja form', category:'verb' },
-  { sentence_hr:'Ti ___ dobar. (are)', answer:'si', hint:'biti — ti form', category:'verb' },
-  { sentence_hr:'Dijete ___ mlijeko. (drinks)', answer:'pije', hint:'piti — ono/dijete form', category:'verb' },
-  { sentence_hr:'Žena ___ kruh. (eats)', answer:'jede', hint:'jesti — ona/žena form', category:'verb' },
-];
-
 const UNIT_META = [
-  { name:'People & Things', icon:'👥', color:'#ff4b4b', type:'vocab', vocabKey:0, tip:'Start here! Man, woman, boy, girl, child — the very first building blocks.' },
-  { name:'Eat & Drink', icon:'🍽️', color:'#ff9600', type:'vocab', vocabKey:1, tip:'Learn the two most useful verbs: jede (eats) and pije (drinks).' },
-  { name:'I / He / She', icon:'👤', color:'#ce82ff', type:'vocab', vocabKey:2, tip:'Learn "I, he, she, they, we" and the forms of "to be".' },
-  { name:'Pronouns & Have', icon:'🤝', color:'#1cb0f6', type:'vocab', vocabKey:3, tip:'"You" + "have" — now you can make real sentences!' },
-  { name:'Pronunciation', icon:'🗣️', color:'#ce82ff', type:'grammar', grammarId:'g_pronunciation', tip:'Learn to read Croatian — it\'s easier than you think!' },
-  { name:'More Food & Drink', icon:'☕', color:'#ff9600', type:'vocab', vocabKey:4, tip:'Expand your food vocabulary with coffee, tea, and more.' },
-  { name:'Family', icon:'👨‍👩‍👧', color:'#58cc02', type:'vocab', vocabKey:5, tip:'Mother, father, brother, sister and the rest of the family.' },
-  { name:'"Is / Am / Are"', icon:'⚡', color:'#ff4b4b', type:'grammar', grammarId:'g_to_be', tip:'The full "biti" table — built on words you already know.' },
-  { name:'Colours', icon:'🎨', color:'#ffc800', type:'vocab', vocabKey:6, tip:'Red, blue, green — describe the world around you.' },
-  { name:'Numbers 1–10', icon:'🔢', color:'#ffc800', type:'vocab', vocabKey:7, tip:'Count from one to ten in Croatian.' },
-  { name:'Core Verbs', icon:'🔄', color:'#58cc02', type:'vocab', vocabKey:8, tip:'Go, come, speak, read — essential action words.' },
-  { name:'Present Tense', icon:'✏️', color:'#58cc02', type:'grammar', grammarId:'g_present_tense', tip:'Learn the pattern for conjugating verbs in the present.' },
-  { name:'Adjectives', icon:'✨', color:'#ce82ff', type:'vocab', vocabKey:9, tip:'Big, small, happy, tired — describe people and things.' },
-  { name:'Greetings', icon:'👋', color:'#ff4b4b', type:'vocab', vocabKey:10, tip:'Hello, goodbye, thank you — greetings with real context now.' },
-  { name:'Getting Around', icon:'🚌', color:'#1cb0f6', type:'vocab', vocabKey:11, tip:'Navigate cities and use transport.' },
-  { name:'Days & Time', icon:'📅', color:'#ffc800', type:'vocab', vocabKey:12, tip:'Today, tomorrow, morning — talk about when things happen.' },
-  { name:'Home', icon:'🏠', color:'#ff9600', type:'vocab', vocabKey:13, tip:'House, room, kitchen, bed — describe your home.' },
-  { name:'Noun Genders', icon:'📖', color:'#ffc800', type:'grammar', grammarId:'g_gender', tip:'Learn why words change endings — masculine, feminine, neuter.' },
+  { name:'People & Things', icon:'👥', color:'#ff4b4b', type:'vocab', vocabKey:0 },
+  { name:'Eat & Drink', icon:'🍽️', color:'#ff9600', type:'vocab', vocabKey:1 },
+  { name:'I / He / She', icon:'👤', color:'#ce82ff', type:'vocab', vocabKey:2 },
+  { name:'Pronouns & Have', icon:'🤝', color:'#1cb0f6', type:'vocab', vocabKey:3 },
+  { name:'Pronunciation', icon:'🗣️', color:'#ce82ff', type:'grammar', grammarId:'g_pronunciation' },
+  { name:'More Food & Drink', icon:'☕', color:'#ff9600', type:'vocab', vocabKey:4 },
+  { name:'Family', icon:'👨‍👩‍👧', color:'#58cc02', type:'vocab', vocabKey:5 },
+  { name:'"Is / Am / Are"', icon:'⚡', color:'#ff4b4b', type:'grammar', grammarId:'g_to_be' },
+  { name:'Colours', icon:'🎨', color:'#ffc800', type:'vocab', vocabKey:6 },
+  { name:'Numbers 1–10', icon:'🔢', color:'#ffc800', type:'vocab', vocabKey:7 },
+  { name:'Core Verbs', icon:'🔄', color:'#58cc02', type:'vocab', vocabKey:8 },
+  { name:'Present Tense', icon:'✏️', color:'#58cc02', type:'grammar', grammarId:'g_present_tense' },
+  { name:'Adjectives', icon:'✨', color:'#ce82ff', type:'vocab', vocabKey:9 },
+  { name:'Greetings', icon:'👋', color:'#ff4b4b', type:'vocab', vocabKey:10 },
+  { name:'Getting Around', icon:'🚌', color:'#1cb0f6', type:'vocab', vocabKey:11 },
+  { name:'Days & Time', icon:'📅', color:'#ffc800', type:'vocab', vocabKey:12 },
+  { name:'Home', icon:'🏠', color:'#ff9600', type:'vocab', vocabKey:13 },
+  { name:'Noun Genders', icon:'📖', color:'#ffc800', type:'grammar', grammarId:'g_gender' },
 ];
 
-// ═══════════════════════════════════════════════════════
-// EXAMPLE SENTENCES
-// ═══════════════════════════════════════════════════════
+// ── EXAMPLE SENTENCES & TRANSLATIONS ──
 const EXAMPLE_SENTENCES = {
-  // Unit 0 — People & Things
-  'čovjek': 'Čovjek jede kruh.',
-  'žena': 'Žena pije vodu.',
-  'dječak': 'Dječak je gladan.',
-  'djevojčica': 'Djevojčica pije mlijeko.',
-  'dijete': 'Dijete je sretan.',
-  'djeca': 'Djeca su ovdje.',
-  'je': 'Žena je dobra.',
-  'i': 'Dječak i djevojčica.',
-  'ili': 'Voda ili sok?',
-  'to': 'To je kruh.',
-  // Unit 1 — Eat & Drink
-  'jede': 'Dječak jede jabuku.',
-  'pije': 'Žena pije vodu.',
-  'voda': 'Ona pije vodu.',
-  'mlijeko': 'Dijete pije mlijeko.',
-  'kruh': 'On jede kruh.',
-  'jabuka': 'Žena jede jabuku.',
-  'juha': 'Dječak jede juhu.',
-  'sok': 'Ona pije sok.',
-  'meso': 'Čovjek jede meso.',
-  'sir': 'Ona jede sir s kruhom.',
-  // Unit 2 — I / He / She
-  'ja': 'Ja jedem kruh.',
-  'on': 'On je sretan.',
-  'ona': 'Ona pije vodu.',
-  'oni': 'Oni su djeca.',
-  'mi': 'Mi jedemo juhu.',
-  'sam': 'Ja sam gladan.',
-  'smo': 'Mi smo ovdje.',
-  'su': 'Oni su sretni.',
-  'ne': 'On ne jede meso.',
-  'da': 'Da, ja pijem vodu.',
-  // Unit 3 — Pronouns & Have
-  'ti': 'Ti jedeš jabuku.',
-  'vi': 'Vi pijete sok.',
-  'si': 'Ti si dobar.',
-  'ste': 'Vi ste sretni.',
-  'imam': 'Ja imam psa.',
-  'ima': 'Ona ima mačku.',
-  'pas': 'Pas jede meso.',
-  'mačka': 'Mačka pije mlijeko.',
-  'ptica': 'Ptica je mala.',
-  'riba': 'Riba je u vodi.',
-  // Unit 4 — More Food & Drink
-  'kava': 'Volim kavu ujutro.',
-  'čaj': 'Ona pije čaj.',
-  'naranča': 'Naranča je žuta.',
-  'banana': 'Dijete jede bananu.',
-  'pizza': 'Pizza je ukusna.',
-  'salata': 'Žena jede salatu.',
-  'jaje': 'On jede jaje.',
-  'maslac': 'Kruh s maslacem je dobar.',
-  'šećer': 'Čaj s šećerom.',
-  // Unit 5 — Family
-  'majka': 'Majka pije kavu.',
-  'otac': 'Otac jede kruh.',
-  'brat': 'Moj brat je mlad.',
-  'sestra': 'Sestra pije sok.',
-  'djed': 'Djed je star.',
-  'baka': 'Baka je dobra.',
-  'sin': 'Sin jede jabuku.',
-  'kći': 'Kći pije mlijeko.',
-  'muž': 'Muž jede meso.',
-  'supruga': 'Supruga je sretna.',
-  // Unit 6 — Colours
-  'crvena': 'Jabuka je crvena.',
-  'plava': 'More je plavo.',
-  'zelena': 'Trava je zelena.',
-  'žuta': 'Naranča je žuta.',
-  'bijela': 'Mlijeko je bijelo.',
-  'crna': 'Imam crnu mačku.',
-  'smeđa': 'Pas je smeđ.',
-  'narančasta': 'Naranča je narančasta.',
-  'ružičasta': 'Dijete voli ružičastu boju.',
-  'siva': 'Oblaci su sivi.',
-  // Unit 7 — Numbers
-  'jedan': 'Imam jedan kruh.',
-  'dva': 'Dva dječaka jedu.',
-  'tri': 'Tri djevojčice piju sok.',
-  'četiri': 'Četiri jabuke su na stolu.',
-  'pet': 'Pet minuta, molim.',
-  'šest': 'Ima šest djece.',
-  'sedam': 'Vlak dolazi u sedam.',
-  'osam': 'Osam sati spavam.',
-  'devet': 'Devet kava, molim.',
-  'deset': 'Imam deset godina.',
-  // Unit 8 — Core Verbs
-  'ići': 'Idem u grad.',
-  'doći': 'Ona dolazi sutra.',
-  'govoriti': 'Govorim hrvatski.',
-  'čitati': 'On čita knjigu.',
-  'spavati': 'Dijete spava.',
-  'raditi': 'Otac radi.',
-  'živjeti': 'Živim u Zagrebu.',
-  'vidjeti': 'Vidim mačku.',
-  'voljeti': 'Volim kavu.',
-  'razumjeti': 'Razumijem te.',
-  // Unit 9 — Adjectives
-  'velik': 'Pas je velik.',
-  'mali': 'Mačka je mala.',
-  'lijep': 'Djevojčica je lijepa.',
-  'star': 'Djed je star.',
-  'mlad': 'Dječak je mlad.',
-  'sretan': 'Dijete je sretno.',
-  'umoran': 'Otac je umoran.',
-  'gladan': 'Dječak je gladan.',
-  'dobar': 'Ona je dobra.',
-  'loš': 'Danas je loše vrijeme.',
-  // Unit 10 — Greetings
-  'zdravo': 'Zdravo! Kako si?',
-  'bok': 'Bok, kako si?',
-  'dobar dan': 'Dobar dan! Govorite li engleski?',
-  'dobro jutro': 'Dobro jutro! Jedeš li kruh?',
-  'dobra večer': 'Dobra večer! Jesi li gladan?',
-  'laku noć': 'Laku noć! Vidimo se ujutro.',
-  'hvala': 'Hvala za kruh!',
-  'molim': 'Jednu kavu, molim.',
-  'oprosti': 'Oprosti, gdje je kolodvor?',
-  'do viđenja': 'Do viđenja! Vidimo se sutra.',
-  // Unit 11 — Getting Around
-  'gdje': 'Gdje je kolodvor?',
-  'grad': 'Zagreb je velik grad.',
-  'ulica': 'Ova ulica je duga.',
-  'auto': 'Imam crni auto.',
-  'autobus': 'Autobus dolazi za pet minuta.',
-  'vlak': 'Vlak je brz.',
-  'kolodvor': 'Kolodvor je blizu.',
-  'blizu': 'Hotel je blizu mora.',
-  'daleko': 'Grad je daleko.',
-  'lijevo': 'Skrenite lijevo.',
-  // Unit 12 — Days & Time
-  'danas': 'Danas je lijep dan.',
-  'sutra': 'Sutra idemo u grad.',
-  'jučer': 'Jučer sam bio gladan.',
-  'jutro': 'Ujutro pijem kavu.',
-  'večer': 'Navečer jedemo juhu.',
-  'tjedan': 'Ovaj tjedan je bio dobar.',
-  'ponedjeljak': 'Ponedjeljak je prvi radni dan.',
-  'petak': 'U petak idemo van.',
-  'subota': 'Subotom spim dulje.',
-  'nedjelja': 'Nedjelja je slobodan dan.',
-  // Unit 13 — Home
-  'kuća': 'Naša kuća je bijela.',
-  'soba': 'Moja soba je mala.',
-  'kuhinja': 'Majka je u kuhinji.',
-  'krevet': 'Dijete spava u krevetu.',
-  'stol': 'Kruh je na stolu.',
-  'stolica': 'Sjedi na stolicu.',
-  'prozor': 'Prozor je otvoren.',
-  'vrata': 'Vrata su zatvorena.',
-  'stan': 'Imam mali stan.',
-  'park': 'Djeca se igraju u parku.',
+  'čovjek':'Čovjek jede kruh.','žena':'Žena pije vodu.','dječak':'Dječak je gladan.',
+  'djevojčica':'Djevojčica pije mlijeko.','dijete':'Dijete je sretan.','djeca':'Djeca su ovdje.',
+  'je':'Žena je dobra.','i':'Dječak i djevojčica.','ili':'Voda ili sok?','to':'To je kruh.',
+  'jede':'Dječak jede jabuku.','pije':'Žena pije vodu.','voda':'Ona pije vodu.',
+  'mlijeko':'Dijete pije mlijeko.','kruh':'On jede kruh.','jabuka':'Žena jede jabuku.',
+  'juha':'Dječak jede juhu.','sok':'Ona pije sok.','meso':'Čovjek jede meso.',
+  'sir':'Ona jede sir s kruhom.','ja':'Ja jedem kruh.','on':'On je sretan.',
+  'ona':'Ona pije vodu.','oni':'Oni su djeca.','mi':'Mi jedemo juhu.',
+  'sam':'Ja sam gladan.','smo':'Mi smo ovdje.','su':'Oni su sretni.',
+  'ne':'On ne jede meso.','da':'Da, ja pijem vodu.','ti':'Ti jedeš jabuku.',
+  'vi':'Vi pijete sok.','si':'Ti si dobar.','ste':'Vi ste sretni.',
+  'imam':'Ja imam psa.','ima':'Ona ima mačku.','pas':'Pas jede meso.',
+  'mačka':'Mačka pije mlijeko.','ptica':'Ptica je mala.','riba':'Riba je u vodi.',
+  'kava':'Volim kavu ujutro.','čaj':'Ona pije čaj.','naranča':'Naranča je žuta.',
+  'banana':'Dijete jede bananu.','pizza':'Pizza je ukusna.','salata':'Žena jede salatu.',
+  'jaje':'On jede jaje.','maslac':'Kruh s maslacem je dobar.','šećer':'Čaj s šećerom.',
+  'vino':'Vino je ukusno.',
+  'majka':'Majka pije kavu.','otac':'Otac jede kruh.','brat':'Moj brat je mlad.',
+  'sestra':'Sestra pije sok.','djed':'Djed je star.','baka':'Baka je dobra.',
+  'sin':'Sin jede jabuku.','kći':'Kći pije mlijeko.','muž':'Muž jede meso.',
+  'supruga':'Supruga je sretna.',
+  'crvena':'Jabuka je crvena.','plava':'More je plavo.','zelena':'Trava je zelena.',
+  'žuta':'Naranča je žuta.','bijela':'Mlijeko je bijelo.','crna':'Imam crnu mačku.',
+  'smeđa':'Pas je smeđ.','narančasta':'Naranča je narančasta.',
+  'ružičasta':'Dijete voli ružičastu boju.','siva':'Oblaci su sivi.',
+  'jedan':'Imam jedan kruh.','dva':'Dva dječaka jedu.','tri':'Tri djevojčice piju sok.',
+  'četiri':'Četiri jabuke su na stolu.','pet':'Pet minuta, molim.',
+  'šest':'Ima šest djece.','sedam':'Vlak dolazi u sedam.',
+  'osam':'Osam sati spavam.','devet':'Devet kava, molim.','deset':'Imam deset godina.',
+  'ići':'Idem u grad.','doći':'Ona dolazi sutra.','govoriti':'Govorim hrvatski.',
+  'čitati':'On čita knjigu.','spavati':'Dijete spava.','raditi':'Otac radi.',
+  'živjeti':'Živim u Zagrebu.','vidjeti':'Vidim mačku.','voljeti':'Volim kavu.',
+  'razumjeti':'Razumijem te.',
+  'velik':'Pas je velik.','mali':'Mačka je mala.','lijep':'Djevojčica je lijepa.',
+  'star':'Djed je star.','mlad':'Dječak je mlad.','sretan':'Dijete je sretno.',
+  'umoran':'Otac je umoran.','gladan':'Dječak je gladan.','dobar':'Ona je dobra.',
+  'loš':'Danas je loše vrijeme.',
+  'zdravo':'Zdravo! Kako si?','bok':'Bok, kako si?',
+  'dobar dan':'Dobar dan! Govorite li engleski?',
+  'dobro jutro':'Dobro jutro! Jedeš li kruh?',
+  'dobra večer':'Dobra večer! Jesi li gladan?',
+  'laku noć':'Laku noć! Vidimo se ujutro.',
+  'hvala':'Hvala za kruh!','molim':'Jednu kavu, molim.',
+  'oprosti':'Oprosti, gdje je kolodvor?','do viđenja':'Do viđenja! Vidimo se sutra.',
+  'gdje':'Gdje je kolodvor?','grad':'Zagreb je velik grad.','ulica':'Ova ulica je duga.',
+  'auto':'Imam crni auto.','autobus':'Autobus dolazi za pet minuta.',
+  'vlak':'Vlak je brz.','kolodvor':'Kolodvor je blizu.',
+  'blizu':'Hotel je blizu mora.','daleko':'Grad je daleko.','lijevo':'Skrenite lijevo.',
+  'danas':'Danas je lijep dan.','sutra':'Sutra idemo u grad.',
+  'jučer':'Jučer sam bio gladan.','jutro':'Ujutro pijem kavu.',
+  'večer':'Navečer jedemo juhu.','tjedan':'Ovaj tjedan je bio dobar.',
+  'ponedjeljak':'Ponedjeljak je prvi radni dan.','petak':'U petak idemo van.',
+  'subota':'Subotom spim dulje.','nedjelja':'Nedjelja je slobodan dan.',
+  'kuća':'Naša kuća je bijela.','soba':'Moja soba je mala.',
+  'kuhinja':'Majka je u kuhinji.','krevet':'Dijete spava u krevetu.',
+  'stol':'Kruh je na stolu.','stolica':'Sjedi na stolicu.',
+  'prozor':'Prozor je otvoren.','vrata':'Vrata su zatvorena.',
+  'stan':'Imam mali stan.','park':'Djeca se igraju u parku.',
 };
-
 const EXAMPLE_TRANSLATIONS = {
-  'čovjek': 'The man eats bread.',
-  'žena': 'The woman drinks water.',
-  'dječak': 'The boy is hungry.',
-  'djevojčica': 'The girl drinks milk.',
-  'dijete': 'The child is happy.',
-  'djeca': 'The children are here.',
-  'je': 'The woman is good.',
-  'i': 'The boy and the girl.',
-  'ili': 'Water or juice?',
-  'to': 'That is bread.',
-  'jede': 'The boy eats an apple.',
-  'pije': 'The woman drinks water.',
-  'voda': 'She drinks water.',
-  'mlijeko': 'The child drinks milk.',
-  'kruh': 'He eats bread.',
-  'jabuka': 'The woman eats an apple.',
-  'juha': 'The boy eats soup.',
-  'sok': 'She drinks juice.',
-  'meso': 'The man eats meat.',
-  'sir': 'She eats cheese with bread.',
-  'ja': 'I eat bread.',
-  'on': 'He is happy.',
-  'ona': 'She drinks water.',
-  'oni': 'They are children.',
-  'mi': 'We eat soup.',
-  'sam': 'I am hungry.',
-  'smo': 'We are here.',
-  'su': 'They are happy.',
-  'ne': 'He does not eat meat.',
-  'da': 'Yes, I drink water.',
-  'ti': 'You eat an apple.',
-  'vi': 'You drink juice.',
-  'si': 'You are good.',
-  'ste': 'You (all) are happy.',
-  'imam': 'I have a dog.',
-  'ima': 'She has a cat.',
-  'pas': 'The dog eats meat.',
-  'mačka': 'The cat drinks milk.',
-  'ptica': 'The bird is small.',
-  'riba': 'The fish is in the water.',
-  'kava': 'I love coffee in the morning.',
-  'čaj': 'She drinks tea.',
-  'naranča': 'The orange is yellow.',
-  'banana': 'The child eats a banana.',
-  'pizza': 'The pizza is tasty.',
-  'salata': 'The woman eats a salad.',
-  'jaje': 'He eats an egg.',
-  'maslac': 'Bread with butter is good.',
-  'šećer': 'Tea with sugar.',
-  'majka': 'Mother drinks coffee.',
-  'otac': 'Father eats bread.',
-  'brat': 'My brother is young.',
-  'sestra': 'Sister drinks juice.',
-  'djed': 'Grandfather is old.',
-  'baka': 'Grandmother is good.',
-  'sin': 'The son eats an apple.',
-  'kći': 'The daughter drinks milk.',
-  'muž': 'The husband eats meat.',
-  'supruga': 'The wife is happy.',
-  'crvena': 'The apple is red.',
-  'plava': 'The sea is blue.',
-  'zelena': 'The grass is green.',
-  'žuta': 'The orange is yellow.',
-  'bijela': 'The milk is white.',
-  'crna': 'I have a black cat.',
-  'smeđa': 'The dog is brown.',
-  'narančasta': 'The orange is orange.',
-  'ružičasta': 'The child likes pink.',
-  'siva': 'The clouds are grey.',
-  'jedan': 'I have one bread.',
-  'dva': 'Two boys are eating.',
-  'tri': 'Three girls drink juice.',
-  'četiri': 'Four apples are on the table.',
-  'pet': 'Five minutes, please.',
-  'šest': 'There are six children.',
-  'sedam': 'The train comes at seven.',
-  'osam': 'I sleep eight hours.',
-  'devet': 'Nine coffees, please.',
-  'deset': 'I am ten years old.',
-  'ići': 'I am going to the city.',
-  'doći': 'She comes tomorrow.',
-  'govoriti': 'I speak Croatian.',
-  'čitati': 'He reads a book.',
-  'spavati': 'The child sleeps.',
-  'raditi': 'Father works.',
-  'živjeti': 'I live in Zagreb.',
-  'vidjeti': 'I see the cat.',
-  'voljeti': 'I love coffee.',
-  'razumjeti': 'I understand you.',
-  'velik': 'The dog is big.',
-  'mali': 'The cat is small.',
-  'lijep': 'The girl is beautiful.',
-  'star': 'Grandfather is old.',
-  'mlad': 'The boy is young.',
-  'sretan': 'The child is happy.',
-  'umoran': 'Father is tired.',
-  'gladan': 'The boy is hungry.',
-  'dobar': 'She is good.',
-  'loš': 'The weather is bad today.',
-  'zdravo': 'Hello! How are you?',
-  'bok': 'Hi, how are you?',
-  'dobar dan': 'Good day! Do you speak English?',
-  'dobro jutro': 'Good morning! Are you eating bread?',
-  'dobra večer': 'Good evening! Are you hungry?',
-  'laku noć': 'Good night! See you in the morning.',
-  'hvala': 'Thank you for the bread!',
-  'molim': 'One coffee, please.',
-  'oprosti': 'Sorry, where is the station?',
-  'do viđenja': 'Goodbye! See you tomorrow.',
-  'gdje': 'Where is the station?',
-  'grad': 'Zagreb is a big city.',
-  'ulica': 'This street is long.',
-  'auto': 'I have a black car.',
-  'autobus': 'The bus comes in five minutes.',
-  'vlak': 'The train is fast.',
-  'kolodvor': 'The station is nearby.',
-  'blizu': 'The hotel is near the sea.',
-  'daleko': 'The city is far.',
-  'lijevo': 'Turn left.',
-  'danas': 'Today is a nice day.',
-  'sutra': 'Tomorrow we go to the city.',
-  'jučer': 'Yesterday I was hungry.',
-  'jutro': 'In the morning I drink coffee.',
-  'večer': 'In the evening we eat soup.',
-  'tjedan': 'This week was good.',
-  'ponedjeljak': 'Monday is the first work day.',
-  'petak': 'On Friday we go out.',
-  'subota': 'On Saturday I sleep longer.',
-  'nedjelja': 'Sunday is a free day.',
-  'kuća': 'Our house is white.',
-  'soba': 'My room is small.',
-  'kuhinja': 'Mother is in the kitchen.',
-  'krevet': 'The child sleeps in the bed.',
-  'stol': 'The bread is on the table.',
-  'stolica': 'Sit on the chair.',
-  'prozor': 'The window is open.',
-  'vrata': 'The door is closed.',
-  'stan': 'I have a small flat.',
-  'park': 'The children play in the park.',
+  'čovjek':'The man eats bread.','žena':'The woman drinks water.','dječak':'The boy is hungry.',
+  'djevojčica':'The girl drinks milk.','dijete':'The child is happy.','djeca':'The children are here.',
+  'je':'The woman is good.','i':'The boy and the girl.','ili':'Water or juice?','to':'That is bread.',
+  'jede':'The boy eats an apple.','pije':'The woman drinks water.','voda':'She drinks water.',
+  'mlijeko':'The child drinks milk.','kruh':'He eats bread.','jabuka':'The woman eats an apple.',
+  'juha':'The boy eats soup.','sok':'She drinks juice.','meso':'The man eats meat.',
+  'sir':'She eats cheese with bread.','ja':'I eat bread.','on':'He is happy.',
+  'ona':'She drinks water.','oni':'They are children.','mi':'We eat soup.',
+  'sam':'I am hungry.','smo':'We are here.','su':'They are happy.',
+  'ne':'He does not eat meat.','da':'Yes, I drink water.','ti':'You eat an apple.',
+  'vi':'You drink juice.','si':'You are good.','ste':'You (all) are happy.',
+  'imam':'I have a dog.','ima':'She has a cat.','pas':'The dog eats meat.',
+  'mačka':'The cat drinks milk.','ptica':'The bird is small.','riba':'The fish is in the water.',
+  'kava':'I love coffee in the morning.','čaj':'She drinks tea.','naranča':'The orange is yellow.',
+  'banana':'The child eats a banana.','pizza':'The pizza is tasty.','salata':'The woman eats a salad.',
+  'jaje':'He eats an egg.','maslac':'Bread with butter is good.','šećer':'Tea with sugar.',
+  'vino':'The wine is tasty.',
+  'majka':'Mother drinks coffee.','otac':'Father eats bread.','brat':'My brother is young.',
+  'sestra':'Sister drinks juice.','djed':'Grandfather is old.','baka':'Grandmother is good.',
+  'sin':'The son eats an apple.','kći':'The daughter drinks milk.',
+  'muž':'The husband eats meat.','supruga':'The wife is happy.',
+  'crvena':'The apple is red.','plava':'The sea is blue.','zelena':'The grass is green.',
+  'žuta':'The orange is yellow.','bijela':'The milk is white.','crna':'I have a black cat.',
+  'smeđa':'The dog is brown.','narančasta':'The orange is orange.',
+  'ružičasta':'The child likes pink.','siva':'The clouds are grey.',
+  'jedan':'I have one bread.','dva':'Two boys are eating.','tri':'Three girls drink juice.',
+  'četiri':'Four apples are on the table.','pet':'Five minutes, please.',
+  'šest':'There are six children.','sedam':'The train comes at seven.',
+  'osam':'I sleep eight hours.','devet':'Nine coffees, please.','deset':'I am ten years old.',
+  'ići':'I am going to the city.','doći':'She comes tomorrow.',
+  'govoriti':'I speak Croatian.','čitati':'He reads a book.','spavati':'The child sleeps.',
+  'raditi':'Father works.','živjeti':'I live in Zagreb.','vidjeti':'I see the cat.',
+  'voljeti':'I love coffee.','razumjeti':'I understand you.',
+  'velik':'The dog is big.','mali':'The cat is small.','lijep':'The girl is beautiful.',
+  'star':'Grandfather is old.','mlad':'The boy is young.','sretan':'The child is happy.',
+  'umoran':'Father is tired.','gladan':'The boy is hungry.','dobar':'She is good.',
+  'loš':'The weather is bad today.',
+  'zdravo':'Hello! How are you?','bok':'Hi, how are you?',
+  'dobar dan':'Good day! Do you speak English?',
+  'dobro jutro':'Good morning! Are you eating bread?',
+  'dobra večer':'Good evening! Are you hungry?',
+  'laku noć':'Good night! See you in the morning.',
+  'hvala':'Thank you for the bread!','molim':'One coffee, please.',
+  'oprosti':'Sorry, where is the station?','do viđenja':'Goodbye! See you tomorrow.',
+  'gdje':'Where is the station?','grad':'Zagreb is a big city.',
+  'ulica':'This street is long.','auto':'I have a black car.',
+  'autobus':'The bus comes in five minutes.','vlak':'The train is fast.',
+  'kolodvor':'The station is nearby.','blizu':'The hotel is near the sea.',
+  'daleko':'The city is far.','lijevo':'Turn left.',
+  'danas':'Today is a nice day.','sutra':'Tomorrow we go to the city.',
+  'jučer':'Yesterday I was hungry.','jutro':'In the morning I drink coffee.',
+  'večer':'In the evening we eat soup.','tjedan':'This week was good.',
+  'ponedjeljak':'Monday is the first work day.','petak':'On Friday we go out.',
+  'subota':'On Saturday I sleep longer.','nedjelja':'Sunday is a free day.',
+  'kuća':'Our house is white.','soba':'My room is small.',
+  'kuhinja':'Mother is in the kitchen.','krevet':'The child sleeps in the bed.',
+  'stol':'The bread is on the table.','stolica':'Sit on the chair.',
+  'prozor':'The window is open.','vrata':'The door is closed.',
+  'stan':'I have a small flat.','park':'The children play in the park.',
 };
 
-function getExampleSentence(croatian) {
-  return EXAMPLE_SENTENCES[croatian] || null;
+function getExampleSentence(croatian) { return EXAMPLE_SENTENCES[croatian] || null; }
+function getExampleTranslation(croatian) { return EXAMPLE_TRANSLATIONS[croatian] || null; }
+
+// ═══════════════════════════════════════════════════════
+// MILESTONES
+// ═══════════════════════════════════════════════════════
+const MILESTONES = [
+  { words:10, icon:'🌱', title:'First 10 Words!', sub:'You\'ve started your Croatian journey!', next:25 },
+  { words:25, icon:'📚', title:'25 Words!', sub:'A quarter of the way to fluency basics!', next:50 },
+  { words:50, icon:'🔥', title:'50 Words!', sub:'Half a century — you\'re serious about this!', next:75 },
+  { words:75, icon:'⭐', title:'75 Words!', sub:'Three quarters done — almost there!', next:100 },
+  { words:100, icon:'🏆', title:'100 Words!', sub:'100 Croatian words — that\'s incredible! Volim te!', next:150 },
+  { words:150, icon:'💎', title:'150 Words!', sub:'You\'re building real fluency now!', next:200 },
+  { words:200, icon:'👑', title:'200 Words!', sub:'You know 200 Croatian words — krasan posao!', next:999 },
+];
+
+let lastMilestoneWords = 0;
+let pendingMilestone = null;
+
+function checkMilestones(wordCount) {
+  for (const m of MILESTONES) {
+    if (wordCount >= m.words && lastMilestoneWords < m.words) {
+      lastMilestoneWords = m.words;
+      pendingMilestone = m;
+      try { localStorage.setItem('govori_lastMilestone', String(m.words)); } catch(e) {}
+      return m;
+    }
+  }
+  return null;
 }
 
-function getExampleTranslation(croatian) {
-  return EXAMPLE_TRANSLATIONS[croatian] || null;
+function showMilestoneBanner(m) {
+  if (!m) return;
+  const banner = document.getElementById('milestoneBanner');
+  document.getElementById('milestoneBannerIcon').textContent = m.icon;
+  document.getElementById('milestoneBannerTitle').textContent = m.title;
+  document.getElementById('milestoneBannerSub').textContent = m.sub;
+  banner.classList.remove('hidden');
+}
+
+function showMilestonePopup() {
+  const m = pendingMilestone;
+  if (!m) return;
+  const wordCount = (state.wordsLearned||[]).length;
+  const nextM = MILESTONES.find(ms => ms.words > m.words);
+  document.getElementById('milestonePopupIcon').textContent = m.icon;
+  document.getElementById('milestonePopupTitle').textContent = m.title;
+  document.getElementById('milestonePopupSub').textContent = m.sub;
+  const pct = nextM ? Math.min(100, Math.round(wordCount / nextM.words * 100)) : 100;
+  document.getElementById('milestoneProgressFill').style.width = pct + '%';
+  document.getElementById('milestoneModal').classList.add('show');
+}
+
+function closeMilestonePopup() {
+  document.getElementById('milestoneModal').classList.remove('show');
+  document.getElementById('milestoneBanner').classList.add('hidden');
+  pendingMilestone = null;
 }
 
 // ═══════════════════════════════════════════════════════
 // STATE & PERSISTENCE
 // ═══════════════════════════════════════════════════════
-const SAVE_KEY = 'govori_hr_v1';
+const SAVE_KEY = 'govori_hr_v2';
 let state = {
-  xp: 0, streak: 0, lastPlayDate: '',
-  unitProgress: {}, wordsLearned: [], totalLessons: 0,
+  xp:0, streak:0, lastPlayDate:'',
+  unitProgress:{}, wordsLearned:[], totalLessons:0,
 };
 
-function saveState() {
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function saveState() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {} }
 function loadState() {
   try {
     const s = localStorage.getItem(SAVE_KEY);
     if (s) state = { ...state, ...JSON.parse(s) };
+    // also try old key
+    if (!s) {
+      const old = localStorage.getItem('govori_hr_v1');
+      if (old) { state = { ...state, ...JSON.parse(old) }; saveState(); }
+    }
   } catch(e) {}
+  try { lastMilestoneWords = parseInt(localStorage.getItem('govori_lastMilestone')||'0')||0; } catch(e) {}
 }
 
 let session = {
   unitId:0, questions:[], index:0, hearts:5, correct:0, total:0,
   xpEarned:0, startTime:0, answered:false, selectedOption:null,
   builtSentence:[], failQueue:[], wordsThisLesson:[], lessonSeed:0,
+  answerStreak:0,
 };
 
 // ═══════════════════════════════════════════════════════
@@ -1142,11 +1258,26 @@ let session = {
 const ELEVENLABS_API_KEY = 'cb378890fb43496121712bc9a30449a281a2370a724f01f6b828f54b674c453f';
 let elevenApiKey = ELEVENLABS_API_KEY;
 let elevenVoiceId = 'cgSgspJ2msm6clMCkdW9';
+let audioSpeed = 'normal'; // 'slow', 'normal', 'fast'
 const audioCache = new Map();
+
+// Base playback rates for each setting
+const BASE_SPEED_RATES = { slow:0.7, normal:1.0, fast:1.2 };
+
+// Returns the playback rate for a given mode.
+// 'slow_relative' = 0.75× the current default rate
+function getPlaybackRate(mode) {
+  if (mode === 'slow_relative') return (BASE_SPEED_RATES[audioSpeed] || 1.0) * 0.75;
+  return BASE_SPEED_RATES[mode] || BASE_SPEED_RATES[audioSpeed] || 1.0;
+}
+
+// ElevenLabs voice settings stay the same regardless of speed (speed handled via playbackRate)
+const VOICE_SETTINGS = { stability:0.5, similarity_boost:0.75, style:0 };
 
 function loadAudioSettings() {
   try {
     elevenVoiceId = localStorage.getItem('eleven_voice_id') || 'cgSgspJ2msm6clMCkdW9';
+    audioSpeed = localStorage.getItem('eleven_speed') || 'normal';
   } catch(e) {}
   updateVoiceUI();
 }
@@ -1157,19 +1288,32 @@ function updateVoiceUI() {
   const badge = document.getElementById('voiceStatusBadge');
   if (!dot || !text) return;
   if (elevenApiKey && elevenApiKey !== 'YOUR_API_KEY_HERE') {
-    dot.className  = 'voice-dot active';
+    dot.className = 'voice-dot active';
     text.textContent = 'ElevenLabs connected — native Croatian audio';
     if (badge) badge.textContent = '🟢';
   } else {
-    dot.className  = 'voice-dot';
-    text.textContent = 'No API key set in script — audio disabled';
+    dot.className = 'voice-dot';
+    text.textContent = 'No API key — audio disabled';
     if (badge) badge.textContent = '⚪';
   }
+  // update speed buttons
+  ['slow','normal','fast'].forEach(s => {
+    const b = document.getElementById('speedBtn' + s.charAt(0).toUpperCase() + s.slice(1));
+    if (b) b.classList.toggle('active', s === audioSpeed);
+  });
 }
 
-async function speakCroatian(text) {
+function setSpeed(s) {
+  audioSpeed = s;
+  audioCache.clear();
+  updateVoiceUI();
+}
+
+async function speakCroatian(text, forceSpeed) {
   if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE' || !text) return;
-  const cacheKey = `${elevenVoiceId}::${text}`;
+  const spd = forceSpeed || audioSpeed;
+  const rate = getPlaybackRate(spd);
+  const cacheKey = `${elevenVoiceId}::${spd === 'slow_relative' ? 'slow_' + audioSpeed : spd}::${text}`;
   try {
     const btns = document.querySelectorAll('.audio-btn');
     btns.forEach(b => { b.disabled = true; b.classList.add('loading'); });
@@ -1181,16 +1325,8 @@ async function speakCroatian(text) {
         `https://api.elevenlabs.io/v1/text-to-speech/${elevenVoiceId}`,
         {
           method: 'POST',
-          headers: {
-            'xi-api-key': elevenApiKey,
-            'Content-Type': 'application/json',
-            'Accept': 'audio/mpeg',
-          },
-          body: JSON.stringify({
-            text: text,
-            model_id: 'eleven_multilingual_v2',
-            voice_settings: { stability: 0.5, similarity_boost: 0.75 },
-          }),
+          headers: { 'xi-api-key': elevenApiKey, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+          body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: VOICE_SETTINGS }),
         }
       );
       if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -1199,8 +1335,12 @@ async function speakCroatian(text) {
     }
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
-    audio.onended = () => URL.revokeObjectURL(url);
-    await audio.play();
+    audio.playbackRate = rate;
+    await new Promise((resolve) => {
+      audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
+      audio.onerror = () => { URL.revokeObjectURL(url); resolve(); };
+      audio.play().catch(resolve);
+    });
   } catch (err) {
     console.warn('ElevenLabs TTS error:', err);
   } finally {
@@ -1209,8 +1349,13 @@ async function speakCroatian(text) {
   }
 }
 
+async function speakSlow(text) { await speakCroatian(text, 'slow_relative'); }
+
 function showSettings() {
   document.getElementById('voiceSelect').value = elevenVoiceId;
+  const isLight = document.body.classList.contains('light-mode');
+  document.getElementById('themeToggle').checked = isLight;
+  updateVoiceUI();
   showScreen('settings');
 }
 
@@ -1220,54 +1365,57 @@ async function testVoice() {
   const voice = document.getElementById('voiceSelect').value;
   const statusEl = document.getElementById('testStatus');
   if (!elevenApiKey || elevenApiKey === 'YOUR_API_KEY_HERE') {
-    statusEl.textContent = '⚠️ No API key set in the script';
-    statusEl.style.color = 'var(--orange)';
-    return;
+    statusEl.textContent = '⚠️ No API key set in the script'; statusEl.style.color = 'var(--orange)'; return;
   }
-  statusEl.textContent = '⏳ Contacting ElevenLabs…';
-  statusEl.style.color = 'var(--text2)';
+  statusEl.textContent = '⏳ Contacting ElevenLabs…'; statusEl.style.color = 'var(--text2)';
   try {
-    const resp = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voice}`,
-      {
-        method: 'POST',
-        headers: {
-          'xi-api-key': elevenApiKey,
-          'Content-Type': 'application/json',
-          'Accept': 'audio/mpeg',
-        },
-        body: JSON.stringify({
-          text: 'Dobar dan! Govorim hrvatski.',
-          model_id: 'eleven_multilingual_v2',
-          voice_settings: { stability: 0.5, similarity_boost: 0.75 },
-        }),
-      }
-    );
-    if (!resp.ok) {
-      const errBody = await resp.json().catch(() => ({}));
-      throw new Error(errBody.detail?.message || 'HTTP ' + resp.status);
-    }
+    const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}`, {
+      method:'POST',
+      headers:{'xi-api-key':elevenApiKey,'Content-Type':'application/json','Accept':'audio/mpeg'},
+      body:JSON.stringify({ text:'Dobar dan! Govorim hrvatski.', model_id:'eleven_multilingual_v2', voice_settings:{stability:.5,similarity_boost:.75} }),
+    });
+    if (!resp.ok) { const e = await resp.json().catch(()=>({})); throw new Error(e.detail?.message||'HTTP '+resp.status); }
     const blob = await resp.blob();
-    const url  = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
     audio.onended = () => URL.revokeObjectURL(url);
     audio.play();
-    statusEl.textContent = '✅ Working! You should hear Croatian now.';
-    statusEl.style.color = 'var(--green)';
+    statusEl.textContent = '✅ Working! You should hear Croatian.'; statusEl.style.color = 'var(--green)';
   } catch (err) {
-    statusEl.textContent = '❌ Error: ' + err.message;
-    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = '❌ Error: ' + err.message; statusEl.style.color = 'var(--red)';
   }
 }
 
 function saveSettings() {
   const voice = document.getElementById('voiceSelect').value;
-  try { localStorage.setItem('eleven_voice_id', voice); } catch(e) {}
+  try { localStorage.setItem('eleven_voice_id', voice); localStorage.setItem('eleven_speed', audioSpeed); } catch(e) {}
   elevenVoiceId = voice;
   audioCache.clear();
   updateVoiceUI();
-  showScreen('home');
-  renderHome();
+  showScreen('home'); renderHome();
+}
+
+function confirmReset() {
+  if (confirm('Reset ALL progress? This cannot be undone.')) {
+    localStorage.clear();
+    state = { xp:0, streak:0, lastPlayDate:'', unitProgress:{}, wordsLearned:[], totalLessons:0 };
+    lastMilestoneWords = 0;
+    showScreen('home'); renderHome();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════
+function toggleTheme(isLight) {
+  document.body.classList.toggle('light-mode', isLight);
+  try { localStorage.setItem('govori_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+}
+function loadTheme() {
+  try {
+    const t = localStorage.getItem('govori_theme');
+    if (t === 'light') { document.body.classList.add('light-mode'); }
+  } catch(e) {}
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1283,113 +1431,81 @@ function shuffle(arr) {
 }
 function seededRandom(seed) {
   let s = seed;
-  return function() {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
-  };
+  return function() { s = (s*1664525+1013904223)&0xffffffff; return (s>>>0)/0xffffffff; };
 }
 function shuffleWithRng(arr, rng) {
   const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(rng()*(i+1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function esc(s) { return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
-
 function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({length:m+1}, (_,i) => Array.from({length:n+1}, (_,j) => i===0?j:j===0?i:0));
-  for (let i=1;i<=m;i++) for (let j=1;j<=n;j++)
-    dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
   return dp[m][n];
+}
+
+// Build set of words "seen so far" across all completed units
+function getLearnedWordSet() {
+  const learned = new Set();
+  for (const key in state.unitProgress) {
+    if ((state.unitProgress[key]||0) > 0) {
+      const vocabKey = UNIT_META[parseInt(key)]?.vocabKey;
+      if (vocabKey !== undefined && VOCAB[vocabKey]) {
+        VOCAB[vocabKey].forEach(v => learned.add(v[0]));
+      }
+    }
+  }
+  return learned;
 }
 
 // ═══════════════════════════════════════════════════════
 // SMART DISTRACTORS
 // ═══════════════════════════════════════════════════════
-function pickSmartDistractors(allVocab, correct, count, mode) {
-  const isEnMode = mode === 'en_from_hr';
-  const correctVal = isEnMode ? correct.english : correct.croatian;
-  const wordType = correct.wordType;
-  let pool = allVocab.filter(v => {
-    const val = isEnMode ? v[1] : v[0];
-    return val !== correctVal && v[3] === wordType;
-  });
-  if (pool.length < count) {
-    const extra = allVocab.filter(v => {
-      const val = isEnMode ? v[1] : v[0];
-      return val !== correctVal && !pool.includes(v);
-    });
-    pool = [...pool, ...shuffle(extra)];
-  }
-  return shuffle(pool).slice(0, count).map(v => isEnMode ? v[1] : v[0]);
+function pickSmartDistractors(pool, correctVal, count, field) {
+  const candidates = pool.filter(v => v[field] !== correctVal);
+  return shuffle(candidates).slice(0, count).map(v => v[field]);
 }
 
-// ═══════════════════════════════════════════════════════
-// SESSION PERSISTENCE (per-question progress)
-// ═══════════════════════════════════════════════════════
-const SESSION_KEY = 'govori_session_v1';
+// Build a sentence where every Croatian word is clickable to show its popup
+function makeClickableSentence(sentence, highlightWord) {
+  const allVocab = Object.values(VOCAB).flat();
+  // Map lowercase word -> vocab entry (first match wins)
+  const vocabMap = {};
+  allVocab.forEach(v => { const k = v[0].toLowerCase(); if (!vocabMap[k]) vocabMap[k] = v; });
 
-function saveSession() {
-  try {
-    // Only save if we have a real in-progress lesson (not at index 0 before anything answered)
-    if (session.unitId === undefined || session.questions.length === 0) return;
-    const toSave = {
-      unitId: session.unitId,
-      questions: session.questions,
-      index: session.index,
-      hearts: session.hearts,
-      correct: session.correct,
-      total: session.total,
-      xpEarned: session.xpEarned,
-      startTime: session.startTime,
-      failQueue: session.failQueue,
-      wordsThisLesson: session.wordsThisLesson,
-      lessonSeed: session.lessonSeed,
-    };
-    localStorage.setItem(SESSION_KEY, JSON.stringify(toSave));
-  } catch(e) {}
+  return sentence.split(/(\s+)/).map(token => {
+    const stripped = token.replace(/[.,!?]/g, '');
+    const lower = stripped.toLowerCase();
+    const entry = vocabMap[lower];
+    const isHighlighted = highlightWord && stripped.toLowerCase() === highlightWord.toLowerCase();
+    if (entry) {
+      const style = isHighlighted
+        ? 'color:var(--gold);font-weight:900;border-bottom:2px solid var(--gold);cursor:pointer'
+        : 'border-bottom:1px dashed var(--blue);cursor:pointer;color:var(--text);font-weight:700';
+      return `<span style="${style}" onclick="showWordPopup('${esc(entry[0])}','${esc(entry[1])}','${esc(entry[2]||'')}','${esc(entry[3]||'')}')">${token}</span>`;
+    }
+    if (isHighlighted) {
+      return `<span style="color:var(--gold);font-weight:900">${token}</span>`;
+    }
+    return token;
+  }).join('');
 }
 
-function clearSavedSession() {
-  try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
-}
-
-function loadSavedSession(unitId) {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    if (!raw) return null;
-    const s = JSON.parse(raw);
-    if (s.unitId !== unitId) return null;
-    // Don't resume if the lesson is essentially at the start
-    if (s.index <= 0) return null;
-    return s;
-  } catch(e) { return null; }
+function buildHighlightedSentence(exSentence, croatian) {
+  return makeClickableSentence(exSentence, croatian);
 }
 
 // ═══════════════════════════════════════════════════════
 // QUESTION GENERATION
+// Safe questions: distractors only drawn from seen/current-lesson words
 // ═══════════════════════════════════════════════════════
-// ─── Highlight helper ────────────────────────────────────────
-function buildHighlightedSentence(exSentence, croatian) {
-  const escaped = croatian.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  let hl = exSentence.replace(
-    new RegExp(`(${escaped})`, 'i'),
-    `<strong style="color:var(--gold)">$1</strong>`
-  );
-  if (hl === exSentence) {
-    const firstWord = croatian.split(' ')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    hl = exSentence.replace(
-      new RegExp(`\\b(${firstWord})\\b`, 'i'),
-      `<strong style="color:var(--gold)">$1</strong>`
-    );
-  }
-  return hl;
-}
-
 function generateLessonQuestions(unitId, seed) {
   const meta = UNIT_META[unitId];
   if (meta.type === 'grammar') return generateGrammarLesson(meta.grammarId);
@@ -1397,233 +1513,146 @@ function generateLessonQuestions(unitId, seed) {
   const rng = seededRandom(seed);
   const vocabKey = meta.vocabKey !== undefined ? meta.vocabKey : unitId;
   const vocabList = VOCAB[vocabKey] || [];
-  const allVocab = Object.values(VOCAB).flat();
   if (vocabList.length === 0) return [];
 
+  // Build pool of ALL words seen before this unit (from completed units)
+  const prevLearnedWords = [];
+  for (const key in state.unitProgress) {
+    if ((state.unitProgress[key]||0) > 0) {
+      const vk = UNIT_META[parseInt(key)]?.vocabKey;
+      if (vk !== undefined && VOCAB[vk]) prevLearnedWords.push(...VOCAB[vk]);
+    }
+  }
+
   const shuffled = shuffleWithRng(vocabList, rng);
-  // 6 words per lesson: enough to be satisfying, not overwhelming
   const lessonWords = shuffled.slice(0, Math.min(6, shuffled.length));
   const qs = [];
+  const seenWords = []; // words seen SO FAR in this lesson
 
-  // seenWords grows as we introduce each word — all distractor pools
-  // only ever draw from words the learner has actually seen
-  const seenWords = [];
-
-  // ═══════════════════════════════════════════════════════════
-  // PHASE 1 — INTRODUCE + IMMEDIATE EASY CHECK, ONE WORD AT A TIME
-  //
-  // For each word:
-  //   1. vocab_intro card   (word, meaning, phonetic, example + translation)
-  //   2. mcq_hr → en        (very easy — just saw the word, pick its meaning)
-  //   3. mcq_en → hr        (slightly harder — from word #2 onward)
-  //   4. every 3rd word: a quick review MCQ on a word seen earlier
-  // ═══════════════════════════════════════════════════════════
   lessonWords.forEach((item, wordIndex) => {
     const [croatian, english, phonetic, wordType, gender] = item;
     const exSentence = getExampleSentence(croatian);
 
-    // ── A: Introduce the word ──────────────────────────────────
-    qs.push({
-      type: 'vocab_intro',
-      word: croatian, phonetic, meaning: english,
-      wordType, gender: gender || null,
-      sentence: exSentence,
-    });
+    // A: Introduce the word
+    qs.push({ type:'vocab_intro', word:croatian, phonetic, meaning:english, wordType, gender:gender||null, sentence:exSentence });
     seenWords.push(item);
 
-    // ── B: Immediate HR→EN MCQ (just saw it — easiest possible check) ──
-    // Distractors: words NOT yet seen (so learner doesn't confuse new words),
-    // drawn randomly from the full vocab pool
-    const unseenPool = allVocab.filter(v => v[1] !== english && !seenWords.find(s => s[1] === v[1]));
-    const easyDist = shuffle(unseenPool).slice(0, 3).map(v => v[1]);
-    // If not enough unseen words, pad with seen (but not correct)
-    const seenDist = seenWords.filter(w => w[1] !== english).map(w => w[1]);
-    const dist_en = [...easyDist, ...seenDist].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
+    // B: Immediate HR→EN MCQ — distractors from ALL available safe pool (prev learned + current seen)
+    const safePool = [...prevLearnedWords, ...seenWords].filter(v => v[1] !== english);
+    const dist_en = shuffle(safePool).slice(0,3).map(v => v[1]).filter((v,i,a) => a.indexOf(v)===i).slice(0,3);
+    // Pad if needed
+    const fallbackEn = Object.values(VOCAB).flat().filter(v => v[1] !== english && !dist_en.includes(v[1]));
+    const finalDistEn = [...dist_en, ...shuffle(fallbackEn).slice(0,3-dist_en.length).map(v => v[1])].slice(0,3);
 
     if (exSentence) {
-      qs.push({
-        type: 'mcq_hr_en',
-        prompt: 'What does the highlighted word mean?',
-        context_sentence: buildHighlightedSentence(exSentence, croatian),
-        answer: english, distractors: dist_en,
-        audio: exSentence,
-        hint: `/${phonetic}/`,
-        _wordKey: croatian,
-      });
+      qs.push({ type:'mcq_hr_en', prompt:'What does the highlighted word mean?',
+        context_sentence:buildHighlightedSentence(exSentence, croatian),
+        answer:english, distractors:finalDistEn, audio:exSentence, hint:`/${phonetic}/`, _wordKey:croatian });
     } else {
-      qs.push({
-        type: 'mcq_hr_en',
-        prompt: `What does <strong style="color:var(--gold)">${croatian}</strong> mean?`,
-        answer: english, distractors: dist_en,
-        audio: croatian,
-        hint: `/${phonetic}/`,
-        _wordKey: croatian,
-      });
+      qs.push({ type:'mcq_hr_en', prompt:`What does <strong style="color:var(--gold)">${croatian}</strong> mean?`,
+        answer:english, distractors:finalDistEn, audio:croatian, hint:`/${phonetic}/`, _wordKey:croatian });
     }
 
-    // ── C: EN→HR MCQ — only from word #2 onward, using seen words as distractors ──
+    // C: EN→HR MCQ — only once we have 2+ seen, distractors from seen words ONLY
     if (seenWords.length >= 2) {
-      const seenHr = seenWords.filter(w => w[0] !== croatian).map(w => w[0]);
-      const dist_hr = shuffle(seenHr).slice(0, 3);
-      // Pad with unseen vocab if needed
-      const extraHr = allVocab
-        .filter(v => v[0] !== croatian && !seenHr.includes(v[0]))
-        .sort(()=>rng()-0.5).slice(0, 3 - dist_hr.length).map(v => v[0]);
-
-      qs.push({
-        type: 'mcq_en_hr',
-        prompt: `Which Croatian word means "${cap(english)}"?`,
-        answer: croatian,
-        distractors: [...dist_hr, ...extraHr].slice(0, 3),
-        audio: croatian,
-        hint: phonetic ? `Sounds like: /${phonetic}/` : '',
-        _wordKey: croatian,
-      });
+      const seenHrPool = seenWords.filter(w => w[0] !== croatian);
+      const dist_hr = shuffle(seenHrPool).slice(0,3).map(v => v[0]);
+      // Pad with prev learned if needed
+      const padHr = prevLearnedWords.filter(v => v[0] !== croatian && !dist_hr.includes(v[0]));
+      const finalDistHr = [...dist_hr, ...shuffle(padHr).slice(0,3-dist_hr.length)].slice(0,3);
+      qs.push({ type:'mcq_en_hr', prompt:`Which Croatian word means "${cap(english)}"?`,
+        answer:croatian, distractors:finalDistHr, audio:croatian,
+        hint:phonetic ? `Sounds like: /${phonetic}/` : '', _wordKey:croatian });
     }
 
-    // ── D: Every 3rd new word — review one earlier word briefly ──
-    if (wordIndex === 2 || wordIndex === 4) {
-      const earlier = seenWords[Math.floor(rng() * (seenWords.length - 1))];
-      const [rc, re, rp] = earlier;
-      const revDist = shuffle(seenWords.filter(w=>w[1]!==re).map(w=>w[1])).slice(0,3);
-      qs.push({
-        type: 'mcq_hr_en',
-        prompt: `Quick check — what does <strong style="color:var(--gold)">${rc}</strong> mean?`,
-        answer: re, distractors: revDist,
-        audio: rc,
-        hint: rp ? `/${rp}/` : '',
-        _wordKey: rc,
-      });
+    // D: Every 3rd word — quick review of earlier word (only from seenWords, so always safe)
+    if ((wordIndex === 2 || wordIndex === 4) && seenWords.length > 1) {
+      const earlier = seenWords[Math.floor(rng()*(seenWords.length-1))];
+      const [rc,re,rp] = earlier;
+      const revDist = shuffle(seenWords.filter(w=>w[1]!==re)).slice(0,3).map(w=>w[1]);
+      qs.push({ type:'mcq_hr_en', prompt:`Quick check — what does <strong style="color:var(--gold)">${rc}</strong> mean?`,
+        answer:re, distractors:revDist, audio:rc, hint:rp ? `/${rp}/` : '', _wordKey:rc });
     }
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // PHASE 2 — ACTIVE RECALL  (all words introduced by this point)
-  //
-  // Harder question types: typing, fill-in-blank.
-  // The learner has now seen each word 2–3 times.
-  // ═══════════════════════════════════════════════════════════
+  // PHASE 2 — Active recall: fill in blank / type
   const phase2Words = shuffle([...lessonWords]);
-  phase2Words.forEach((item) => {
+  phase2Words.forEach(item => {
     const [croatian, english, phonetic] = item;
     const exSentence = getExampleSentence(croatian);
-
     if (exSentence) {
-      const blanked = exSentence.replace(
-        new RegExp(`\\b${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`, 'i'),
-        '___'
-      );
+      const blanked = exSentence.replace(new RegExp(`\\b${croatian.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`,'i'), '___');
       if (blanked !== exSentence) {
-        qs.push({
-          type: 'fill_blank_free',
-          sentence_hr: blanked,
-          sentence_en: `"${cap(english)}" — /${phonetic || '...'}/`,
-          answer: croatian.toLowerCase(),
-          hint: phonetic ? `/${phonetic}/` : '',
-          audio: exSentence,
-          _wordKey: croatian,
-        });
+        qs.push({ type:'fill_blank_free', sentence_hr:blanked, sentence_en:`"${cap(english)}" — /${phonetic||'...'}/`,
+          answer:croatian.toLowerCase(), hint:phonetic?`/${phonetic}/`:'', audio:exSentence, _wordKey:croatian });
         return;
       }
     }
-    qs.push({
-      type: 'type_hr',
-      prompt: 'Type in Croatian:',
-      context: `"${cap(english)}"`,
-      answer: croatian.toLowerCase(),
-      acceptableAnswers: [croatian.toLowerCase()],
-      audio: croatian,
-      hint: phonetic ? `/${phonetic}/` : '',
-      _wordKey: croatian,
-    });
+    qs.push({ type:'type_hr', prompt:'Type in Croatian:', context:`"${cap(english)}"`,
+      answer:croatian.toLowerCase(), acceptableAnswers:[croatian.toLowerCase()],
+      audio:croatian, hint:phonetic?`/${phonetic}/`:'', _wordKey:croatian });
   });
 
-  // Sentence builder — 1 at the end of phase 2
-  const tmplList = shuffleWithRng(SENTENCE_TEMPLATES, rng).slice(0, 1);
+  // Sentence builder
+  const tmplList = shuffleWithRng(SENTENCE_TEMPLATES, rng).slice(0,1);
   tmplList.forEach(tmpl => {
     if (tmpl.words.length === 0) {
-      qs.push({
-        type: 'build_hr', sentence_en: tmpl.en, answer: tmpl.hr,
-        distractors: shuffle([...new Set([...tmpl.hr, 'ne','je','sam','imam','gdje'])]),
-        audio: tmpl.hr.join(' '),
-      });
+      qs.push({ type:'build_hr', sentence_en:tmpl.en, answer:tmpl.hr,
+        distractors:shuffle([...new Set([...tmpl.hr,'ne','je','sam','imam','gdje'])]),
+        audio:tmpl.hr.join(' ') });
     } else {
-      const ri = Math.floor(rng() * tmpl.words.length);
-      const word = tmpl.words[ri];
-      const enWord = tmpl.en_words[ri];
+      const ri = Math.floor(rng()*tmpl.words.length);
+      const word = tmpl.words[ri], enWord = tmpl.en_words[ri];
       const filled_hr = tmpl.hr.map(w => w.startsWith('{') ? word : w);
       const filled_en = tmpl.en.replace(/\{[A-Z]\}/g, enWord);
       const extraWords = shuffle(tmpl.words.filter((_,i)=>i!==ri)).slice(0,3);
-      qs.push({
-        type: 'build_hr', sentence_en: filled_en, answer: filled_hr,
-        distractors: shuffle([...new Set([...filled_hr, ...extraWords])]),
-        audio: filled_hr.join(' '),
-      });
+      qs.push({ type:'build_hr', sentence_en:filled_en, answer:filled_hr,
+        distractors:shuffle([...new Set([...filled_hr,...extraWords])]),
+        audio:filled_hr.join(' ') });
     }
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // PHASE 3 — FINAL MATCHING  (comes last, when all words are familiar)
-  // ═══════════════════════════════════════════════════════════
+  // PHASE 3 — Matching
   if (lessonWords.length >= 4) {
-    const pairWords = shuffleWithRng(lessonWords, rng).slice(0, 4);
-    qs.push({
-      type: 'matching',
-      pairs: pairWords.map(([c, e]) => ({ croatian: c, english: e })),
-    });
+    const pairWords = shuffleWithRng(lessonWords, rng).slice(0,4);
+    qs.push({ type:'matching', pairs:pairWords.map(([c,e]) => ({croatian:c, english:e})) });
   }
 
   return qs;
-}
-
-
-// Pick distractors that are semantically distinct — different word type category,
-// different meaning domain — so learners can make educated guesses, not blind ones
-function pickContextualDistractors(allVocab, correct, count, mode) {
-  const isEnMode = mode === 'en_from_hr';
-  const correctVal = isEnMode ? correct.english : correct.croatian;
-  const wordType = correct.wordType;
-
-  // First try same word type (feels like a real choice) but clearly different meanings
-  let pool = allVocab.filter(v => {
-    const val = isEnMode ? v[1] : v[0];
-    if (val === correctVal) return false;
-    if (v[3] === wordType) return true;
-    return false;
-  });
-
-  // If not enough same-type, pull from different types but avoid confusingly similar words
-  if (pool.length < count) {
-    const extra = allVocab.filter(v => {
-      const val = isEnMode ? v[1] : v[0];
-      return val !== correctVal && !pool.find(p => (isEnMode ? p[1] : p[0]) === val);
-    });
-    pool = [...pool, ...shuffle(extra)];
-  }
-
-  // Prefer distractors from different "semantic clusters" — pick spread across pool
-  const shuffled = shuffle(pool);
-  const chosen = [];
-  const usedMeanings = new Set([correctVal]);
-
-  for (const v of shuffled) {
-    if (chosen.length >= count) break;
-    const val = isEnMode ? v[1] : v[0];
-    if (!usedMeanings.has(val)) {
-      chosen.push(val);
-      usedMeanings.add(val);
-    }
-  }
-
-  return chosen.slice(0, count);
 }
 
 function generateGrammarLesson(grammarId) {
   const g = GRAMMAR_LESSONS[grammarId];
   if (!g) return [];
   const qs = [{ type:'grammar_intro', title:g.title, content:g.content }];
-  g.questions.forEach(q => qs.push({ ...q }));
+  g.questions.forEach(q => qs.push({...q}));
   return qs;
+}
+
+// ═══════════════════════════════════════════════════════
+// SESSION PERSISTENCE
+// ═══════════════════════════════════════════════════════
+const SESSION_KEY = 'govori_session_v2';
+function saveSession() {
+  try {
+    if (session.unitId === undefined || session.questions.length === 0) return;
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      unitId:session.unitId, questions:session.questions, index:session.index,
+      hearts:session.hearts, correct:session.correct, total:session.total,
+      xpEarned:session.xpEarned, startTime:session.startTime,
+      failQueue:session.failQueue, wordsThisLesson:session.wordsThisLesson, lessonSeed:session.lessonSeed,
+    }));
+  } catch(e) {}
+}
+function clearSavedSession() { try { localStorage.removeItem(SESSION_KEY); } catch(e) {} }
+function loadSavedSession(unitId) {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (s.unitId !== unitId || s.index <= 0) return null;
+    return s;
+  } catch(e) { return null; }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1632,51 +1661,47 @@ function generateGrammarLesson(grammarId) {
 function renderHome() {
   document.getElementById('streakNum').textContent = state.streak;
   document.getElementById('totalXp').textContent = state.xp;
-  document.getElementById('wordsLearned').textContent = (state.wordsLearned||[]).length;
+  const wl = (state.wordsLearned||[]).length;
+  document.getElementById('wordsLearned').textContent = wl;
 
   const XP_PER_LEVEL = 200;
-  const level = Math.floor(state.xp / XP_PER_LEVEL) + 1;
+  const level = Math.floor(state.xp/XP_PER_LEVEL)+1;
   const xpInLevel = state.xp % XP_PER_LEVEL;
   document.getElementById('levelLabel').textContent = 'Level ' + level;
-  document.getElementById('xpLabel').textContent = xpInLevel + ' / ' + XP_PER_LEVEL + ' XP';
-  document.getElementById('xpFill').style.width = (xpInLevel / XP_PER_LEVEL * 100) + '%';
+  document.getElementById('xpLabel').textContent = xpInLevel+' / '+XP_PER_LEVEL+' XP';
+  document.getElementById('xpFill').style.width = (xpInLevel/XP_PER_LEVEL*100)+'%';
+
+  // Milestone check
+  const newMile = checkMilestones(wl);
+  if (newMile) showMilestoneBanner(newMile);
 
   const grid = document.getElementById('unitGrid');
   grid.innerHTML = '';
-
   UNIT_META.forEach((meta, i) => {
-    const progress = state.unitProgress[i] || 0;
+    const progress = state.unitProgress[i]||0;
     const isLocked = i > 0 && !state.unitProgress[i-1];
     const isDone = progress >= 3;
     const isGrammar = meta.type === 'grammar';
-
     const btn = document.createElement('button');
-    btn.className = 'unit-btn' + (isLocked ? ' locked' : '') + (isDone ? ' done' : '') + (isGrammar ? ' grammar-unit' : '');
-
+    btn.className = 'unit-btn'+(isLocked?' locked':'')+(isDone?' done':'')+(isGrammar?' grammar-unit':'');
     let badge = '';
-    if (isLocked)            badge = '<span class="unit-badge badge-locked">🔒 Locked</span>';
-    else if (isDone)         badge = '<span class="unit-badge badge-done">✓ Done</span>';
-    else if (isGrammar && progress === 0) badge = '<span class="unit-badge badge-grammar">📝 Grammar</span>';
-    else if (progress === 0) badge = '<span class="unit-badge badge-new">NEW</span>';
-    else                     badge = '<span class="unit-badge badge-active">▶ Active</span>';
-
-    // Check if there's a saved in-progress session for this unit
+    if (isLocked) badge = '<span class="unit-badge badge-locked">🔒 Locked</span>';
+    else if (isDone) badge = '<span class="unit-badge badge-done">✓ Done</span>';
+    else if (isGrammar && progress===0) badge = '<span class="unit-badge badge-grammar">📝 Grammar</span>';
+    else if (progress===0) badge = '<span class="unit-badge badge-new">NEW</span>';
+    else badge = '<span class="unit-badge badge-active">▶ Active</span>';
     const hasSaved = !isLocked && loadSavedSession(i) !== null;
     if (hasSaved) badge = '<span class="unit-badge badge-active" style="background:var(--orange)">⏸ Resume</span>';
-
     btn.innerHTML = `
       <div class="unit-icon">${meta.icon}</div>
       <div class="unit-info">
         <div class="unit-name">${meta.name}</div>
-        <div class="unit-progress">${progress > 0 ? progress + ' lesson'+(progress===1?'':'s')+' done' : (isGrammar ? 'Grammar lesson' : 'Not started')}</div>
+        <div class="unit-progress">${progress > 0 ? progress+' lesson'+(progress===1?'':'s')+' done' : (isGrammar ? 'Grammar lesson' : 'Not started')}</div>
       </div>
-      ${badge}
-    `;
-
+      ${badge}`;
     if (!isLocked) btn.onclick = () => startLesson(i);
     grid.appendChild(btn);
   });
-
   updateVoiceUI();
 }
 
@@ -1694,38 +1719,18 @@ function startNextLesson() {
 function startLesson(unitId) {
   const saved = loadSavedSession(unitId);
   if (saved) {
-    // Resume in-progress lesson
-    session = {
-      unitId: saved.unitId,
-      questions: saved.questions,
-      index: saved.index,
-      hearts: saved.hearts,
-      correct: saved.correct,
-      total: saved.total,
-      xpEarned: saved.xpEarned,
-      startTime: saved.startTime,
-      answered: false,
-      selectedOption: null,
-      builtSentence: [],
-      failQueue: saved.failQueue || [],
-      wordsThisLesson: saved.wordsThisLesson || [],
-      lessonSeed: saved.lessonSeed,
-    };
-    showScreen('lesson');
-    renderQuestion();
-    return;
+    session = { unitId:saved.unitId, questions:saved.questions, index:saved.index,
+      hearts:saved.hearts, correct:saved.correct, total:saved.total,
+      xpEarned:saved.xpEarned, startTime:saved.startTime, answered:false,
+      selectedOption:null, builtSentence:[], failQueue:saved.failQueue||[],
+      wordsThisLesson:saved.wordsThisLesson||[], lessonSeed:saved.lessonSeed };
+    showScreen('lesson'); renderQuestion(); return;
   }
-  // Fresh lesson
   const seed = Date.now() ^ (unitId * 9999 + (state.totalLessons * 1337));
-  session = {
-    unitId, questions: generateLessonQuestions(unitId, seed),
-    index:0, hearts:5, correct:0, total:0,
-    xpEarned:0, startTime:Date.now(), answered:false,
-    selectedOption:null, builtSentence:[], failQueue:[],
-    wordsThisLesson:[], lessonSeed:seed,
-  };
-  showScreen('lesson');
-  renderQuestion();
+  session = { unitId, questions:generateLessonQuestions(unitId, seed),
+    index:0, hearts:5, correct:0, total:0, xpEarned:0, startTime:Date.now(),
+    answered:false, selectedOption:null, builtSentence:[], failQueue:[], wordsThisLesson:[], lessonSeed:seed, answerStreak:0 };
+  showScreen('lesson'); renderQuestion();
 }
 
 function renderQuestion() {
@@ -1733,45 +1738,27 @@ function renderQuestion() {
     if (session.failQueue.length > 0) {
       session.questions = session.questions.concat(shuffle(session.failQueue));
       session.failQueue = [];
-    } else {
-      endLesson(false);
-      return;
-    }
+    } else { endLesson(false); return; }
   }
-
   const q = session.questions[session.index];
-  const pct = (session.index / session.questions.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-  const h = '❤️'.repeat(session.hearts) + '🖤'.repeat(5 - session.hearts);
+  const pct = (session.index/session.questions.length)*100;
+  document.getElementById('progressFill').style.width = pct+'%';
+  const h = '❤️'.repeat(session.hearts)+'🖤'.repeat(5-session.hearts);
   document.getElementById('heartsWrap').textContent = h;
-
   document.getElementById('feedbackBar').className = 'feedback-bar';
-  session.answered = false;
-  session.selectedOption = null;
-  session.builtSentence = [];
-
+  session.answered = false; session.selectedOption = null; session.builtSentence = [];
   const checkBtn = document.getElementById('checkBtn');
-  checkBtn.disabled = true;
-  checkBtn.textContent = 'CHECK';
-  checkBtn.onclick = null;
-
+  checkBtn.disabled = true; checkBtn.textContent = 'CHECK'; checkBtn.onclick = null;
   const body = document.getElementById('lessonBody');
   body.innerHTML = '';
-
-  if (q._retry) {
-    const rb = document.createElement('div');
-    rb.className = 'repeat-badge';
-    rb.textContent = '🔁 Try again';
-    body.appendChild(rb);
-  }
-
-  if (q.type === 'vocab_intro')        renderVocabIntro(q);
-  else if (q.type === 'grammar_intro') renderGrammarIntro(q);
-  else if (q.type === 'mcq_en_hr' || q.type === 'mcq_hr_en' || q.type === 'mcq_grammar') renderMCQ(q);
-  else if (q.type === 'type_hr' || q.type === 'type_en') renderTypeAnswer(q);
-  else if (q.type === 'fill_blank' || q.type === 'fill_blank_free') renderFillBlank(q);
-  else if (q.type === 'build_hr')      renderBuilder(q);
-  else if (q.type === 'matching')      renderMatching(q);
+  if (q._retry) { const rb = document.createElement('div'); rb.className='repeat-badge'; rb.textContent='🔁 Try again'; body.appendChild(rb); }
+  if (q.type==='vocab_intro') renderVocabIntro(q);
+  else if (q.type==='grammar_intro') renderGrammarIntro(q);
+  else if (q.type==='mcq_en_hr'||q.type==='mcq_hr_en'||q.type==='mcq_grammar') renderMCQ(q);
+  else if (q.type==='type_hr'||q.type==='type_en') renderTypeAnswer(q);
+  else if (q.type==='fill_blank'||q.type==='fill_blank_free') renderFillBlank(q);
+  else if (q.type==='build_hr') renderBuilder(q);
+  else if (q.type==='matching') renderMatching(q);
 }
 
 // ─── Vocab Intro ─────────────────────────────────────────
@@ -1779,35 +1766,49 @@ function renderVocabIntro(q) {
   const body = document.getElementById('lessonBody');
   if (!state.wordsLearned.includes(q.word)) state.wordsLearned.push(q.word);
   if (!session.wordsThisLesson.includes(q.word)) session.wordsThisLesson.push(q.word);
-
   const conj = CONJUGATIONS[q.word];
-  const genderLabel = q.gender === 'm' ? '♂ masculine' : q.gender === 'f' ? '♀ feminine' : q.gender === 'n' ? '⚪ neuter' : '';
-  const genderColor = q.gender === 'm' ? 'var(--blue)' : q.gender === 'f' ? '#ff9999' : q.gender === 'n' ? 'var(--text2)' : '';
+  const genderLabel = q.gender==='m'?'♂ masculine':q.gender==='f'?'♀ feminine':q.gender==='n'?'⚪ neuter':'';
+  const genderColor = q.gender==='m'?'var(--blue)':q.gender==='f'?'#ff9999':q.gender==='n'?'var(--text2)':'';
+  const translation = getExampleTranslation(q.word);
 
   let sentenceHtml = '';
   if (q.sentence) {
-    const translation = getExampleTranslation(q.word);
     sentenceHtml = `
-      <div class="vocab-example-label">Example</div>
+      <div class="vocab-example-label">Example <span style="font-size:10px;color:var(--blue);font-weight:600">(tap a word)</span></div>
       <div class="vocab-sentence">
-        <span class="vocab-sentence-hr">${q.sentence}</span>
+        <span class="vocab-sentence-hr">${makeClickableSentence(q.sentence, q.word)}</span>
         ${translation ? `<span class="vocab-sentence-en">${translation}</span>` : ''}
-      </div>
-    `;
+      </div>`;
   }
 
-  const noAudioNote = elevenApiKey ? '' : `<div style="font-size:11px;color:var(--text3);margin-top:8px">No API key — set up ElevenLabs in ⚙️ Voice Settings for audio</div>`;
+  // Extra examples
+  const extras = EXTRA_EXAMPLES[q.word] || [];
+  let extrasHtml = '';
+  if (extras.length) {
+    extrasHtml = `<div class="vocab-examples-extra">
+      <div class="vocab-examples-extra-title">More examples</div>
+      ${extras.map(ex => `<div class="vocab-extra-row"><span class="hr">${ex.hr}</span> <span style="color:var(--text2);font-weight:600;font-size:12px;font-style:italic">— ${ex.en}</span></div>`).join('')}
+    </div>`;
+  }
+
+  const noAudioNote = (!elevenApiKey||elevenApiKey==='YOUR_API_KEY_HERE') ?
+    `<div style="font-size:11px;color:var(--text3);margin-top:6px">Add ElevenLabs API key in Settings for audio</div>` : '';
 
   const card = document.createElement('div');
+  card.style.width = '100%';
   card.innerHTML = `
-    <div class="lesson-type-badge">🆕 New Word</div>
+    <div class="lesson-type-badge">📖 New word</div>
     <div class="vocab-card">
       <div class="vocab-word" onclick="showWordPopup('${esc(q.word)}','${esc(q.meaning)}','${esc(q.phonetic||'')}','${esc(q.wordType||'')}')">${q.word}</div>
       <div class="vocab-phonetic">/${q.phonetic}/</div>
       <div class="vocab-meaning">${q.meaning}</div>
       ${genderLabel ? `<div class="vocab-gender" style="color:${genderColor}">${genderLabel}</div>` : ''}
       ${sentenceHtml}
-      <button class="audio-btn" onclick="speakCroatian('${esc(q.word)}')" ${!elevenApiKey ? 'title="Add ElevenLabs API key in settings for audio"' : ''}>🔊 Hear it</button>
+      ${extrasHtml}
+      <div class="audio-btns-row" style="margin-top:12px">
+        <button class="audio-btn" onclick="speakCroatian('${esc(q.word)}')" ${!elevenApiKey?'title="Add ElevenLabs API key for audio"':''}>🔊 Hear it</button>
+        ${audioSpeed !== 'slow' ? `<button class="audio-btn slow" onclick="speakSlow('${esc(q.word)}')">🐢 Slow</button>` : ''}
+      </div>
       ${noAudioNote}
       ${conj ? `<div style="font-size:12px;color:var(--text3);margin-top:6px;font-weight:600">💡 Tap the word to see all conjugations</div>` : ''}
     </div>
@@ -1818,11 +1819,9 @@ function renderVocabIntro(q) {
     <p class="tap-hint">Tap the word to explore its forms</p>
   `;
   body.appendChild(card);
-
   const checkBtn = document.getElementById('checkBtn');
-  checkBtn.disabled = false;
-  checkBtn.textContent = 'GOT IT →';
-  checkBtn.onclick = () => { session.answered = true; session.xpEarned += 5; nextQuestion(); };
+  checkBtn.disabled = false; checkBtn.textContent = 'GOT IT →';
+  checkBtn.onclick = () => { session.answered=true; session.xpEarned+=5; nextQuestion(); };
   setTimeout(() => speakCroatian(q.word), 400);
 }
 
@@ -1841,32 +1840,33 @@ function renderGrammarIntro(q) {
     <p class="tap-hint">Scroll up to re-read any time during questions.</p>
   `;
   body.appendChild(div);
-
   const checkBtn = document.getElementById('checkBtn');
-  checkBtn.disabled = false;
-  checkBtn.textContent = 'PRACTICE →';
-  checkBtn.onclick = () => { session.answered = true; session.xpEarned += 10; nextQuestion(); };
+  checkBtn.disabled=false; checkBtn.textContent='PRACTICE →';
+  checkBtn.onclick = () => { session.answered=true; session.xpEarned+=10; nextQuestion(); };
 }
 
 // ─── MCQ ──────────────────────────────────────────────────
 function renderMCQ(q) {
   const body = document.getElementById('lessonBody');
   let badge = '🇬🇧 → 🇭🇷 Translate to Croatian';
-  if (q.type === 'mcq_hr_en')   badge = '🇭🇷 → 🇬🇧 What does it mean?';
-  if (q.type === 'mcq_grammar') badge = '📝 Grammar Question';
-
+  if (q.type==='mcq_hr_en') badge = '🇭🇷 → 🇬🇧 What does it mean?';
+  if (q.type==='mcq_grammar') badge = '📝 Grammar Question';
   const options = shuffle([q.answer, ...q.distractors]);
   const div = document.createElement('div');
   div.style.width = '100%';
-
-  // Context sentence block (shows the word in a real sentence)
   const contextBlock = q.context_sentence
     ? `<div class="vocab-card" style="margin-bottom:16px;padding:18px;text-align:left">
         <div style="font-size:17px;font-weight:700;line-height:1.6">${q.context_sentence}</div>
-        ${q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
+        <div style="font-size:10px;color:var(--blue);font-weight:600;margin-top:4px">💡 Tap any word for details</div>
+        ${q.audio ? `<div style="margin-top:10px;display:flex;gap:8px">
+          <button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>
+          <button class="audio-btn slow" onclick="speakSlow('${esc(q.audio)}')">🐢 Slow</button>
+        </div>` : ''}
       </div>`
-    : (q.audio ? `<button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>` : '');
-
+    : (q.audio ? `<div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>
+        <button class="audio-btn slow" onclick="speakSlow('${esc(q.audio)}')">🐢 Slow</button>
+      </div>` : '');
   div.innerHTML = `
     <div class="lesson-type-badge">${badge}</div>
     <div class="lesson-question">${q.prompt}</div>
@@ -1875,30 +1875,27 @@ function renderMCQ(q) {
     <div class="options-grid" id="optionsGrid"></div>
   `;
   body.appendChild(div);
-
   const grid = document.getElementById('optionsGrid');
   options.forEach(opt => {
     const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = opt;
+    btn.className='option-btn'; btn.textContent=opt;
     btn.onclick = () => {
       if (session.answered) return;
-      session.selectedOption = opt;
-      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      session.selectedOption=opt;
+      document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
-      document.getElementById('checkBtn').disabled = false;
+      document.getElementById('checkBtn').disabled=false;
     };
     grid.appendChild(btn);
   });
-
   document.getElementById('checkBtn').onclick = () => {
     if (!session.selectedOption) return;
-    session.answered = true; session.total++;
-    const correct = session.selectedOption === q.answer;
+    session.answered=true; session.total++;
+    const correct = session.selectedOption===q.answer;
     document.querySelectorAll('.option-btn').forEach(b => {
-      b.disabled = true;
-      if (b.textContent === q.answer) b.classList.add('correct');
-      else if (b.textContent === session.selectedOption && !correct) b.classList.add('wrong');
+      b.disabled=true;
+      if (b.textContent===q.answer) b.classList.add('correct');
+      else if (b.textContent===session.selectedOption && !correct) b.classList.add('wrong');
     });
     showFeedback(correct, q.answer, q);
   };
@@ -1907,143 +1904,119 @@ function renderMCQ(q) {
 // ─── Type Answer ───────────────────────────────────────────
 function renderTypeAnswer(q) {
   const body = document.getElementById('lessonBody');
-  const isHr = q.type === 'type_hr';
+  const isHr = q.type==='type_hr';
   const badge = isHr ? '⌨️ Type in Croatian' : '⌨️ Type in English';
   const placeholder = isHr ? 'Type the Croatian word...' : 'Type the English meaning...';
-
   const div = document.createElement('div');
-  div.style.width = '100%';
+  div.style.width='100%';
   div.innerHTML = `
     <div class="lesson-type-badge">${badge}</div>
     <div class="lesson-question">${q.prompt}</div>
     ${q.context ? `<div class="vocab-card" style="margin-bottom:16px;padding:18px">
       <div style="font-size:${isHr?'22px':'28px'};font-weight:800">${q.context}</div>
       ${isHr && q.hint ? `<div style="font-size:14px;color:var(--blue);font-style:italic;margin-top:6px;font-weight:600">📢 ${q.hint}</div>` : ''}
-      ${q.audio ? `<div style="margin-top:10px"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button></div>` : ''}
+      ${q.audio ? `<div style="margin-top:10px;display:flex;gap:8px">
+        <button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear it</button>
+        <button class="audio-btn slow" onclick="speakSlow('${esc(q.audio)}')">🐢 Slow</button>
+      </div>` : ''}
     </div>` : (q.hint ? `<div class="lesson-hint">📢 ${q.hint}</div>` : '')}
     <input type="text" class="text-input" id="typeInput" placeholder="${placeholder}" autocomplete="off" autocorrect="off" spellcheck="false">
     <div class="input-hint">Press ENTER or tap CHECK • Accents like č, š, ž are accepted but not required</div>
   `;
   body.appendChild(div);
-
   const input = document.getElementById('typeInput');
-  input.addEventListener('input', () => {
-    document.getElementById('checkBtn').disabled = input.value.trim().length === 0;
-  });
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !document.getElementById('checkBtn').disabled && !session.answered) {
-      document.getElementById('checkBtn').click();
-    }
-  });
+  input.addEventListener('input', () => { document.getElementById('checkBtn').disabled = input.value.trim().length===0; });
+  input.addEventListener('keydown', e => { if (e.key==='Enter' && !document.getElementById('checkBtn').disabled && !session.answered) document.getElementById('checkBtn').click(); });
   setTimeout(() => input.focus(), 100);
   document.getElementById('checkBtn').onclick = () => checkTypeAnswer(q, input);
 }
 
 function normalizeAccents(s) {
-  return s
-    .replace(/č/g,'c').replace(/š/g,'s').replace(/ž/g,'z')
-    .replace(/ć/g,'c').replace(/đ/g,'d').replace(/dž/g,'dz');
+  return s.replace(/č/g,'c').replace(/š/g,'s').replace(/ž/g,'z').replace(/ć/g,'c').replace(/đ/g,'d').replace(/dž/g,'dz');
 }
 
 function checkTypeAnswer(q, input) {
   if (session.answered) return;
-  session.answered = true; session.total++;
-
-  const rawUser = input.value.trim().toLowerCase().replace(/[.,!?]/g, '');
+  session.answered=true; session.total++;
+  const rawUser = input.value.trim().toLowerCase().replace(/[.,!?]/g,'');
   const userAns = normalizeAccents(rawUser);
-  const acceptable = (q.acceptableAnswers || [q.answer]).map(a =>
-    normalizeAccents(a.toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ').trim())
-  );
-
-  const isCorrect = acceptable.some(acc => {
-    if (userAns === acc) return true;
-    if (acc.length > 3 && levenshtein(userAns, acc) <= 1) return true;
-    return false;
-  });
-
-  input.disabled = true;
-  input.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
-  const correctDisplay = q.acceptableAnswers ? q.acceptableAnswers[0] : q.answer;
-  showFeedback(isCorrect, correctDisplay, q);
+  const acceptable = (q.acceptableAnswers||[q.answer]).map(a => normalizeAccents(a.toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ').trim()));
+  const isCorrect = acceptable.some(acc => userAns===acc || (acc.length>3 && levenshtein(userAns,acc)<=1));
+  input.disabled=true;
+  input.classList.add(isCorrect?'correct-input':'wrong-input');
+  showFeedback(isCorrect, q.acceptableAnswers?q.acceptableAnswers[0]:q.answer, q);
 }
 
 // ─── Fill in the Blank ─────────────────────────────────────
 function renderFillBlank(q) {
   const body = document.getElementById('lessonBody');
-  const isMCQ = q.type === 'fill_blank' && q.distractors;
-  const parts = (q.sentence_hr || '').split('___');
-
+  const isMCQ = q.type==='fill_blank' && q.distractors;
+  const parts = (q.sentence_hr||'').split('___');
   const div = document.createElement('div');
-  div.style.width = '100%';
-
+  div.style.width='100%';
   if (isMCQ) {
     const options = shuffle([q.answer, ...q.distractors]);
+    const p0 = makeClickableSentence(parts[0], null);
+    const p1 = parts[1] ? makeClickableSentence(parts[1], null) : '';
     div.innerHTML = `
       <div class="lesson-type-badge">🔲 Fill in the blank</div>
-      <div class="blank-sentence">${parts[0]}<span style="color:var(--blue);font-weight:900">___</span>${parts[1] || ''}</div>
+      <div class="blank-sentence">${p0}<span style="color:var(--blue);font-weight:900">___</span>${p1}</div>
       ${q.hint ? `<div class="lesson-hint">💡 Hint: ${q.hint}</div>` : ''}
       <div class="options-grid" id="optionsGrid"></div>
     `;
     body.appendChild(div);
-
     const grid = document.getElementById('optionsGrid');
     options.forEach(opt => {
       const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.textContent = opt;
+      btn.className='option-btn'; btn.textContent=opt;
       btn.onclick = () => {
         if (session.answered) return;
-        session.selectedOption = opt;
-        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        session.selectedOption=opt;
+        document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
         btn.classList.add('selected');
-        document.getElementById('checkBtn').disabled = false;
+        document.getElementById('checkBtn').disabled=false;
       };
       grid.appendChild(btn);
     });
-
     document.getElementById('checkBtn').onclick = () => {
       if (!session.selectedOption) return;
-      session.answered = true; session.total++;
-      const correct = session.selectedOption.toLowerCase() === q.answer.toLowerCase();
+      session.answered=true; session.total++;
+      const correct = session.selectedOption.toLowerCase()===q.answer.toLowerCase();
       document.querySelectorAll('.option-btn').forEach(b => {
-        b.disabled = true;
-        if (b.textContent.toLowerCase() === q.answer.toLowerCase()) b.classList.add('correct');
-        else if (b.textContent === session.selectedOption && !correct) b.classList.add('wrong');
+        b.disabled=true;
+        if (b.textContent.toLowerCase()===q.answer.toLowerCase()) b.classList.add('correct');
+        else if (b.textContent===session.selectedOption && !correct) b.classList.add('wrong');
       });
       showFeedback(correct, q.answer, q);
     };
   } else {
+    const p0 = makeClickableSentence(parts[0], null);
+    const p1 = parts[1] ? makeClickableSentence(parts[1], null) : '';
     div.innerHTML = `
       <div class="lesson-type-badge">⌨️ Fill in the blank</div>
       ${q.sentence_en ? `<div class="lesson-hint" style="margin-bottom:12px">💡 ${q.sentence_en}</div>` : ''}
       ${q.hint && q.sentence_en ? `<div class="lesson-hint" style="margin-bottom:12px;color:var(--blue)">📢 ${q.hint}</div>` : ''}
-      <div class="blank-sentence">${parts[0]}<input type="text" class="blank-input" id="blankInput" autocomplete="off" autocorrect="off" spellcheck="false" size="${Math.max(6, (q.answer||'').length+2)}">${parts[1] || ''}</div>
+      <div class="blank-sentence">${p0}<input type="text" class="blank-input" id="blankInput" autocomplete="off" autocorrect="off" spellcheck="false" size="${Math.max(6,(q.answer||'').length+2)}">${p1}</div>
       ${q.hint && !q.sentence_en ? `<div class="lesson-hint" style="margin-top:14px">💡 Hint: ${q.hint}</div>` : ''}
-      ${q.audio ? `<div style="margin-top:10px;text-align:center"><button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear full sentence</button></div>` : ''}
+      ${q.audio ? `<div style="margin-top:10px;text-align:center;display:flex;gap:8px;justify-content:center">
+        <button class="audio-btn" onclick="speakCroatian('${esc(q.audio)}')">🔊 Hear sentence</button>
+        <button class="audio-btn slow" onclick="speakSlow('${esc(q.audio)}')">🐢 Slow</button>
+      </div>` : ''}
     `;
     body.appendChild(div);
-
     const input = document.getElementById('blankInput');
-    input.addEventListener('input', () => {
-      document.getElementById('checkBtn').disabled = input.value.trim().length === 0;
-    });
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !document.getElementById('checkBtn').disabled && !session.answered) {
-        document.getElementById('checkBtn').click();
-      }
-    });
+    input.addEventListener('input', () => { document.getElementById('checkBtn').disabled = input.value.trim().length===0; });
+    input.addEventListener('keydown', e => { if (e.key==='Enter' && !document.getElementById('checkBtn').disabled && !session.answered) document.getElementById('checkBtn').click(); });
     setTimeout(() => input.focus(), 100);
-
     document.getElementById('checkBtn').onclick = () => {
       if (session.answered) return;
-      session.answered = true; session.total++;
-      const rawUser = input.value.trim().toLowerCase().replace(/[.,!?]/g,'');
-      const userAns = normalizeAccents(rawUser);
+      session.answered=true; session.total++;
+      const userAns = normalizeAccents(input.value.trim().toLowerCase().replace(/[.,!?]/g,''));
       const correct = normalizeAccents(q.answer.toLowerCase());
-      const isCorrect = userAns === correct || levenshtein(userAns, correct) <= 1;
-      input.disabled = true;
-      input.classList.add(isCorrect ? 'correct-blank' : 'wrong-blank');
-      if (!isCorrect) input.value = q.answer;
+      const isCorrect = userAns===correct || levenshtein(userAns,correct)<=1;
+      input.disabled=true;
+      input.classList.add(isCorrect?'correct-blank':'wrong-blank');
+      if (!isCorrect) input.value=q.answer;
       showFeedback(isCorrect, q.answer, q);
     };
   }
@@ -2053,22 +2026,23 @@ function renderFillBlank(q) {
 function renderBuilder(q) {
   const body = document.getElementById('lessonBody');
   const div = document.createElement('div');
-  div.style.width = '100%';
+  div.style.width='100%';
   div.innerHTML = `
     <div class="lesson-type-badge">🏗️ Build the sentence</div>
     <div class="lesson-question">${q.sentence_en}</div>
     <div class="lesson-hint">Tap words in the right order to build the Croatian sentence</div>
     <div class="sentence-display" id="sentDisplay"><span style="color:var(--text3);font-size:13px">Tap words below ↓</span></div>
     <div class="word-bank" id="wordBank"></div>
-    <button class="audio-btn" style="margin-bottom:14px" onclick="speakCroatian('${esc((q.audio||q.answer.join(' ')).replace(/'/g,"\\'"))}')">🔊 Hear answer</button>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
+      <button class="audio-btn" onclick="speakCroatian('${esc((q.audio||q.answer.join(' ')).replace(/'/g,"\\'"))}')">🔊 Hear answer</button>
+      <button class="audio-btn slow" onclick="speakSlow('${esc((q.audio||q.answer.join(' ')).replace(/'/g,"\\'"))}')">🐢 Slow</button>
+    </div>
   `;
   body.appendChild(div);
-
   const bank = document.getElementById('wordBank');
   shuffle([...q.distractors]).forEach(word => {
     const btn = document.createElement('button');
-    btn.className = 'bank-word';
-    btn.textContent = word;
+    btn.className='bank-word'; btn.textContent=word;
     btn.onclick = () => toggleBuilderWord(btn, word, q);
     bank.appendChild(btn);
   });
@@ -2079,52 +2053,47 @@ function toggleBuilderWord(btn, word, q) {
   if (session.answered) return;
   if (btn.classList.contains('used')) {
     const lastIdx = [...session.builtSentence].reverse().indexOf(word);
-    if (lastIdx !== -1) session.builtSentence.splice(session.builtSentence.length - 1 - lastIdx, 1);
+    if (lastIdx!==-1) session.builtSentence.splice(session.builtSentence.length-1-lastIdx,1);
     btn.classList.remove('used');
   } else {
-    session.builtSentence.push(word);
-    btn.classList.add('used');
+    session.builtSentence.push(word); btn.classList.add('used');
   }
   updateBuiltDisplay(q);
 }
 
 function updateBuiltDisplay(q) {
   const display = document.getElementById('sentDisplay');
-  if (session.builtSentence.length === 0) {
-    display.innerHTML = '<span style="color:var(--text3);font-size:13px">Tap words below ↓</span>';
+  if (session.builtSentence.length===0) {
+    display.innerHTML='<span style="color:var(--text3);font-size:13px">Tap words below ↓</span>';
   } else {
-    display.innerHTML = session.builtSentence.map((w,i) =>
-      `<span class="built-word" onclick="removeBuilderWord(${i})">${w}</span>`
-    ).join('');
+    display.innerHTML = session.builtSentence.map((w,i) => `<span class="built-word" onclick="removeBuilderWord(${i})">${w}</span>`).join('');
   }
-  document.getElementById('checkBtn').disabled = session.builtSentence.length === 0;
+  document.getElementById('checkBtn').disabled = session.builtSentence.length===0;
 }
 
 function removeBuilderWord(idx) {
   if (session.answered) return;
   const word = session.builtSentence[idx];
-  session.builtSentence.splice(idx, 1);
-  let found = false;
+  session.builtSentence.splice(idx,1);
+  let found=false;
   document.querySelectorAll('.bank-word').forEach(btn => {
-    if (btn.textContent === word && btn.classList.contains('used') && !found) {
-      btn.classList.remove('used'); found = true;
-    }
+    if (btn.textContent===word && btn.classList.contains('used') && !found) { btn.classList.remove('used'); found=true; }
   });
   updateBuiltDisplay(null);
 }
 
 function checkBuilder(q) {
-  session.answered = true; session.total++;
-  const built   = normalizeAccents(session.builtSentence.join(' ').toLowerCase().replace(/[.,!?]/g,''));
+  session.answered=true; session.total++;
+  const built = normalizeAccents(session.builtSentence.join(' ').toLowerCase().replace(/[.,!?]/g,''));
   const correct = normalizeAccents(q.answer.join(' ').toLowerCase().replace(/[.,!?]/g,''));
-  showFeedback(built === correct, q.answer.join(' '), q);
+  showFeedback(built===correct, q.answer.join(' '), q);
 }
 
 // ─── Matching ────────────────────────────────────────────────
 function renderMatching(q) {
   const body = document.getElementById('lessonBody');
   const div = document.createElement('div');
-  div.style.width = '100%';
+  div.style.width='100%';
   div.innerHTML = `
     <div class="lesson-type-badge">🔗 Match the pairs</div>
     <div class="lesson-question">Tap a Croatian word, then its English meaning</div>
@@ -2132,177 +2101,190 @@ function renderMatching(q) {
     <div id="matchGrid"></div>
   `;
   body.appendChild(div);
-
   const matchState = { selectedCroatian:null, selectedEl:null, matched:0, total:q.pairs.length };
-  const shuffledHr = shuffle(q.pairs.map(p => p.croatian));
-  const shuffledEn = shuffle(q.pairs.map(p => p.english));
-
+  const shuffledHr = shuffle(q.pairs.map(p=>p.croatian));
+  const shuffledEn = shuffle(q.pairs.map(p=>p.english));
   const grid = document.getElementById('matchGrid');
-  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-bottom:16px';
-
+  grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-bottom:16px';
   shuffledHr.forEach(word => {
-    const btn = document.createElement('button');
-    btn.className = 'pair-btn'; btn.textContent = word;
-    btn.dataset.word = word; btn.dataset.side = 'croatian';
-    btn.onclick = () => handleMatchClick(btn, matchState, q);
-    grid.appendChild(btn);
+    const btn=document.createElement('button'); btn.className='pair-btn'; btn.textContent=word;
+    btn.dataset.word=word; btn.dataset.side='croatian';
+    btn.onclick=()=>handleMatchClick(btn,matchState,q); grid.appendChild(btn);
   });
   shuffledEn.forEach(word => {
-    const btn = document.createElement('button');
-    btn.className = 'pair-btn'; btn.textContent = word;
-    btn.dataset.word = word; btn.dataset.side = 'english';
-    btn.onclick = () => handleMatchClick(btn, matchState, q);
-    grid.appendChild(btn);
+    const btn=document.createElement('button'); btn.className='pair-btn'; btn.textContent=word;
+    btn.dataset.word=word; btn.dataset.side='english';
+    btn.onclick=()=>handleMatchClick(btn,matchState,q); grid.appendChild(btn);
   });
-
-  document.getElementById('checkBtn').onclick = () => {
-    session.answered = true; session.total++;
-    showFeedback(true, '', null);
-  };
+  document.getElementById('checkBtn').onclick = () => { session.answered=true; session.total++; showFeedback(true,'',null); };
 }
 
 function handleMatchClick(btn, matchState, q) {
   if (session.answered || btn.classList.contains('matched')) return;
-  const side = btn.dataset.side;
-  const word = btn.dataset.word;
-
-  if (side === 'croatian') {
-    document.querySelectorAll('.pair-btn[data-side="croatian"]').forEach(b => b.classList.remove('selected-a'));
-    matchState.selectedCroatian = word;
-    matchState.selectedEl = btn;
-    btn.classList.add('selected-a');
+  const side=btn.dataset.side, word=btn.dataset.word;
+  if (side==='croatian') {
+    document.querySelectorAll('.pair-btn[data-side="croatian"]').forEach(b=>b.classList.remove('selected-a'));
+    matchState.selectedCroatian=word; matchState.selectedEl=btn; btn.classList.add('selected-a');
   } else {
     if (!matchState.selectedCroatian) {
-      document.querySelectorAll('.pair-btn[data-side="english"]').forEach(b => b.classList.remove('selected-b'));
-      btn.classList.add('selected-b');
-      return;
+      document.querySelectorAll('.pair-btn[data-side="english"]').forEach(b=>b.classList.remove('selected-b'));
+      btn.classList.add('selected-b'); return;
     }
-    const pair = q.pairs.find(p => p.croatian === matchState.selectedCroatian);
-    if (pair && pair.english === word) {
-      btn.classList.add('matched');
-      matchState.selectedEl.classList.remove('selected-a');
-      matchState.selectedEl.classList.add('matched');
-      speakCroatian(pair.croatian);
-      matchState.matched++;
-      matchState.selectedCroatian = null; matchState.selectedEl = null;
-      if (matchState.matched === matchState.total) {
-        const cb = document.getElementById('checkBtn');
-        cb.disabled = false; cb.textContent = '✓ All Matched!';
-      }
+    const pair=q.pairs.find(p=>p.croatian===matchState.selectedCroatian);
+    if (pair && pair.english===word) {
+      btn.classList.add('matched'); matchState.selectedEl.classList.remove('selected-a'); matchState.selectedEl.classList.add('matched');
+      speakCroatian(pair.croatian); matchState.matched++;
+      matchState.selectedCroatian=null; matchState.selectedEl=null;
+      if (matchState.matched===matchState.total) { const cb=document.getElementById('checkBtn'); cb.disabled=false; cb.textContent='✓ All Matched!'; }
     } else {
-      btn.classList.add('wrong-shake');
-      matchState.selectedEl && matchState.selectedEl.classList.add('wrong-shake');
-      setTimeout(() => {
-        btn.classList.remove('wrong-shake','selected-b');
-        matchState.selectedEl && matchState.selectedEl.classList.remove('wrong-shake','selected-a');
-        matchState.selectedCroatian = null; matchState.selectedEl = null;
-      }, 400);
+      btn.classList.add('wrong-shake'); matchState.selectedEl&&matchState.selectedEl.classList.add('wrong-shake');
+      setTimeout(()=>{ btn.classList.remove('wrong-shake','selected-b'); matchState.selectedEl&&matchState.selectedEl.classList.remove('wrong-shake','selected-a'); matchState.selectedCroatian=null; matchState.selectedEl=null; },400);
     }
   }
 }
 
 // ─── Feedback ─────────────────────────────────────────────
-function showFeedback(isCorrect, correctAnswer, q) {
-  if (isCorrect) {
-    session.correct++; session.xpEarned += 10;
-    if (q && q.audio) speakCroatian(q.audio);
-  } else {
-    session.hearts = Math.max(0, session.hearts - 1);
-    session.failQueue.push({ ...q, _retry:true });
-    if (q && q.audio) speakCroatian(q.audio);
+let _feedbackAudioDone = false;
+
+function lockContinueBtn(locked) {
+  const btn = document.getElementById('continueBtnFb');
+  if (!btn) return;
+  btn.classList.toggle('locked', locked);
+  btn._locked = locked;
+}
+
+function showStreakPopup(streak) {
+  if (streak < 3) return;
+  const popup = document.getElementById('streakPopup');
+  const countEl = document.getElementById('streakPopupCount');
+  const labelEl = document.getElementById('streakPopupLabel');
+  const flamesEl = document.getElementById('streakPopupFlames');
+
+  const tiers = [
+    { min:10, flames:'💎✨💎', label:'LEGENDARY!',   color:'linear-gradient(135deg,#7b2fff,#ce82ff,#b06aff)' },
+    { min:7,  flames:'⚡🔥⚡', label:'UNSTOPPABLE!', color:'linear-gradient(135deg,#c40000,#ff4b4b,#ff9600)' },
+    { min:5,  flames:'🔥🔥🔥', label:'ON FIRE!',     color:'linear-gradient(135deg,#c47800,var(--gold),#ffd84d)' },
+    { min:3,  flames:'🔥🔥',   label:'STREAK!',      color:'linear-gradient(135deg,#c47800,var(--gold),#ffd84d)' },
+  ];
+  const tier = tiers.find(t => streak >= t.min);
+  if (!tier) return;
+
+  countEl.textContent = streak;
+  labelEl.textContent = tier.label;
+  flamesEl.textContent = tier.flames;
+  popup.querySelector('.streak-popup-inner').style.background = tier.color;
+
+  // Restart animation
+  popup.className = 'streak-popup';
+  void popup.offsetWidth;
+  popup.className = 'streak-popup show';
+
+  // Spawn emoji particles
+  const emojis = tier.min >= 10 ? ['💎','✨','⭐'] : tier.min >= 7 ? ['⚡','🔥','💥'] : ['🔥','⭐','✨'];
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'streak-particle';
+    p.textContent = emojis[i % emojis.length];
+    const angle = (i / 8) * 360;
+    const dist = 80 + Math.random() * 60;
+    const px = Math.round(Math.cos(angle * Math.PI / 180) * dist);
+    const py = Math.round(Math.sin(angle * Math.PI / 180) * dist - 40);
+    p.style.cssText = `left:50%;top:50%;--px:${px}px;--py:${py}px;animation-delay:${i*0.04}s`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1100 + i * 40);
   }
+}
 
-  const bar   = document.getElementById('feedbackBar');
-  const icon  = document.getElementById('feedbackIcon');
-  const title = document.getElementById('feedbackTitle');
-  const ans   = document.getElementById('feedbackAnswer');
-  const reviewBtn = document.getElementById('reviewWordBtn');
+function showFeedback(isCorrect, correctAnswer, q) {
+  _feedbackAudioDone = false;
+  lockContinueBtn(true);
 
   if (isCorrect) {
-    bar.className    = 'feedback-bar correct-bar show';
-    icon.textContent = '✅';
-    title.textContent = getCorrectPhrase();
-    ans.textContent  = '';
-    reviewBtn.style.display = 'none';
-  } else {
-    bar.className    = 'feedback-bar wrong-bar show';
-    icon.textContent = '❌';
-    title.textContent = 'Not quite!';
-    ans.textContent  = correctAnswer ? 'Correct answer: ' + correctAnswer : 'Keep trying!';
-    if (q && q._wordKey) {
-      reviewBtn.style.display = 'block';
-      reviewBtn.dataset.wordKey = q._wordKey;
+    session.correct++; session.xpEarned+=10;
+    session.answerStreak = (session.answerStreak || 0) + 1;
+    showStreakPopup(session.answerStreak);
+    if (q && q.audio) {
+      speakCroatian(q.audio).then(() => {
+        setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100);
+      }).catch(() => { setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100); });
     } else {
-      reviewBtn.style.display = 'none';
+      setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100);
+    }
+  } else {
+    session.hearts=Math.max(0,session.hearts-1);
+    session.answerStreak = 0;
+    session.failQueue.push({...q,_retry:true});
+    if (q && q.audio) {
+      speakCroatian(q.audio).then(() => {
+        setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100);
+      }).catch(() => { setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100); });
+    } else {
+      setTimeout(() => { _feedbackAudioDone = true; lockContinueBtn(false); }, 100);
     }
   }
-
-  document.getElementById('checkBtn').disabled = true;
-  if (session.hearts === 0) {
-    document.getElementById('continueBtnFb').textContent = 'END LESSON';
-    document.getElementById('continueBtnFb').onclick = () => endLesson(true);
+  const bar=document.getElementById('feedbackBar'), icon=document.getElementById('feedbackIcon'),
+    title=document.getElementById('feedbackTitle'), ans=document.getElementById('feedbackAnswer'),
+    reviewBtn=document.getElementById('reviewWordBtn');
+  if (isCorrect) {
+    bar.className='feedback-bar correct-bar show'; icon.textContent='✅';
+    title.textContent=getCorrectPhrase(); ans.textContent=''; reviewBtn.style.display='none';
   } else {
-    document.getElementById('continueBtnFb').textContent = 'CONTINUE';
-    document.getElementById('continueBtnFb').onclick = nextQuestion;
+    bar.className='feedback-bar wrong-bar show'; icon.textContent='❌';
+    title.textContent='Not quite!';
+    ans.textContent=correctAnswer?'Correct answer: '+correctAnswer:'Keep trying!';
+    if (q && q._wordKey) { reviewBtn.style.display='block'; reviewBtn.dataset.wordKey=q._wordKey; }
+    else reviewBtn.style.display='none';
+  }
+  document.getElementById('checkBtn').disabled=true;
+  if (session.hearts===0) {
+    document.getElementById('continueBtnFb').textContent='END LESSON';
+    document.getElementById('continueBtnFb').onclick=()=>{ if(document.getElementById('continueBtnFb')._locked) return; endLesson(true); };
+  } else {
+    document.getElementById('continueBtnFb').textContent='CONTINUE';
+    document.getElementById('continueBtnFb').onclick=()=>{ if(document.getElementById('continueBtnFb')._locked) return; nextQuestion(); };
   }
 }
 
 function reviewWordFromFeedback() {
-  const btn = document.getElementById('reviewWordBtn');
-  const wordKey = btn && btn.dataset.wordKey;
+  const btn=document.getElementById('reviewWordBtn');
+  const wordKey=btn&&btn.dataset.wordKey;
   if (!wordKey) return;
-  showWordPopup(wordKey, '', '', '');
+  showWordPopup(wordKey,'','','');
 }
 
-const CORRECT_PHRASES = [
-  'Odlično!', 'Točno!', 'Izvrsno!', 'Bravo!', 'Sjajno!',
-  'Super!', 'Savršeno!', 'Tako je!', 'Fantastično!', 'Čestitam!',
-];
-function getCorrectPhrase() { return CORRECT_PHRASES[Math.floor(Math.random() * CORRECT_PHRASES.length)]; }
+const CORRECT_PHRASES = ['Odlično!','Točno!','Izvrsno!','Bravo!','Sjajno!','Super!','Savršeno!','Tako je!','Fantastično!','Čestitam!'];
+function getCorrectPhrase() { return CORRECT_PHRASES[Math.floor(Math.random()*CORRECT_PHRASES.length)]; }
 
 function nextQuestion() {
-  document.getElementById('feedbackBar').className = 'feedback-bar';
-  session.index++;
-  saveSession();
-  setTimeout(renderQuestion, 180);
+  document.getElementById('feedbackBar').className='feedback-bar';
+  session.index++; saveSession();
+  setTimeout(renderQuestion,180);
 }
 
 // ─── End Lesson ───────────────────────────────────────────
-function endLesson(outOfHearts = false) {
+function endLesson(outOfHearts=false) {
   const today = new Date().toDateString();
-  if (state.lastPlayDate !== today) {
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    state.streak = (state.lastPlayDate === yesterday) ? state.streak + 1 : 1;
-    state.lastPlayDate = today;
+  if (state.lastPlayDate!==today) {
+    const yesterday=new Date(Date.now()-86400000).toDateString();
+    state.streak=(state.lastPlayDate===yesterday)?state.streak+1:1;
+    state.lastPlayDate=today;
   }
-  state.xp += session.xpEarned;
-  state.totalLessons++;
-  if (!outOfHearts) {
-    state.unitProgress[session.unitId] = (state.unitProgress[session.unitId] || 0) + 1;
-  }
-  saveState();
-  clearSavedSession();
-  showConfetti();
-  showScreen('complete');
-
-  const elapsed = Math.round((Date.now() - session.startTime) / 1000);
-  const acc = session.total > 0 ? Math.round(session.correct / session.total * 100) : 100;
-
-  document.getElementById('completeTitle').textContent = outOfHearts ? 'Dobro pokušano!' : 'Odlično! 🎉';
-  document.getElementById('completeSub').textContent = outOfHearts
-    ? 'You ran out of hearts — keep practicing, you\'re making progress!'
-    : `Lesson complete! ${session.correct} of ${session.total} correct`;
-  document.getElementById('statXp').textContent   = '+' + session.xpEarned;
-  document.getElementById('statAcc').textContent  = acc + '%';
-  document.getElementById('statTime').textContent = elapsed < 60 ? elapsed + 's' : Math.round(elapsed/60) + 'm';
-
-  if (session.wordsThisLesson.length > 0) {
-    const row   = document.getElementById('masteredRow');
-    const words = document.getElementById('masteredWords');
-    row.style.display = 'block';
-    words.innerHTML = session.wordsThisLesson.map(w =>
-      `<span class="mastered-chip" onclick="showWordPopup('${esc(w)}','','','')">${w}</span>`
-    ).join('');
+  state.xp+=session.xpEarned; state.totalLessons++;
+  if (!outOfHearts) state.unitProgress[session.unitId]=(state.unitProgress[session.unitId]||0)+1;
+  saveState(); clearSavedSession(); showConfetti(); showScreen('complete');
+  const elapsed=Math.round((Date.now()-session.startTime)/1000);
+  const acc=session.total>0?Math.round(session.correct/session.total*100):100;
+  document.getElementById('completeTitle').textContent=outOfHearts?'Dobro pokušano!':'Odlično! 🎉';
+  document.getElementById('completeSub').textContent=outOfHearts
+    ?'You ran out of hearts — keep practicing, you\'re making progress!'
+    :`Lesson complete! ${session.correct} of ${session.total} correct`;
+  document.getElementById('statXp').textContent='+'+session.xpEarned;
+  document.getElementById('statAcc').textContent=acc+'%';
+  document.getElementById('statTime').textContent=elapsed<60?elapsed+'s':Math.round(elapsed/60)+'m';
+  if (session.wordsThisLesson.length>0) {
+    const row=document.getElementById('masteredRow'), words=document.getElementById('masteredWords');
+    row.style.display='block';
+    words.innerHTML=session.wordsThisLesson.map(w=>`<span class="mastered-chip" onclick="showWordPopup('${esc(w)}','','','')">${w}</span>`).join('');
   }
 }
 
@@ -2312,22 +2294,26 @@ function endLesson(outOfHearts = false) {
 function showWordPopup(croatian, english, phonetic, wordType) {
   if (!croatian) return;
   if (!english) {
-    const all = Object.values(VOCAB).flat();
-    const entry = all.find(v => v[0] === croatian);
+    const all=Object.values(VOCAB).flat();
+    const entry=all.find(v=>v[0]===croatian);
     if (entry) { croatian=entry[0]; english=entry[1]; phonetic=entry[2]; wordType=entry[3]; }
   }
-  const inner = document.getElementById('wordPopupInner');
-  const conj  = CONJUGATIONS[croatian];
+  const inner=document.getElementById('wordPopupInner');
+  const conj=CONJUGATIONS[croatian];
+  const extras=EXTRA_EXAMPLES[croatian]||[];
 
-  let html = `
+  let html=`
     <div class="word-popup-croatian">${croatian}</div>
-    ${phonetic ? `<div class="word-popup-phonetic">/${phonetic}/</div>` : ''}
+    ${phonetic?`<div class="word-popup-phonetic">/${phonetic}/</div>`:''}
     <div class="word-popup-meaning">${english}</div>
-    <button class="audio-btn" style="margin-bottom:16px;display:flex" onclick="speakCroatian('${esc(croatian)}')">🔊 Hear it</button>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="audio-btn" onclick="speakCroatian('${esc(croatian)}')">🔊 Hear it</button>
+      <button class="audio-btn slow" onclick="speakSlow('${esc(croatian)}')">🐢 Slow</button>
+    </div>
   `;
 
   if (conj) {
-    html += `
+    html+=`
       <div class="word-popup-section">
         <div class="word-popup-section-title">Present tense — all forms</div>
         <div class="forms-grid">
@@ -2338,59 +2324,156 @@ function showWordPopup(croatian, english, phonetic, wordType) {
           <span class="form-label">vi</span><span class="form-val" onclick="speakCroatian('vi ${esc(conj.vi)}')">${conj.vi}</span>
           <span class="form-label">oni</span><span class="form-val" onclick="speakCroatian('oni ${esc(conj.oni)}')">${conj.oni}</span>
         </div>
-        ${conj.note ? `<div class="grammar-note" style="margin-top:10px">${conj.note}</div>` : ''}
-      </div>
-    `;
+        ${conj.note?`<div class="grammar-note" style="margin-top:10px">${conj.note}</div>`:''}
+      </div>`;
   }
 
-  const exSent = getExampleSentence(croatian);
+  const exSent=getExampleSentence(croatian);
   if (exSent) {
-    const exTrans = getExampleTranslation(croatian);
-    html += `
+    const exTrans=getExampleTranslation(croatian);
+    html+=`
       <div class="word-popup-section">
         <div class="word-popup-section-title">Example</div>
-        <div class="grammar-example">
-          <span class="hr" style="cursor:pointer" onclick="speakCroatian('${esc(exSent)}')">🔊 ${exSent}</span>
-          ${exTrans ? `<span class="en">${exTrans}</span>` : ''}
+        <div class="popup-examples">
+          <div class="popup-example-item" onclick="speakCroatian('${esc(exSent)}')">
+            <div class="popup-ex-hr">🔊 ${exSent}</div>
+            ${exTrans?`<div class="popup-ex-en">${exTrans}</div>`:''}
+          </div>
+          ${extras.map(ex=>`<div class="popup-example-item" onclick="speakCroatian('${esc(ex.hr)}')">
+            <div class="popup-ex-hr">🔊 ${ex.hr}</div>
+            <div class="popup-ex-en">${ex.en}</div>
+          </div>`).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
+  } else if (extras.length) {
+    html+=`
+      <div class="word-popup-section">
+        <div class="word-popup-section-title">Examples</div>
+        <div class="popup-examples">
+          ${extras.map(ex=>`<div class="popup-example-item" onclick="speakCroatian('${esc(ex.hr)}')">
+            <div class="popup-ex-hr">🔊 ${ex.hr}</div>
+            <div class="popup-ex-en">${ex.en}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
   }
 
-  inner.innerHTML = html;
+  inner.innerHTML=html;
   document.getElementById('wordPopup').classList.add('show');
 }
 
 function closeWordPopup(event) {
-  if (!event || event.target === document.getElementById('wordPopup') || event.target.classList.contains('close-popup-btn')) {
+  if (!event||event.target===document.getElementById('wordPopup')||event.target.classList.contains('close-popup-btn')) {
     document.getElementById('wordPopup').classList.remove('show');
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// DICTIONARY
+// ═══════════════════════════════════════════════════════
+let dictFilter = 'all';
+
+function setDictFilter(filter, el) {
+  dictFilter = filter;
+  document.querySelectorAll('.dict-filter-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderDictionary();
+}
+
+function showDictionary() {
+  document.getElementById('dictSearch').value = '';
+  dictFilter = 'all';
+  document.querySelectorAll('.dict-filter-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+  renderDictionary();
+  showScreen('dictionary');
+}
+
+function renderDictionary() {
+  const query = (document.getElementById('dictSearch').value||'').toLowerCase().trim();
+  const learnedSet = new Set(state.wordsLearned||[]);
+  const allWords = Object.values(VOCAB).flat();
+
+  let filtered = allWords.filter(v => {
+    const [cr, en, , type] = v;
+    if (dictFilter === 'learned' && !learnedSet.has(cr)) return false;
+    if (dictFilter !== 'all' && dictFilter !== 'learned' && type !== dictFilter) return false;
+    if (query) {
+      return cr.toLowerCase().includes(query) || en.toLowerCase().includes(query);
+    }
+    return true;
+  });
+
+  // Sort: learned first, then alphabetical
+  filtered.sort((a,b) => {
+    const al = learnedSet.has(a[0]), bl = learnedSet.has(b[0]);
+    if (al !== bl) return al ? -1 : 1;
+    return a[0].localeCompare(b[0]);
+  });
+
+  const container = document.getElementById('dictResults');
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="dict-empty">No words found for "${query}"</div>`;
+    return;
+  }
+
+  // Group by learned/not-learned
+  const learned = filtered.filter(v => learnedSet.has(v[0]));
+  const notLearned = filtered.filter(v => !learnedSet.has(v[0]));
+
+  let html = '';
+  if (learned.length > 0) {
+    html += `<div class="dict-section-header">✅ Learned (${learned.length})</div>`;
+    html += learned.map(v => dictEntryHtml(v, true)).join('');
+  }
+  if (notLearned.length > 0) {
+    html += `<div class="dict-section-header">🔒 Not yet learned (${notLearned.length})</div>`;
+    html += notLearned.map(v => dictEntryHtml(v, false)).join('');
+  }
+  container.innerHTML = html;
+}
+
+function dictEntryHtml(v, isLearned) {
+  const [cr, en, phonetic, type, gender] = v;
+  const badge = isLearned
+    ? `<span class="dict-entry-badge dict-badge-learned">✓ Learned</span>`
+    : `<span class="dict-entry-badge dict-badge-locked">Not yet</span>`;
+  const genderStr = gender ? ` · ${gender==='m'?'masc':gender==='f'?'fem':'neut'}` : '';
+  return `<div class="dict-entry ${isLearned?'':'not-learned'}" onclick="showWordPopup('${esc(cr)}','${esc(en)}','${esc(phonetic||'')}','${esc(type||'')}')">
+    <div style="flex:1">
+      <div class="dict-entry-word">${cr}</div>
+      <div class="dict-entry-meaning">${en}${genderStr}</div>
+      <div class="dict-entry-phonetic">/${phonetic}/</div>
+    </div>
+    ${badge}
+    <button class="audio-btn" style="padding:7px 12px;font-size:12px;flex-shrink:0" onclick="event.stopPropagation();speakCroatian('${esc(cr)}')">🔊</button>
+  </div>`;
+}
+
+function openDictFromLesson() {
+  document.getElementById('pauseModal').classList.remove('show');
+  showDictionary();
 }
 
 // ═══════════════════════════════════════════════════════
 // PAUSE / QUIT
 // ═══════════════════════════════════════════════════════
 function showPauseMenu() { document.getElementById('pauseModal').classList.add('show'); }
-function resumeLesson()  { document.getElementById('pauseModal').classList.remove('show'); }
-function quitLesson()    {
-  document.getElementById('pauseModal').classList.remove('show');
-  saveSession(); // save progress so it can be resumed
-  showScreen('home'); renderHome();
-}
-function returnHome()    { clearSavedSession(); showScreen('home'); renderHome(); }
+function resumeLesson() { document.getElementById('pauseModal').classList.remove('show'); }
+function quitLesson() { document.getElementById('pauseModal').classList.remove('show'); saveSession(); showScreen('home'); renderHome(); }
+function returnHome() { clearSavedSession(); showScreen('home'); renderHome(); }
 
 // ═══════════════════════════════════════════════════════
 // CONFETTI
 // ═══════════════════════════════════════════════════════
 function showConfetti() {
-  const colors = ['#ff4b4b','#ffc800','#1cb0f6','#58cc02','#ce82ff','#ff9600'];
-  for (let i = 0; i < 50; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    const size = 6 + Math.random() * 9;
-    el.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()*1.5}s;width:${size}px;height:${size}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+  const colors=['#ff4b4b','#ffc800','#1cb0f6','#58cc02','#ce82ff','#ff9600'];
+  for (let i=0;i<50;i++) {
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    const size=6+Math.random()*9;
+    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()*1.5}s;width:${size}px;height:${size}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3500);
+    setTimeout(()=>el.remove(),3500);
   }
 }
 
@@ -2398,7 +2481,7 @@ function showConfetti() {
 // SCREEN HELPER
 // ═══════════════════════════════════════════════════════
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
@@ -2407,6 +2490,7 @@ function showScreen(id) {
 // ═══════════════════════════════════════════════════════
 loadState();
 loadAudioSettings();
+loadTheme();
 renderHome();
 </script>
 </body>
