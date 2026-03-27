@@ -1679,18 +1679,17 @@ function renderHome() {
   grid.innerHTML = '';
   UNIT_META.forEach((meta, i) => {
     const progress = state.unitProgress[i]||0;
-    const isLocked = i > 0 && !state.unitProgress[i-1];
+    const isLocked = false;
     const isDone = progress >= 3;
     const isGrammar = meta.type === 'grammar';
     const btn = document.createElement('button');
-    btn.className = 'unit-btn'+(isLocked?' locked':'')+(isDone?' done':'')+(isGrammar?' grammar-unit':'');
+    btn.className = 'unit-btn'+(isDone?' done':'')+(isGrammar?' grammar-unit':'');
     let badge = '';
-    if (isLocked) badge = '<span class="unit-badge badge-locked">🔒 Locked</span>';
-    else if (isDone) badge = '<span class="unit-badge badge-done">✓ Done</span>';
+    if (isDone) badge = '<span class="unit-badge badge-done">✓ Done</span>';
     else if (isGrammar && progress===0) badge = '<span class="unit-badge badge-grammar">📝 Grammar</span>';
     else if (progress===0) badge = '<span class="unit-badge badge-new">NEW</span>';
     else badge = '<span class="unit-badge badge-active">▶ Active</span>';
-    const hasSaved = !isLocked && loadSavedSession(i) !== null;
+    const hasSaved = loadSavedSession(i) !== null;
     if (hasSaved) badge = '<span class="unit-badge badge-active" style="background:var(--orange)">⏸ Resume</span>';
     btn.innerHTML = `
       <div class="unit-icon">${meta.icon}</div>
@@ -1699,7 +1698,7 @@ function renderHome() {
         <div class="unit-progress">${progress > 0 ? progress+' lesson'+(progress===1?'':'s')+' done' : (isGrammar ? 'Grammar lesson' : 'Not started')}</div>
       </div>
       ${badge}`;
-    if (!isLocked) btn.onclick = () => startLesson(i);
+    btn.onclick = () => startLesson(i);
     grid.appendChild(btn);
   });
   updateVoiceUI();
@@ -1707,8 +1706,7 @@ function renderHome() {
 
 function startNextLesson() {
   for (let i = 0; i < UNIT_META.length; i++) {
-    const isLocked = i > 0 && !state.unitProgress[i-1];
-    if (!isLocked && (state.unitProgress[i]||0) < 3) { startLesson(i); return; }
+    if ((state.unitProgress[i]||0) < 3) { startLesson(i); return; }
   }
   startLesson(0);
 }
