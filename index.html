@@ -834,6 +834,107 @@ const CONJUGATIONS = {
   'doći':     { ja:'dođem', ti:'dođeš', on:'dođe', mi:'dođemo', vi:'dođete', oni:'dođu', note:'"doći" (to come) is irregular' },
 };
 
+// ═══════════════════════════════════════════════════════
+// NOUN DECLENSIONS — the 7 Croatian cases (singular + plural)
+// Format: { sg: [nom,gen,dat,acc,voc,loc,ins], pl: [nom,gen,dat,acc,voc,loc,ins] }
+// ═══════════════════════════════════════════════════════
+const CASE_LABELS = ['Nominative','Genitive','Dative','Accusative','Vocative','Locative','Instrumental'];
+const CASE_NOTES  = ['subject','of / possession','to / for','direct object','addressing','about / at','with / by'];
+
+const NOUN_DECLENSIONS = {
+  // ── MASCULINE ──
+  'čovjek':   { gender:'m', sg:['čovjek','čovjeka','čovjeku','čovjeka','čovječe','čovjeku','čovjekom'],   pl:['ljudi','ljudi','ljudima','ljude','ljudi','ljudima','ljudima'] },
+  'dječak':   { gender:'m', sg:['dječak','dječaka','dječaku','dječaka','dječače','dječaku','dječakom'],   pl:['dječaci','dječaka','dječacima','dječake','dječaci','dječacima','dječacima'] },
+  'pas':      { gender:'m', sg:['pas','psa','psu','psa','pse','psu','psom'],                               pl:['psi','pasa','psima','pse','psi','psima','psima'] },
+  'grad':     { gender:'m', sg:['grad','grada','gradu','grad','grade','gradu','gradom'],                   pl:['gradovi','gradova','gradovima','gradove','gradovi','gradovima','gradovima'] },
+  'brat':     { gender:'m', sg:['brat','brata','bratu','brata','brate','bratu','bratom'],                 pl:['braća','braće','braći','braću','braćo','braći','braćom'] },
+  'otac':     { gender:'m', sg:['otac','oca','ocu','oca','oče','ocu','ocem'],                             pl:['očevi','očeva','očevima','očeve','očevi','očevima','očevima'] },
+  'sin':      { gender:'m', sg:['sin','sina','sinu','sina','sine','sinu','sinom'],                         pl:['sinovi','sinova','sinovima','sinove','sinovi','sinovima','sinovima'] },
+  'muž':      { gender:'m', sg:['muž','muža','mužu','muža','mužu','mužu','mužem'],                       pl:['muževi','muževa','muževima','muževe','muževi','muževima','muževima'] },
+  'djed':     { gender:'m', sg:['djed','djeda','djedu','djeda','djede','djedu','djedom'],                 pl:['djedovi','djedova','djedovima','djedove','djedovi','djedovima','djedovima'] },
+  'sok':      { gender:'m', sg:['sok','soka','soku','sok','soče','soku','sokom'],                         pl:['sokovi','sokova','sokovima','sokove','sokovi','sokovima','sokovima'] },
+  'čaj':      { gender:'m', sg:['čaj','čaja','čaju','čaj','čaju','čaju','čajem'],                         pl:['čajevi','čajeva','čajevima','čajeve','čajevi','čajevima','čajevima'] },
+  'kruh':     { gender:'m', sg:['kruh','kruha','kruhu','kruh','kruhu','kruhu','kruhom'],                   pl:['kruhovi','kruhova','kruhovima','kruhove','kruhovi','kruhovima','kruhovima'] },
+  'sir':      { gender:'m', sg:['sir','sira','siru','sir','siru','siru','sirom'],                         pl:['sirevi','sireva','sirevima','sireve','sirevi','sirevima','sirevima'] },
+  'maslac':   { gender:'m', sg:['maslac','maslaca','maslacu','maslac','maslače','maslacu','maslacem'],     pl:['maslaci','maslaca','maslacima','maslace','maslaci','maslacima','maslacima'] },
+  'šećer':    { gender:'m', sg:['šećer','šećera','šećeru','šećer','šećeru','šećeru','šećerom'],           pl:['šećeri','šećera','šećerima','šećere','šećeri','šećerima','šećerima'] },
+  'stol':     { gender:'m', sg:['stol','stola','stolu','stol','stole','stolu','stolom'],                   pl:['stolovi','stolova','stolovima','stolove','stolovi','stolovima','stolovima'] },
+  'krevet':   { gender:'m', sg:['krevet','kreveta','krevetu','krevet','krevete','krevetu','krevetom'],     pl:['kreveti','kreveta','krevetima','krevete','kreveti','krevetima','krevetima'] },
+  'prozor':   { gender:'m', sg:['prozor','prozora','prozoru','prozor','prozore','prozoru','prozorom'],     pl:['prozori','prozora','prozorima','prozore','prozori','prozorima','prozorima'] },
+  'stan':     { gender:'m', sg:['stan','stana','stanu','stan','stane','stanu','stanom'],                   pl:['stanovi','stanova','stanovima','stanove','stanovi','stanovima','stanovima'] },
+  'park':     { gender:'m', sg:['park','parka','parku','park','parče','parku','parkom'],                   pl:['parkovi','parkova','parkovima','parkove','parkovi','parkovima','parkovima'] },
+  'auto':     { gender:'m', sg:['auto','auta','autu','auto','auto','autu','autom'],                       pl:['auti','auta','autima','aute','auti','autima','autima'] },
+  'autobus':  { gender:'m', sg:['autobus','autobusa','autobusu','autobus','autobuse','autobusu','autobusom'], pl:['autobusi','autobusa','autobusima','autobuse','autobusi','autobusima','autobusima'] },
+  'vlak':     { gender:'m', sg:['vlak','vlaka','vlaku','vlak','vlaku','vlaku','vlakom'],                   pl:['vlakovi','vlakova','vlakovima','vlakove','vlakovi','vlakovima','vlakovima'] },
+  'kolodvor': { gender:'m', sg:['kolodvor','kolodvora','kolodvoru','kolodvor','kolodvore','kolodvoru','kolodvorom'], pl:['kolodvori','kolodvora','kolodvorima','kolodvore','kolodvori','kolodvorima','kolodvorima'] },
+  'tjedan':   { gender:'m', sg:['tjedan','tjedna','tjednu','tjedan','tjedne','tjednu','tjednom'],         pl:['tjedni','tjedana','tjednima','tjedne','tjedni','tjednima','tjednima'] },
+  'petak':    { gender:'m', sg:['petak','petka','petku','petak','petče','petku','petkom'],                 pl:['petci','petaka','petcima','petke','petci','petcima','petcima'] },
+  // ── FEMININE ──
+  'žena':     { gender:'f', sg:['žena','žene','ženi','ženu','ženo','ženi','ženom'],                       pl:['žene','žena','ženama','žene','žene','ženama','ženama'] },
+  'djevojčica':{ gender:'f', sg:['djevojčica','djevojčice','djevojčici','djevojčicu','djevojčice','djevojčici','djevojčicom'], pl:['djevojčice','djevojčica','djevojčicama','djevojčice','djevojčice','djevojčicama','djevojčicama'] },
+  'djeca':    { gender:'f', sg:['djeca','djece','djeci','djecu','djeco','djeci','djecom'],                pl:['—','—','—','—','—','—','—'], note:'"djeca" (children) is always plural in meaning but singular in grammar' },
+  'voda':     { gender:'f', sg:['voda','vode','vodi','vodu','vodo','vodi','vodom'],                       pl:['vode','voda','vodama','vode','vode','vodama','vodama'] },
+  'jabuka':   { gender:'f', sg:['jabuka','jabuke','jabuci','jabuku','jabuko','jabuci','jabukom'],         pl:['jabuke','jabuka','jabukama','jabuke','jabuke','jabukama','jabukama'] },
+  'juha':     { gender:'f', sg:['juha','juhe','juhi','juhu','juho','juhi','juhom'],                       pl:['juhe','juha','juhama','juhe','juhe','juhama','juhama'] },
+  'naranča':  { gender:'f', sg:['naranča','naranče','naranči','naranču','naranča','naranči','narančom'], pl:['naranče','naranča','narančama','naranče','naranče','narančama','narančama'] },
+  'banana':   { gender:'f', sg:['banana','banane','banani','bananu','banano','banani','bananom'],         pl:['banane','banana','bananama','banane','banane','bananama','bananama'] },
+  'pizza':    { gender:'f', sg:['pizza','pizze','pizzi','pizzu','pizzo','pizzi','pizzom'],                 pl:['pizze','pizza','pizzama','pizze','pizze','pizzama','pizzama'] },
+  'salata':   { gender:'f', sg:['salata','salate','salati','salatu','salato','salati','salatom'],         pl:['salate','salata','salatama','salate','salate','salatama','salatama'] },
+  'majka':    { gender:'f', sg:['majka','majke','majci','majku','majko','majci','majkom'],                 pl:['majke','majki','majkama','majke','majke','majkama','majkama'] },
+  'sestra':   { gender:'f', sg:['sestra','sestre','sestri','sestru','sestro','sestri','sestrom'],         pl:['sestre','sestara','sestrama','sestre','sestre','sestrama','sestrama'] },
+  'baka':     { gender:'f', sg:['baka','bake','baki','baku','bako','baki','bakom'],                       pl:['bake','baka','bakama','bake','bake','bakama','bakama'] },
+  'kći':      { gender:'f', sg:['kći','kćeri','kćeri','kćer','kćeri','kćeri','kćerju'],                 pl:['kćeri','kćeri','kćerima','kćeri','kćeri','kćerima','kćerima'] },
+  'supruga':  { gender:'f', sg:['supruga','supruge','suprugi','suprugi','supruga','suprugi','suprugom'], pl:['supruge','supruga','suprugama','supruge','supruge','suprugama','suprugama'] },
+  'mačka':    { gender:'f', sg:['mačka','mačke','mački','mačku','mačko','mački','mačkom'],               pl:['mačke','mačaka','mačkama','mačke','mačke','mačkama','mačkama'] },
+  'ptica':    { gender:'f', sg:['ptica','ptice','ptici','pticu','ptice','ptici','pticom'],               pl:['ptice','ptica','pticama','ptice','ptice','pticama','pticama'] },
+  'riba':     { gender:'f', sg:['riba','ribe','ribi','ribu','ribo','ribi','ribom'],                       pl:['ribe','riba','ribama','ribe','ribe','ribama','ribama'] },
+  'kava':     { gender:'f', sg:['kava','kave','kavi','kavu','kavo','kavi','kavom'],                       pl:['kave','kava','kavama','kave','kave','kavama','kavama'] },
+  'kuća':     { gender:'f', sg:['kuća','kuće','kući','kuću','kućo','kući','kućom'],                       pl:['kuće','kuća','kućama','kuće','kuće','kućama','kućama'] },
+  'soba':     { gender:'f', sg:['soba','sobe','sobi','sobu','sobo','sobi','sobom'],                       pl:['sobe','soba','sobama','sobe','sobe','sobama','sobama'] },
+  'kuhinja':  { gender:'f', sg:['kuhinja','kuhinje','kuhinji','kuhinju','kuhinjo','kuhinji','kuhinjom'], pl:['kuhinje','kuhinja','kuhinjama','kuhinje','kuhinje','kuhinjama','kuhinjama'] },
+  'stolica':  { gender:'f', sg:['stolica','stolice','stolici','stolicu','stolico','stolici','stolicom'], pl:['stolice','stolica','stolicama','stolice','stolice','stolicama','stolicama'] },
+  'ulica':    { gender:'f', sg:['ulica','ulice','ulici','ulicu','ulico','ulici','ulicom'],               pl:['ulice','ulica','ulicama','ulice','ulice','ulicama','ulicama'] },
+  'subota':   { gender:'f', sg:['subota','subote','suboti','subotu','suboto','suboti','subotom'],         pl:['subote','subota','subotama','subote','subote','subotama','subotama'] },
+  'nedjelja': { gender:'f', sg:['nedjelja','nedjelje','nedjelji','nedjelju','nedjeljo','nedjelji','nedjeljom'], pl:['nedjelje','nedjelja','nedjeljama','nedjelje','nedjelje','nedjeljama','nedjeljama'] },
+  // ── NEUTER ──
+  'dijete':   { gender:'n', sg:['dijete','djeteta','djetetu','dijete','dijete','djetetu','djetetom'],     pl:['djeca','djece','djeci','djecu','djeco','djeci','djecom'], note:'Irregular plural — "djeca" (same as the word for children)' },
+  'mlijeko':  { gender:'n', sg:['mlijeko','mlijeka','mlijeku','mlijeko','mlijeko','mlijeku','mlijekom'], pl:['mlijeka','mlijeka','mlijekima','mlijeka','mlijeka','mlijekima','mlijekima'] },
+  'meso':     { gender:'n', sg:['meso','mesa','mesu','meso','meso','mesu','mesom'],                       pl:['mesa','mesa','mesima','mesa','mesa','mesima','mesima'] },
+  'jaje':     { gender:'n', sg:['jaje','jajeta','jajetu','jaje','jaje','jajetu','jajetom'],               pl:['jaja','jaja','jajima','jaja','jaja','jajima','jajima'] },
+  'vino':     { gender:'n', sg:['vino','vina','vinu','vino','vino','vinu','vinom'],                       pl:['vina','vina','vinima','vina','vina','vinima','vinima'] },
+  'vrata':    { gender:'n', sg:['vrata','vrata','vratima','vrata','vrata','vratima','vratima'],           pl:['vrata','vrata','vratima','vrata','vrata','vratima','vratima'], note:'"vrata" (door) is always plural in Croatian' },
+  'jutro':    { gender:'n', sg:['jutro','jutra','jutru','jutro','jutro','jutru','jutrom'],                 pl:['jutra','jutara','jutrima','jutra','jutra','jutrima','jutrima'] },
+};
+
+// ═══════════════════════════════════════════════════════
+// ADJECTIVE DECLENSIONS — m/f/n for singular nominative,
+// plus the full agreement table (nom sg m/f/n + nom pl)
+// ═══════════════════════════════════════════════════════
+const ADJ_DECLENSIONS = {
+  // Each entry: { m, f, n, pl_m, pl_f, pl_n, cases_m: [nom,gen,dat,acc,loc,ins], note? }
+  // cases_m = masculine singular across key cases (for compact display)
+  'velik':       { m:'velik',      f:'velika',      n:'veliko',      pl:'veliki',    cases_m:['velik','velikog','velikom','velikog / velik','velikom','velikim'],     note:'Large / big' },
+  'mali':        { m:'mali',       f:'mala',        n:'malo',        pl:'mali',      cases_m:['mali','malog','malom','malog / mali','malom','malim'],                  note:'Small' },
+  'lijep':       { m:'lijep',      f:'lijepa',      n:'lijepo',      pl:'lijepi',    cases_m:['lijep','lijepog','lijepom','lijepog / lijep','lijepom','lijepim'],      note:'Beautiful / handsome' },
+  'star':        { m:'star',       f:'stara',        n:'staro',       pl:'stari',     cases_m:['star','starog','starom','starog / star','starom','starim'],             note:'Old' },
+  'mlad':        { m:'mlad',       f:'mlada',        n:'mlado',       pl:'mladi',     cases_m:['mlad','mladog','mladom','mladog / mlad','mladom','mladim'],             note:'Young' },
+  'sretan':      { m:'sretan',     f:'sretna',      n:'sretno',      pl:'sretni',    cases_m:['sretan','sretnog','sretnom','sretnog / sretan','sretnom','sretnim'],    note:'Happy' },
+  'umoran':      { m:'umoran',     f:'umorna',      n:'umorno',      pl:'umorni',    cases_m:['umoran','umornog','umornom','umornog / umoran','umornom','umornim'],    note:'Tired' },
+  'gladan':      { m:'gladan',     f:'gladna',      n:'gladno',      pl:'gladni',    cases_m:['gladan','gladnog','gladnom','gladnog / gladan','gladnom','gladnim'],    note:'Hungry' },
+  'dobar':       { m:'dobar',      f:'dobra',       n:'dobro',       pl:'dobri',     cases_m:['dobar','dobrog','dobrom','dobrog / dobar','dobrom','dobrim'],           note:'Good' },
+  'loš':         { m:'loš',        f:'loša',         n:'loše',        pl:'loši',      cases_m:['loš','lošeg','lošem','lošeg / loš','lošem','lošim'],                  note:'Bad' },
+  'crvena':      { m:'crveni',     f:'crvena',      n:'crveno',      pl:'crveni',    cases_m:['crveni','crvenog','crvenom','crvenog / crveni','crvenom','crvenim'],   note:'Red' },
+  'plava':       { m:'plavi',      f:'plava',       n:'plavo',       pl:'plavi',     cases_m:['plavi','plavog','plavom','plavog / plavi','plavom','plavim'],          note:'Blue' },
+  'zelena':      { m:'zeleni',     f:'zelena',      n:'zeleno',      pl:'zeleni',    cases_m:['zeleni','zelenog','zelenom','zelenog / zeleni','zelenom','zelenim'],   note:'Green' },
+  'žuta':        { m:'žuti',       f:'žuta',        n:'žuto',        pl:'žuti',      cases_m:['žuti','žutog','žutom','žutog / žuti','žutom','žutim'],                note:'Yellow' },
+  'bijela':      { m:'bijeli',     f:'bijela',      n:'bijelo',      pl:'bijeli',    cases_m:['bijeli','bijelog','bijelom','bijelog / bijeli','bijelom','bijelim'],   note:'White' },
+  'crna':        { m:'crni',       f:'crna',        n:'crno',        pl:'crni',      cases_m:['crni','crnog','crnom','crnog / crni','crnom','crnim'],                 note:'Black' },
+  'smeđa':       { m:'smeđi',      f:'smeđa',       n:'smeđe',       pl:'smeđi',     cases_m:['smeđi','smeđeg','smeđem','smeđeg / smeđi','smeđem','smeđim'],         note:'Brown' },
+  'narančasta':  { m:'narančasti', f:'narančasta',  n:'narančasto',  pl:'narančasti',cases_m:['narančasti','narančastog','narančastom','narančastog / narančasti','narančastom','narančastim'], note:'Orange (colour)' },
+  'ružičasta':   { m:'ružičasti',  f:'ružičasta',   n:'ružičasto',   pl:'ružičasti', cases_m:['ružičasti','ružičastog','ružičastom','ružičastog / ružičasti','ružičastom','ružičastim'], note:'Pink' },
+  'siva':        { m:'sivi',       f:'siva',        n:'sivo',        pl:'sivi',      cases_m:['sivi','sivog','sivom','sivog / sivi','sivom','sivim'],                 note:'Grey' },
+};
+
 const GRAMMAR_LESSONS = {
   'g_pronunciation': {
     title: 'Croatian pronunciation — read what you see!',
@@ -1485,12 +1586,27 @@ function makeClickableSentence(sentence, highlightWord) {
     const lower = stripped.toLowerCase();
     const entry = vocabMap[lower];
     const isHighlighted = highlightWord && stripped.toLowerCase() === highlightWord.toLowerCase();
+
     if (entry) {
       const style = isHighlighted
         ? 'color:var(--gold);font-weight:900;border-bottom:2px solid var(--gold);cursor:pointer'
         : 'border-bottom:1px dashed var(--blue);cursor:pointer;color:var(--text);font-weight:700';
       return `<span style="${style}" onclick="showWordPopup('${esc(entry[0])}','${esc(entry[1])}','${esc(entry[2]||'')}','${esc(entry[3]||'')}')">${token}</span>`;
     }
+
+    // Not directly in vocab — check if it's a conjugated verb form
+    const conjInfList = CONJ_REVERSE_MAP[lower];
+    if (conjInfList && conjInfList.length > 0) {
+      const inf = conjInfList[0];
+      const infEntry = allVocab.find(v => v[0] === inf);
+      const en = infEntry ? infEntry[1] : inf;
+      const phonetic = infEntry ? (infEntry[2]||'') : '';
+      const style = isHighlighted
+        ? 'color:var(--gold);font-weight:900;border-bottom:2px solid var(--gold);cursor:pointer'
+        : 'border-bottom:1px dashed var(--purple);cursor:pointer;color:var(--text);font-weight:700';
+      return `<span style="${style}" onclick="showWordPopup('${esc(stripped)}','${esc(en)}','${esc(phonetic)}','verb')">${token}</span>`;
+    }
+
     if (isHighlighted) {
       return `<span style="color:var(--gold);font-weight:900">${token}</span>`;
     }
@@ -2287,6 +2403,22 @@ function endLesson(outOfHearts=false) {
 }
 
 // ═══════════════════════════════════════════════════════
+// REVERSE CONJUGATION MAP — conjugated form → infinitive
+// Allows clicking "je", "sam", "pije" etc. to show full table
+// ═══════════════════════════════════════════════════════
+const CONJ_REVERSE_MAP = {};
+Object.entries(CONJUGATIONS).forEach(([infinitive, conj]) => {
+  ['ja','ti','on','mi','vi','oni'].forEach(pronoun => {
+    const form = conj[pronoun];
+    if (form) {
+      const lower = form.toLowerCase();
+      if (!CONJ_REVERSE_MAP[lower]) CONJ_REVERSE_MAP[lower] = [];
+      if (!CONJ_REVERSE_MAP[lower].includes(infinitive)) CONJ_REVERSE_MAP[lower].push(infinitive);
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════
 // WORD DETAIL POPUP
 // ═══════════════════════════════════════════════════════
 function showWordPopup(croatian, english, phonetic, wordType) {
@@ -2297,7 +2429,17 @@ function showWordPopup(croatian, english, phonetic, wordType) {
     if (entry) { croatian=entry[0]; english=entry[1]; phonetic=entry[2]; wordType=entry[3]; }
   }
   const inner=document.getElementById('wordPopupInner');
-  const conj=CONJUGATIONS[croatian];
+  // Look up conjugation either by the word itself (if it's an infinitive)
+  // or by reverse-mapping from a conjugated form (e.g. "je" → "biti")
+  let conj=CONJUGATIONS[croatian];
+  let conjInfinitive = croatian;
+  if (!conj) {
+    const infList = CONJ_REVERSE_MAP[croatian.toLowerCase()];
+    if (infList && infList.length > 0) {
+      conjInfinitive = infList[0];
+      conj = CONJUGATIONS[conjInfinitive];
+    }
+  }
   const extras=EXTRA_EXAMPLES[croatian]||[];
 
   let html=`
@@ -2311,18 +2453,95 @@ function showWordPopup(croatian, english, phonetic, wordType) {
   `;
 
   if (conj) {
+    const conjTitle = conjInfinitive !== croatian
+      ? `🔀 Present tense — <span style="color:var(--purple)">${conjInfinitive}</span> (all forms)`
+      : `🔀 Present tense — all forms`;
+    // Highlight the row that matches the clicked conjugated form
+    const clickedLower = croatian.toLowerCase();
+    const pronounRows = [
+      {label:'ja', key:'ja'}, {label:'ti', key:'ti'}, {label:'on/ona', key:'on'},
+      {label:'mi', key:'mi'}, {label:'vi', key:'vi'}, {label:'oni', key:'oni'}
+    ];
+    const rowsHtml = pronounRows.map(({label, key}) => {
+      const form = conj[key];
+      const isActive = form && form.toLowerCase() === clickedLower;
+      const highlight = isActive ? 'color:var(--gold);font-weight:900;background:rgba(255,200,0,.1);border-radius:6px;padding:2px 6px' : '';
+      return `<span class="form-label"${isActive?' style="color:var(--gold)"':''}>${label}</span><span class="form-val" style="${highlight}" onclick="speakCroatian('${esc(label.split('/')[0])} ${esc(form)}')">${form}${isActive?' ◀':''}</span>`;
+    }).join('');
     html+=`
       <div class="word-popup-section">
-        <div class="word-popup-section-title">Present tense — all forms</div>
-        <div class="forms-grid">
-          <span class="form-label">ja</span><span class="form-val" onclick="speakCroatian('ja ${esc(conj.ja)}')">${conj.ja}</span>
-          <span class="form-label">ti</span><span class="form-val" onclick="speakCroatian('ti ${esc(conj.ti)}')">${conj.ti}</span>
-          <span class="form-label">on/ona</span><span class="form-val" onclick="speakCroatian('on ${esc(conj.on)}')">${conj.on}</span>
-          <span class="form-label">mi</span><span class="form-val" onclick="speakCroatian('mi ${esc(conj.mi)}')">${conj.mi}</span>
-          <span class="form-label">vi</span><span class="form-val" onclick="speakCroatian('vi ${esc(conj.vi)}')">${conj.vi}</span>
-          <span class="form-label">oni</span><span class="form-val" onclick="speakCroatian('oni ${esc(conj.oni)}')">${conj.oni}</span>
-        </div>
+        <div class="word-popup-section-title">${conjTitle}</div>
+        <div class="forms-grid">${rowsHtml}</div>
         ${conj.note?`<div class="grammar-note" style="margin-top:10px">${conj.note}</div>`:''}
+      </div>`;
+  }
+
+  // ── Noun declension ──
+  const nounDecl = NOUN_DECLENSIONS[croatian];
+  if (nounDecl) {
+    const gLabel = nounDecl.gender==='m'?'masculine':nounDecl.gender==='f'?'feminine':'neuter';
+    const gColor = nounDecl.gender==='m'?'var(--blue)':nounDecl.gender==='f'?'#ff82b4':'var(--green)';
+    const sg = nounDecl.sg;
+    const pl = nounDecl.pl;
+    html+=`
+      <div class="word-popup-section">
+        <div class="word-popup-section-title">📋 Noun forms — <span style="color:${gColor}">${gLabel}</span></div>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <tr>
+            <th style="text-align:left;padding:5px 6px;color:var(--text3);font-size:11px;font-weight:800;border-bottom:1px solid var(--border)">Case</th>
+            <th style="padding:5px 6px;color:var(--blue);font-size:11px;font-weight:800;border-bottom:1px solid var(--border)">Singular</th>
+            <th style="padding:5px 6px;color:var(--purple);font-size:11px;font-weight:800;border-bottom:1px solid var(--border)">Plural</th>
+          </tr>
+          ${CASE_LABELS.map((lbl,i)=>`
+          <tr style="background:${i%2===0?'var(--bg3)':'transparent'}">
+            <td style="padding:5px 6px;color:var(--text3);font-size:11px;font-weight:700">${lbl}<br><span style="color:var(--text3);opacity:.6;font-size:10px">${CASE_NOTES[i]}</span></td>
+            <td style="padding:5px 6px;font-weight:800;color:var(--text);cursor:pointer;text-align:center" onclick="speakCroatian('${esc(sg[i])}')">${sg[i]}</td>
+            <td style="padding:5px 6px;font-weight:700;color:var(--text2);cursor:pointer;text-align:center" onclick="speakCroatian('${esc(pl[i])}')">${pl[i]}</td>
+          </tr>`).join('')}
+        </table>
+        </div>
+        ${nounDecl.note?`<div class="grammar-note" style="margin-top:8px">💡 ${nounDecl.note}</div>`:''}
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;font-weight:600">Tap any form to hear it spoken</div>
+      </div>`;
+  }
+
+  // ── Adjective declension ──
+  const adjDecl = ADJ_DECLENSIONS[croatian];
+  if (adjDecl) {
+    const caseLabelsAdj = ['Nominative','Genitive','Dative','Accusative','Locative','Instrumental'];
+    html+=`
+      <div class="word-popup-section">
+        <div class="word-popup-section-title">🎨 Adjective agreement</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="text-align:center">
+            <div style="font-size:10px;color:var(--blue);font-weight:800;margin-bottom:3px">MASC</div>
+            <div style="font-size:15px;font-weight:900;cursor:pointer" onclick="speakCroatian('${esc(adjDecl.m)}')">${adjDecl.m}</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:10px;color:#ff82b4;font-weight:800;margin-bottom:3px">FEM</div>
+            <div style="font-size:15px;font-weight:900;cursor:pointer" onclick="speakCroatian('${esc(adjDecl.f)}')">${adjDecl.f}</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:10px;color:var(--green);font-weight:800;margin-bottom:3px">NEUT</div>
+            <div style="font-size:15px;font-weight:900;cursor:pointer" onclick="speakCroatian('${esc(adjDecl.n)}')">${adjDecl.n}</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:10px;color:var(--purple);font-weight:800;margin-bottom:3px">PLURAL</div>
+            <div style="font-size:15px;font-weight:900;cursor:pointer" onclick="speakCroatian('${esc(adjDecl.pl)}')">${adjDecl.pl}</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">Masculine singular — all cases</div>
+        <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          ${caseLabelsAdj.map((lbl,i)=>`
+          <tr style="background:${i%2===0?'var(--bg3)':'transparent'}">
+            <td style="padding:4px 6px;color:var(--text3);font-size:11px;font-weight:700">${lbl}</td>
+            <td style="padding:4px 6px;font-weight:800;color:var(--text);cursor:pointer" onclick="speakCroatian('${esc(adjDecl.cases_m[i])}')">${adjDecl.cases_m[i]}</td>
+          </tr>`).join('')}
+        </table>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;font-weight:600">💡 Adjectives change ending to match the noun's gender & case</div>
       </div>`;
   }
 
